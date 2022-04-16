@@ -138,4 +138,17 @@ public class LinkedList {
             }
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LinkedList)) return false;
+        LinkedList that = (LinkedList) o;
+        return Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(head, tail);
+    }
 }

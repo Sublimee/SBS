@@ -240,6 +240,21 @@ public class LinkedListTest {
         Assertions.assertEquals(0, actualLinkedList.findAll(2).size());
     }
 
+    @Test
+    void countManyTest() {
+        Assertions.assertEquals(5, getLinkedList(2, 1, 2, 1, 2).count());
+    }
+
+    @Test
+    void countEmptyTest() {
+        Assertions.assertEquals(0, getLinkedList().count());
+    }
+
+    @Test
+    void countSingleTest() {
+        Assertions.assertEquals(1, getLinkedList(1).count());
+    }
+
     private LinkedList getLinkedList(int... values) {
         LinkedList linkedList = new LinkedList();
         for (Integer value : values) {
