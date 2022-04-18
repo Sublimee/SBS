@@ -1,4 +1,4 @@
-package org.example;
+package org.example.lesson01;
 
 import java.util.*;
 
@@ -9,6 +9,14 @@ public class Node {
     public Node(int _value) {
         value = _value;
         next = null;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "value=" + value +
+                ", next=" + next +
+                '}';
     }
 
     @Override
