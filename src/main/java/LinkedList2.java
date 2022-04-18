@@ -1,5 +1,3 @@
-package org.example.lesson02;
-
 import java.util.*;
 
 public class LinkedList2 {
@@ -142,45 +140,5 @@ public class LinkedList2 {
                 node = node.next;
             }
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LinkedList2)) return false;
-        LinkedList2 other = (LinkedList2) o;
-        if (this.head == null && other.head == null && this.tail == null && other.tail == null) {
-            return true;
-        }
-        if (((this.head != null) && (other.head == null)) || ((this.head == null) && (other.head != null))) {
-            return false;
-        }
-        if (this.head != null && (other.head != null) && (this.head.value != other.head.value)) {
-            return false;
-        }
-        if (((this.tail != null) && (other.tail == null)) || ((this.tail == null) && (other.tail != null))) {
-            return false;
-        }
-        if (this.tail != null && (other.tail != null) && (this.tail.value != other.tail.value)) {
-            return false;
-        }
-
-        Node thisPrevNode = tail.prev;
-        Node otherPrevNode = other.tail.prev;
-        boolean prevNodesAreEquals = true;
-
-        while (prevNodesAreEquals) {
-            if (thisPrevNode == null && otherPrevNode == null) {
-                break;
-            }
-            if (thisPrevNode != null && otherPrevNode != null && thisPrevNode.value == otherPrevNode.value) {
-                thisPrevNode = thisPrevNode.prev;
-                otherPrevNode = otherPrevNode.prev;
-                continue;
-            }
-            prevNodesAreEquals = false;
-        }
-
-        return prevNodesAreEquals;
     }
 }
