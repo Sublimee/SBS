@@ -1,10 +1,7 @@
-package org.example.lesson03;
-
 import java.lang.reflect.Array;
-import java.util.*;
 
 public class DynArray<T> {
-    public static final double CAPACITY_DECREASE_FACTOR = 1.5;
+    public static final double CAPACITY_DECREASE_RATIO = 1.5;
     public static final int DECREASE_COUNT_RATIO = 2;
     public static final int MIN_CAPACITY = 16;
 
@@ -73,22 +70,7 @@ public class DynArray<T> {
         count--;
 
         if (DECREASE_COUNT_RATIO * count < capacity) {
-            makeArray((int) (capacity / CAPACITY_DECREASE_FACTOR));
+            makeArray((int) (capacity / CAPACITY_DECREASE_RATIO));
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DynArray)) return false;
-        DynArray<?> dynArray = (DynArray<?>) o;
-        return count == dynArray.count && capacity == dynArray.capacity && Arrays.equals(array, dynArray.array) && Objects.equals(clazz, dynArray.clazz);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(count, capacity, clazz);
-        result = 31 * result + Arrays.hashCode(array);
-        return result;
     }
 }
