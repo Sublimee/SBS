@@ -1,17 +1,17 @@
 package org.example.lesson03;
 
 import java.lang.reflect.Array;
+import java.util.*;
 
 public class DynArray<T> {
     public static final double CAPACITY_DECREASE_FACTOR = 1.5;
     public static final int DECREASE_COUNT_RATIO = 2;
+    public static final int MIN_CAPACITY = 16;
 
     public T[] array;
     public int count;
     public int capacity;
     Class clazz;
-
-    private final int MIN_CAPACITY = 16;
 
     public DynArray(Class clz) {
         clazz = clz;
@@ -77,4 +77,18 @@ public class DynArray<T> {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DynArray)) return false;
+        DynArray<?> dynArray = (DynArray<?>) o;
+        return count == dynArray.count && capacity == dynArray.capacity && Arrays.equals(array, dynArray.array) && Objects.equals(clazz, dynArray.clazz);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(count, capacity, clazz);
+        result = 31 * result + Arrays.hashCode(array);
+        return result;
+    }
 }
