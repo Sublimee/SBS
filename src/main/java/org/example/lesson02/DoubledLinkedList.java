@@ -2,11 +2,11 @@ package org.example.lesson02;
 
 import java.util.*;
 
-public class LinkedList2 {
+public class DoubledLinkedList {
     public Node head;
     public Node tail;
 
-    public LinkedList2() {
+    public DoubledLinkedList() {
         head = null;
         tail = null;
     }
@@ -147,8 +147,8 @@ public class LinkedList2 {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LinkedList2)) return false;
-        LinkedList2 other = (LinkedList2) o;
+        if (!(o instanceof DoubledLinkedList)) return false;
+        DoubledLinkedList other = (DoubledLinkedList) o;
         if (this.head == null && other.head == null && this.tail == null && other.tail == null) {
             return true;
         }

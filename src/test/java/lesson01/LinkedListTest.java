@@ -1,13 +1,15 @@
-import org.example.lesson02.LinkedList2;
-import org.example.lesson02.Node;
+package lesson01;
+
+import org.example.lesson01.LinkedList;
+import org.example.lesson01.Node;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class LinkedList2Test {
+public class LinkedListTest {
 
     @Test
     void removeFirstElementFromManyTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1, 2, 3);
+        LinkedList actualLinkedList = getLinkedList(1, 2, 3);
 
         actualLinkedList.remove(1);
 
@@ -16,7 +18,7 @@ public class LinkedList2Test {
 
     @Test
     void removeMiddleElementFromManyTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1, 2, 3);
+        LinkedList actualLinkedList = getLinkedList(1, 2, 3);
 
         actualLinkedList.remove(2);
 
@@ -25,7 +27,7 @@ public class LinkedList2Test {
 
     @Test
     void removeLastElementFromManyTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1, 2, 3);
+        LinkedList actualLinkedList = getLinkedList(1, 2, 3);
 
         actualLinkedList.remove(3);
 
@@ -34,7 +36,7 @@ public class LinkedList2Test {
 
     @Test
     void removeFirstElementFromTwoTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1, 2);
+        LinkedList actualLinkedList = getLinkedList(1, 2);
 
         actualLinkedList.remove(1);
 
@@ -43,7 +45,7 @@ public class LinkedList2Test {
 
     @Test
     void removeLastElementFromTwoTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1, 2);
+        LinkedList actualLinkedList = getLinkedList(1, 2);
 
         actualLinkedList.remove(2);
 
@@ -52,7 +54,7 @@ public class LinkedList2Test {
 
     @Test
     void removeElementFromSingleTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1);
+        LinkedList actualLinkedList = getLinkedList(1);
 
         actualLinkedList.remove(1);
 
@@ -61,7 +63,7 @@ public class LinkedList2Test {
 
     @Test
     void removeUnexpectedElementTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1);
+        LinkedList actualLinkedList = getLinkedList(1);
 
         actualLinkedList.remove(2);
 
@@ -70,7 +72,7 @@ public class LinkedList2Test {
 
     @Test
     void removeElementFromEmptyTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1);
+        LinkedList actualLinkedList = getLinkedList(1);
 
         actualLinkedList.remove(1);
 
@@ -79,7 +81,7 @@ public class LinkedList2Test {
 
     @Test
     void clearNotEmptyTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1, 2, 3);
+        LinkedList actualLinkedList = getLinkedList(1, 2, 3);
         actualLinkedList.clear();
 
         Assertions.assertEquals(getLinkedList(), actualLinkedList);
@@ -87,7 +89,7 @@ public class LinkedList2Test {
 
     @Test
     void clearSingleTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1);
+        LinkedList actualLinkedList = getLinkedList(1);
         actualLinkedList.clear();
 
         Assertions.assertEquals(getLinkedList(), actualLinkedList);
@@ -95,7 +97,7 @@ public class LinkedList2Test {
 
     @Test
     void clearEmptyTest() {
-        LinkedList2 actualLinkedList = getLinkedList();
+        LinkedList actualLinkedList = getLinkedList();
         actualLinkedList.clear();
 
         Assertions.assertEquals(getLinkedList(), actualLinkedList);
@@ -103,7 +105,7 @@ public class LinkedList2Test {
 
     @Test
     void removeAllFromManyTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1, 1, 1);
+        LinkedList actualLinkedList = getLinkedList(1, 1, 1);
         actualLinkedList.removeAll(1);
 
         Assertions.assertEquals(getLinkedList(), actualLinkedList);
@@ -111,7 +113,7 @@ public class LinkedList2Test {
 
     @Test
     void removeAllFromTwoTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1, 1);
+        LinkedList actualLinkedList = getLinkedList(1, 1);
 
         actualLinkedList.removeAll(1);
 
@@ -120,7 +122,7 @@ public class LinkedList2Test {
 
     @Test
     void removeAllFromSingleTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1);
+        LinkedList actualLinkedList = getLinkedList(1);
 
         actualLinkedList.removeAll(1);
 
@@ -129,7 +131,7 @@ public class LinkedList2Test {
 
     @Test
     void removeAllFromEmptyTest() {
-        LinkedList2 actualLinkedList = getLinkedList();
+        LinkedList actualLinkedList = getLinkedList();
 
         actualLinkedList.removeAll(1);
 
@@ -138,7 +140,7 @@ public class LinkedList2Test {
 
     @Test
     void removeAllFromComplexSequence1Test() {
-        LinkedList2 actualLinkedList = getLinkedList(1, 2, 1, 2, 1);
+        LinkedList actualLinkedList = getLinkedList(1, 2, 1, 2, 1);
 
         actualLinkedList.removeAll(1);
 
@@ -147,7 +149,7 @@ public class LinkedList2Test {
 
     @Test
     void removeAllFromComplexSequence2Test() {
-        LinkedList2 actualLinkedList = getLinkedList(2, 1, 2, 1);
+        LinkedList actualLinkedList = getLinkedList(2, 1, 2, 1);
 
         actualLinkedList.removeAll(1);
 
@@ -156,7 +158,7 @@ public class LinkedList2Test {
 
     @Test
     void removeAllFromComplexSequence3Test() {
-        LinkedList2 actualLinkedList = getLinkedList(2, 1, 2, 2, 1, 2, 1, 1, 2, 2, 2, 1, 1, 1, 2, 1);
+        LinkedList actualLinkedList = getLinkedList(2, 1, 2, 2, 1, 2, 1, 1, 2, 2, 2, 1, 1, 1, 2, 1);
 
         actualLinkedList.removeAll(1);
 
@@ -165,7 +167,7 @@ public class LinkedList2Test {
 
     @Test
     void insertAfterNoSpecifiedElementIntoEmptyTest() {
-        LinkedList2 actualLinkedList = getLinkedList();
+        LinkedList actualLinkedList = getLinkedList();
 
         actualLinkedList.insertAfter(null, new Node(2));
 
@@ -174,7 +176,7 @@ public class LinkedList2Test {
 
     @Test
     void insertAfterNoSpecifiedElementIntoSingleTest() {
-        LinkedList2 actualLinkedList = getLinkedList(1);
+        LinkedList actualLinkedList = getLinkedList(1);
 
         actualLinkedList.insertAfter(null, new Node(2));
 
@@ -183,7 +185,7 @@ public class LinkedList2Test {
 
     @Test
     void insertAfterNoSpecifiedElementIntoManyTest() {
-        LinkedList2 actualLinkedList = getLinkedList(2, 1);
+        LinkedList actualLinkedList = getLinkedList(2, 1);
 
         actualLinkedList.insertAfter(null, new Node(3));
 
@@ -192,7 +194,7 @@ public class LinkedList2Test {
 
     @Test
     void insertAfterSpecifiedElementIntoSingleTest() {
-        LinkedList2 actualLinkedList = getLinkedList();
+        LinkedList actualLinkedList = getLinkedList();
 
         Node nodeAfter = new Node(2);
         actualLinkedList.addInTail(nodeAfter);
@@ -203,7 +205,7 @@ public class LinkedList2Test {
 
     @Test
     void insertAfterFirstSpecifiedElementIntoManyTest() {
-        LinkedList2 actualLinkedList = getLinkedList();
+        LinkedList actualLinkedList = getLinkedList();
 
         Node nodeAfter = new Node(1);
         actualLinkedList.addInTail(nodeAfter);
@@ -215,7 +217,7 @@ public class LinkedList2Test {
 
     @Test
     void insertAfterLastSpecifiedElementIntoManyTest() {
-        LinkedList2 actualLinkedList = getLinkedList();
+        LinkedList actualLinkedList = getLinkedList();
 
         Node nodeAfter = new Node(3);
         actualLinkedList.addInTail(new Node(1));
@@ -227,7 +229,7 @@ public class LinkedList2Test {
 
     @Test
     void findAllInManyTest() {
-        LinkedList2 actualLinkedList = getLinkedList(2, 1, 2, 1, 2);
+        LinkedList actualLinkedList = getLinkedList(2, 1, 2, 1, 2);
 
         Assertions.assertEquals(3, actualLinkedList.findAll(2).size());
         Assertions.assertEquals(2, actualLinkedList.findAll(1).size());
@@ -236,7 +238,7 @@ public class LinkedList2Test {
 
     @Test
     void findAllInEmptyTest() {
-        LinkedList2 actualLinkedList = getLinkedList();
+        LinkedList actualLinkedList = getLinkedList();
         Assertions.assertEquals(0, actualLinkedList.findAll(2).size());
     }
 
@@ -255,8 +257,8 @@ public class LinkedList2Test {
         Assertions.assertEquals(1, getLinkedList(1).count());
     }
 
-    private LinkedList2 getLinkedList(int... values) {
-        LinkedList2 linkedList = new LinkedList2();
+    private LinkedList getLinkedList(int... values) {
+        LinkedList linkedList = new LinkedList();
         for (Integer value : values) {
             linkedList.addInTail(new Node(value));
         }
