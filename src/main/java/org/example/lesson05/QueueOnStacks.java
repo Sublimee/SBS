@@ -9,7 +9,7 @@ public class QueueOnStacks<T> {
 
     private Stack<T> head;
     private Stack<T> tail;
-    boolean reverse;
+    boolean reversed;
 
     public QueueOnStacks() {
         this.stack1 = new Stack<>();
@@ -17,46 +17,36 @@ public class QueueOnStacks<T> {
 
         head = this.stack1;
         tail = this.stack2;
-        reverse = true;
+        reversed = true;
     }
 
     public void enqueue(T item) {
-        if (reverse) {
-            head.push(item);
-        } else {
-            while (head.size() > 0) {
-                tail.push(head.pop());
-            }
-            tail.push(item);
-
-            Stack<T> stackTemp = head;
-            head = tail;
-            tail = stackTemp;
-
-            reverse = true;
+        if (!reversed) {
+            exchangeStacks();
         }
-        // вставка в хвост
+        head.push(item);
     }
 
     public T dequeue() {
-        if (reverse) {
-            while (head.size() > 1) {
-                tail.push(head.pop());
-            }
-
-            Stack<T> stackTemp = head;
-            head = tail;
-            tail = stackTemp;
-
-            reverse = false;
-            // выдача из головы
-            return tail.pop(); // null если очередь пустая
-        } else {
-            return head.pop();
+        if (reversed) {
+            exchangeStacks();
         }
+        return head.size() > 0 ? head.pop() : null;
+    }
+
+    private void exchangeStacks() {
+        while (head.size() > 0) {
+            tail.push(head.pop());
+        }
+
+        Stack<T> stackTemp = head;
+        head = tail;
+        tail = stackTemp;
+
+        reversed = !reversed;
     }
 
     public int size() {
-        return 0; // размер очереди
+        return head.size();
     }
 }
