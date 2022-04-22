@@ -26,7 +26,7 @@ public class StackOnLinkedListTest {
         IntStream.range(1, 5).forEach(it -> destination.push(source.pop()));
 
         Assertions.assertEquals(0, source.size());
-        Assertions.assertEquals(Arrays.asList(1, 2,3, 4), destination.elements);
+        Assertions.assertEquals(Arrays.asList(1, 2, 3, 4), destination.elements);
     }
 
     @Test

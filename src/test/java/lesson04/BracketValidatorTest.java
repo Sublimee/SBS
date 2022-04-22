@@ -15,7 +15,7 @@ public class BracketValidatorTest {
 
     @Test
     void bracketValidator2() {
-        Assertions.assertFalse(bracketValidator.validate( "(()()(()"));
+        Assertions.assertFalse(bracketValidator.validate("(()()(()"));
     }
 
     @Test

@@ -4,19 +4,13 @@ import org.example.lesson04.Stack;
 
 public class QueueOnStacks<T> {
 
-    public final Stack<T> stack1;
-    public final Stack<T> stack2;
-
+    private boolean reversed;
     private Stack<T> head;
     private Stack<T> tail;
-    boolean reversed;
 
     public QueueOnStacks() {
-        this.stack1 = new Stack<>();
-        this.stack2 = new Stack<>();
-
-        head = this.stack1;
-        tail = this.stack2;
+        head = new Stack<>();
+        tail = new Stack<>();
         reversed = true;
     }
 
