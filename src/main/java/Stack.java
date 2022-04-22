@@ -1,5 +1,3 @@
-package org.example.lesson04;
-
 import java.util.*;
 
 public class Stack<T> {
