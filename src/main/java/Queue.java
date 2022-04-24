@@ -1,5 +1,3 @@
-package org.example.lesson05;
-
 import java.util.*;
 
 public class Queue<T> {
