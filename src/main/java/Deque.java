@@ -1,5 +1,3 @@
-package org.example.lesson06;
-
 import java.util.*;
 
 public class Deque<T> {
