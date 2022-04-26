@@ -1,6 +1,16 @@
-package org.example.lesson07;
-
 import java.util.*;
+
+
+class Node<T> {
+    public T value;
+    public Node<T> next, prev;
+
+    public Node(T _value) {
+        value = _value;
+        next = null;
+        prev = null;
+    }
+}
 
 public class OrderedList<T> {
     public Node<T> head, tail;
@@ -107,56 +117,15 @@ public class OrderedList<T> {
         return count;
     }
 
-    public ArrayList<Node<T>> getAll() {
-        ArrayList<Node<T>> result = new ArrayList<>();
+    ArrayList<Node<T>> getAll() // выдать все элементы упорядоченного 
+    // списка в виде стандартного списка
+    {
+        ArrayList<Node<T>> r = new ArrayList<Node<T>>();
         Node<T> node = head;
         while (node != null) {
-            result.add(node);
+            r.add(node);
             node = node.next;
         }
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OrderedList)) return false;
-        OrderedList other = (OrderedList) o;
-        if (other._ascending != this._ascending) {
-            return false;
-        }
-        if (this.head == null && other.head == null && this.tail == null && other.tail == null) {
-            return true;
-        }
-        if (((this.head != null) && (other.head == null)) || ((this.head == null) && (other.head != null))) {
-            return false;
-        }
-        if (this.head != null && (other.head != null) && (this.head.value != other.head.value)) {
-            return false;
-        }
-        if (((this.tail != null) && (other.tail == null)) || ((this.tail == null) && (other.tail != null))) {
-            return false;
-        }
-        if (this.tail != null && (other.tail != null) && (this.tail.value != other.tail.value)) {
-            return false;
-        }
-
-        Node thisPrevNode = tail.prev;
-        Node otherPrevNode = other.tail.prev;
-        boolean prevNodesAreEquals = true;
-
-        while (prevNodesAreEquals) {
-            if (thisPrevNode == null && otherPrevNode == null) {
-                break;
-            }
-            if (thisPrevNode != null && otherPrevNode != null && thisPrevNode.value == otherPrevNode.value) {
-                thisPrevNode = thisPrevNode.prev;
-                otherPrevNode = otherPrevNode.prev;
-                continue;
-            }
-            prevNodesAreEquals = false;
-        }
-
-        return prevNodesAreEquals;
+        return r;
     }
 }
