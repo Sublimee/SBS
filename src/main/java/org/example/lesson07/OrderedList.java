@@ -72,28 +72,24 @@ public class OrderedList<T> {
     }
 
     public void delete(T val) {
-        Node<T> node = this.head;
-
-        while (node != null) {
-            if (node.value == val) {
-                if (head == tail) { // only
-                    this.head = null;
-                    this.tail = null;
-                } else if (node.next == null) { // last
-                    node.prev.next = null;
-                    this.tail = node.prev;
-                } else if (this.head != node && this.tail != node) { // in the middle
-                    node.prev.next = node.next;
-                    node.next.prev = node.prev;
-                } else if (this.head == node) { // first
-                    this.head = node.next;
-                    node.next.prev = null;
-                }
-                count--;
-                return;
-            }
-            node = node.next;
+        Node<T> node = find(val);
+        if (node == null) {
+            return;
         }
+        if (head == tail) { // only
+            this.head = null;
+            this.tail = null;
+        } else if (node.next == null) { // last
+            node.prev.next = null;
+            this.tail = node.prev;
+        } else if (this.head != node && this.tail != node) { // in the middle
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        } else if (this.head == node) { // first
+            this.head = node.next;
+            node.next.prev = null;
+        }
+        count--;
     }
 
     public void clear(boolean asc) {
