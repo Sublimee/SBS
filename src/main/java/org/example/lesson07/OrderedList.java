@@ -5,7 +5,7 @@ import java.util.*;
 public class OrderedList<T> {
     public Node<T> head, tail;
     private boolean _ascending;
-    public int count;
+    private int count;
 
     public OrderedList(boolean asc) {
         clear(asc);
@@ -16,7 +16,7 @@ public class OrderedList<T> {
             return ((Integer) v1).compareTo((Integer) v2);
         }
         if (v1 instanceof String && v2 instanceof String) {
-            return ((String) v1).compareTo((String) v2);
+            return ((String) v1).trim().compareTo(((String) v2).trim());
         }
         throw new ClassCastException();
     }
@@ -32,7 +32,7 @@ public class OrderedList<T> {
 
         Node<T> nextNode = head;
         while (nextNode != null) {
-            if ((compare(nextNode.value, value) > 0 && _ascending)|| (compare(nextNode.value, value) < 0 && !_ascending)) {
+            if ((compare(nextNode.value, value) > 0 && _ascending) || (compare(nextNode.value, value) < 0 && !_ascending)) {
                 node.prev = nextNode.prev;
                 node.next = nextNode;
                 if (nextNode == head) {
@@ -57,11 +57,11 @@ public class OrderedList<T> {
     public Node<T> find(T val) {
         Node<T> node = this.head;
 
-        while (node != null) {
-            if ((compare(val,node.value) == -1 && _ascending) || (compare(val,node.value) == 1 && !_ascending)){
-                return null;
-            }
+        if (Objects.nonNull(node) && ((compare(val, node.value) == -1 && _ascending) || (compare(val, node.value) == 1 && !_ascending))) {
+            return null;
+        }
 
+        while (node != null) {
             if (node.value.equals(val)) {
                 return node;
             }
@@ -89,6 +89,7 @@ public class OrderedList<T> {
                     this.head = node.next;
                     node.next.prev = null;
                 }
+                count--;
                 return;
             }
             node = node.next;
@@ -121,6 +122,9 @@ public class OrderedList<T> {
         if (this == o) return true;
         if (!(o instanceof OrderedList)) return false;
         OrderedList other = (OrderedList) o;
+        if (other._ascending != this._ascending) {
+            return false;
+        }
         if (this.head == null && other.head == null && this.tail == null && other.tail == null) {
             return true;
         }

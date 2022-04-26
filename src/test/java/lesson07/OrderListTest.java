@@ -153,6 +153,142 @@ public class OrderListTest {
         assertOrderedListEquals(expectedOrderedList, expected, 8, actualOrderedList);
     }
 
+    @Test
+    void clearTest() {
+        Integer[] expected = List.of().toArray(Integer[]::new);
+
+        OrderedList<Integer> expectedOrderedList = getExpectedOrderedList(true, expected);
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false, 4, 0, 1, 2, 3, 3, 2, 1);
+        actualOrderedList.clear(true);
+
+        assertOrderedListEquals(expectedOrderedList, expected, 0, actualOrderedList);
+    }
+
+    @Test
+    void deleteFromEmptyTest() {
+        Integer[] expected = List.of().toArray(Integer[]::new);
+
+        OrderedList<Integer> expectedOrderedList = getExpectedOrderedList(false, expected);
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false);
+        actualOrderedList.delete(4);
+        actualOrderedList.delete(2);
+        actualOrderedList.delete(0);
+
+        assertOrderedListEquals(expectedOrderedList, expected, 0, actualOrderedList);
+    }
+
+    @Test
+    void deleteFromSingleTest() {
+        Integer[] expected = List.of().toArray(Integer[]::new);
+
+        OrderedList<Integer> expectedOrderedList = getExpectedOrderedList(false, expected);
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false);
+        actualOrderedList.delete(4);
+
+        assertOrderedListEquals(expectedOrderedList, expected, 0, actualOrderedList);
+    }
+
+    @Test
+    void deleteFromPairTest() {
+        Integer[] expected = List.of(3).toArray(Integer[]::new);
+
+        OrderedList<Integer> expectedOrderedList = getExpectedOrderedList(false, expected);
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false, 3, 3);
+        actualOrderedList.delete(3);
+
+        assertOrderedListEquals(expectedOrderedList, expected, 1, actualOrderedList);
+    }
+
+    @Test
+    void deleteFromManyTest() {
+        Integer[] expected = List.of(3, 3, 2, 1, 1).toArray(Integer[]::new);
+
+        OrderedList<Integer> expectedOrderedList = getExpectedOrderedList(false, expected);
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false, 4, 0, 1, 2, 3, 3, 2, 1);
+        actualOrderedList.delete(4);
+        actualOrderedList.delete(2);
+        actualOrderedList.delete(0);
+
+        assertOrderedListEquals(expectedOrderedList, expected, 5, actualOrderedList);
+    }
+
+    @Test
+    void findFromEmptyAscendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(true);
+
+        Assertions.assertNull(actualOrderedList.find(4));
+    }
+
+    @Test
+    void findFromEmptyDescendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false);
+
+        Assertions.assertNull(actualOrderedList.find(4));
+    }
+
+    @Test
+    void findFromSingleAscendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(true, 4);
+
+        Assertions.assertEquals(4, actualOrderedList.find(4).value);
+    }
+
+    @Test
+    void findFromSingleDescendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false, 4);
+
+        Assertions.assertEquals(4, actualOrderedList.find(4).value);
+    }
+
+    @Test
+    void findFromPairFirstAscendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(true, 4, 3);
+
+        Assertions.assertEquals(3, actualOrderedList.find(3).value);
+    }
+
+    @Test
+    void findFromPairLastAscendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(true, 4, 3);
+
+        Assertions.assertEquals(4, actualOrderedList.find(4).value);
+    }
+
+    @Test
+    void findFromPairFirstDescendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false, 4, 3);
+
+        Assertions.assertEquals(4, actualOrderedList.find(4).value);
+    }
+
+    @Test
+    void findFromPairLastDescendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false, 4, 3);
+
+        Assertions.assertEquals(3, actualOrderedList.find(3).value);
+    }
+
+    @Test
+    void findFromManyAscendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(true, 4, 1, 2, 3, 3, 2, 1);
+
+        Assertions.assertEquals(4, actualOrderedList.find(4).value);
+        Assertions.assertEquals(2, actualOrderedList.find(2).value);
+        Assertions.assertEquals(1, actualOrderedList.find(1).value);
+        Assertions.assertNull(actualOrderedList.find(0));
+    }
+
+    @Test
+    void findFromManyDescendingTest() {
+        OrderedList<Integer> actualOrderedList = getActualOrderedList(false, 4, 0, 1, 2, 3, 3, 2, 1);
+
+        Assertions.assertEquals(4, actualOrderedList.find(4).value);
+        Assertions.assertEquals(2, actualOrderedList.find(2).value);
+        Assertions.assertEquals(0, actualOrderedList.find(0).value);
+        Assertions.assertNull(actualOrderedList.find(5));
+    }
+
+
     private void assertOrderedListEquals(
             OrderedList<Integer> expectedOrderedList,
             Integer[] expectedOrderedElements,
@@ -177,6 +313,21 @@ public class OrderListTest {
         return Stream.of(
                 Arguments.of(-1, "aa", "ab"),
                 Arguments.of(0, "aa", "aa"),
+                Arguments.of(0, "aa", "aa "),
+                Arguments.of(0, "aa", " aa"),
+                Arguments.of(0, "aa", " aa "),
+                Arguments.of(0, "aa ", "aa"),
+                Arguments.of(0, "aa ", "aa "),
+                Arguments.of(0, "aa ", " aa "),
+                Arguments.of(0, "aa ", " aa "),
+                Arguments.of(0, " aa", "aa"),
+                Arguments.of(0, " aa", "aa "),
+                Arguments.of(0, " aa", " aa"),
+                Arguments.of(0, " aa", " aa "),
+                Arguments.of(0, " aa ", "aa"),
+                Arguments.of(0, " aa ", "aa "),
+                Arguments.of(0, " aa ", " aa"),
+                Arguments.of(0, " aa ", " aa "),
                 Arguments.of(1, "ab", "aa")
         );
     }
