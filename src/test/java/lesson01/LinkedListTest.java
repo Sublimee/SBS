@@ -11,8 +11,7 @@ public class LinkedListTest {
     void removeFirstElementFromManyTest() {
         LinkedList actualLinkedList = getLinkedList(1, 2, 3);
 
-        actualLinkedList.remove(1);
-
+        Assertions.assertTrue(actualLinkedList.remove(1));
         Assertions.assertEquals(getLinkedList(2, 3), actualLinkedList);
     }
 
@@ -20,8 +19,7 @@ public class LinkedListTest {
     void removeMiddleElementFromManyTest() {
         LinkedList actualLinkedList = getLinkedList(1, 2, 3);
 
-        actualLinkedList.remove(2);
-
+        Assertions.assertTrue(actualLinkedList.remove(2));
         Assertions.assertEquals(getLinkedList(1, 3), actualLinkedList);
     }
 
@@ -29,8 +27,7 @@ public class LinkedListTest {
     void removeLastElementFromManyTest() {
         LinkedList actualLinkedList = getLinkedList(1, 2, 3);
 
-        actualLinkedList.remove(3);
-
+        Assertions.assertTrue(actualLinkedList.remove(3));
         Assertions.assertEquals(getLinkedList(1, 2), actualLinkedList);
     }
 
@@ -38,8 +35,7 @@ public class LinkedListTest {
     void removeFirstElementFromTwoTest() {
         LinkedList actualLinkedList = getLinkedList(1, 2);
 
-        actualLinkedList.remove(1);
-
+        Assertions.assertTrue(actualLinkedList.remove(1));
         Assertions.assertEquals(getLinkedList(2), actualLinkedList);
     }
 
@@ -47,8 +43,7 @@ public class LinkedListTest {
     void removeLastElementFromTwoTest() {
         LinkedList actualLinkedList = getLinkedList(1, 2);
 
-        actualLinkedList.remove(2);
-
+        Assertions.assertTrue(actualLinkedList.remove(2));
         Assertions.assertEquals(getLinkedList(1), actualLinkedList);
     }
 
@@ -56,8 +51,7 @@ public class LinkedListTest {
     void removeElementFromSingleTest() {
         LinkedList actualLinkedList = getLinkedList(1);
 
-        actualLinkedList.remove(1);
-
+        Assertions.assertTrue(actualLinkedList.remove(1));
         Assertions.assertEquals(getLinkedList(), actualLinkedList);
     }
 
@@ -65,17 +59,15 @@ public class LinkedListTest {
     void removeUnexpectedElementTest() {
         LinkedList actualLinkedList = getLinkedList(1);
 
-        actualLinkedList.remove(2);
-
+        Assertions.assertFalse(actualLinkedList.remove(2));
         Assertions.assertEquals(getLinkedList(1), actualLinkedList);
     }
 
     @Test
     void removeElementFromEmptyTest() {
-        LinkedList actualLinkedList = getLinkedList(1);
+        LinkedList actualLinkedList = getLinkedList();
 
-        actualLinkedList.remove(1);
-
+        Assertions.assertFalse(actualLinkedList.remove(1));
         Assertions.assertEquals(getLinkedList(), actualLinkedList);
     }
 
@@ -248,7 +240,7 @@ public class LinkedListTest {
 
         Assertions.assertEquals(1, actualLinkedList.find(2).next.value);
         Assertions.assertEquals(2, actualLinkedList.find(1).next.value);
-        Assertions.assertNull( actualLinkedList.find(3).next);
+        Assertions.assertNull(actualLinkedList.find(3).next);
     }
 
     @Test
