@@ -10,7 +10,7 @@ public class AccumulatorTest {
 
     @Test
     void processEmptyTest() {
-        Assertions.assertNull(Accumulator.process(getLinkedList(), getLinkedList()));
+        Assertions.assertEquals(getLinkedList(), Accumulator.process(getLinkedList(), getLinkedList()));
     }
 
     @Test

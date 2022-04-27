@@ -3,7 +3,7 @@ package org.example.lesson01;
 public class Accumulator {
 
     public static LinkedList process(LinkedList first, LinkedList second) {
-        if (first.count() == 0 || first.count() != second.count()) {
+        if (first.count() != second.count()) {
             return null;
         }
 
