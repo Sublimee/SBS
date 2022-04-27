@@ -20,22 +20,22 @@ public class AccumulatorTest {
 
     @Test
     void processPairTest() {
-        Assertions.assertEquals(getLinkedList(3,8), Accumulator.process(getLinkedList(1,3), getLinkedList(2,5)));
+        Assertions.assertEquals(getLinkedList(3, 8), Accumulator.process(getLinkedList(1, 3), getLinkedList(2, 5)));
     }
 
     @Test
     void processDifferentSizeTest() {
-        Assertions.assertNull(Accumulator.process(getLinkedList(1,2), getLinkedList(1,3,5)));
+        Assertions.assertNull(Accumulator.process(getLinkedList(1, 2), getLinkedList(1, 3, 5)));
     }
 
     @Test
     void processDifferentSize1Test() {
-        Assertions.assertNull(Accumulator.process(getLinkedList(), getLinkedList(1,3,5)));
+        Assertions.assertNull(Accumulator.process(getLinkedList(), getLinkedList(1, 3, 5)));
     }
 
     @Test
     void processDifferentSize2Test() {
-        Assertions.assertNull(Accumulator.process(getLinkedList(1,2), getLinkedList()));
+        Assertions.assertNull(Accumulator.process(getLinkedList(1, 2), getLinkedList()));
     }
 
 }
