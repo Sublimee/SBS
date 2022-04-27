@@ -108,4 +108,10 @@ public class HashTableTest {
         AtomicInteger i = new AtomicInteger(-2);
         Stream.of(16, 12, 1, 5, 9).forEach(x -> Assertions.assertEquals(i.incrementAndGet() % 4, hashTable.find(String.valueOf(x))));
     }
+
+    @Test
+    public void findEmptyTest() {
+        HashTable hashTable = new HashTable(4, 1);
+        Assertions.assertEquals(-1, hashTable.find("1"));
+    }
 }

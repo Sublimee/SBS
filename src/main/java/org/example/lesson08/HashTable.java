@@ -42,11 +42,11 @@ public class HashTable {
     }
 
     public int find(String value) {
-        for (int i = 0; i < slots.length; i++) {
-            if (Objects.equals(slots[i], value)) {
-                return i;
-            }
+        int slot =  seekSlot(value);
+        if (slot == -1 || !Objects.equals(slots[slot], value)){
+            return -1;
+        }else {
+            return slot;
         }
-        return -1;
     }
 }
