@@ -6,13 +6,15 @@ public class LinkedList {
 
     public Node head;
     public Node tail;
+    public int count;
 
     public LinkedList() {
-        head = null;
-        tail = null;
+        clear();
     }
 
     public void addInTail(Node item) {
+        count++;
+
         if (this.head == null) {
             this.head = item;
         } else {
@@ -25,11 +27,11 @@ public class LinkedList {
         Node node = this.head;
         while (node != null) {
             if (node.value == value) {
-                return node;
+                break;
             }
             node = node.next;
         }
-        return null;
+        return node;
     }
 
     public ArrayList<Node> findAll(int _value) {
@@ -51,23 +53,26 @@ public class LinkedList {
         Node previousNode = null;
 
         while (node != null) {
-            if (node.value == _value && head == tail) { // only
-                this.head = null;
-                this.tail = null;
-                return true;
-            }
-            if (node.value == _value && node.next == null) { // last
-                previousNode.next = null;
-                this.tail = previousNode;
-                return true;
-            }
-            if (node.value == _value && (this.head != node) && (this.tail != node)) { // in the middle
-                previousNode.next = node.next;
-                return true;
-            }
-            if (node.value == _value && this.head == node) { // first
-                this.head = node.next;
-                return true;
+            if (node.value == _value) {
+                count--;
+                if (head == tail) { // only
+                    this.head = null;
+                    this.tail = null;
+                    return true;
+                }
+                if (node.next == null) { // last
+                    previousNode.next = null;
+                    this.tail = previousNode;
+                    return true;
+                }
+                if (this.head != node && this.tail != node) { // in the middle
+                    previousNode.next = node.next;
+                    return true;
+                }
+                if (this.head == node) { // first
+                    this.head = node.next;
+                    return true;
+                }
             }
             previousNode = node;
             node = node.next;
@@ -80,17 +85,20 @@ public class LinkedList {
         Node previousNode = null;
 
         while (node != null) {
-            if (node.value == _value && (this.head == this.tail)) { // only
-                this.head = null;
-                this.tail = null;
-            } else if (node.value == _value && node.next == null) { // last
-                previousNode.next = null;
-                this.tail = previousNode;
-            } else if (node.value == _value && (this.head == node)) { // first
-                this.head = node.next;
-            } else if (node.value == _value && (this.tail != node)) { // in the middle
-                previousNode.next = node.next;
-                node = previousNode;
+            if (node.value == _value) {
+                count--;
+                if (this.head == this.tail) { // only
+                    this.head = null;
+                    this.tail = null;
+                } else if (node.next == null) { // last
+                    previousNode.next = null;
+                    this.tail = previousNode;
+                } else if (this.head == node) { // first
+                    this.head = node.next;
+                } else if (this.tail != node) { // in the middle
+                    previousNode.next = node.next;
+                    node = previousNode;
+                }
             }
             previousNode = node;
             node = node.next;
@@ -100,20 +108,16 @@ public class LinkedList {
     public void clear() {
         this.head = null;
         this.tail = null;
+        count = 0;
     }
 
     public int count() {
-        int size = 0;
-        Node node = this.head;
-
-        while (node != null) {
-            size++;
-            node = node.next;
-        }
-        return size;
+        return count;
     }
 
     public void insertAfter(Node _nodeAfter, Node _nodeToInsert) {
+        count++;
+
         if (_nodeAfter == null) {  // add new element first
             if (this.head == null) { // if list empty
                 this.head = _nodeToInsert;
@@ -122,20 +126,21 @@ public class LinkedList {
                 _nodeToInsert.next = this.head;
                 this.head = _nodeToInsert;
             }
-        } else {
-            Node node = this.head;
-            while (node != null) {
-                if (_nodeAfter == node) {
-                    if (_nodeAfter == this.tail) {
-                        _nodeAfter.next = _nodeToInsert;
-                        this.tail = _nodeToInsert;
-                    } else {
-                        _nodeToInsert.next = _nodeAfter.next;
-                        _nodeAfter.next = _nodeToInsert;
-                    }
+            return;
+        }
+
+        Node node = this.head;
+        while (node != null) {
+            if (_nodeAfter == node) {
+                if (_nodeAfter == this.tail) {
+                    _nodeAfter.next = _nodeToInsert;
+                    this.tail = _nodeToInsert;
+                } else {
+                    _nodeToInsert.next = _nodeAfter.next;
+                    _nodeAfter.next = _nodeToInsert;
                 }
-                node = node.next;
             }
+            node = node.next;
         }
     }
 
@@ -144,12 +149,12 @@ public class LinkedList {
         if (this == o) return true;
         if (!(o instanceof LinkedList)) return false;
         LinkedList that = (LinkedList) o;
-        return Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
+        return count == that.count && Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(head, tail);
+        return Objects.hash(head, tail, count);
     }
 
     @Override
