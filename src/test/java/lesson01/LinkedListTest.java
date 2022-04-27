@@ -243,6 +243,20 @@ public class LinkedListTest {
     }
 
     @Test
+    void findInManyTest() {
+        LinkedList actualLinkedList = getLinkedList(2, 1, 2, 4, 3);
+
+        Assertions.assertEquals(1, actualLinkedList.find(2).next.value);
+        Assertions.assertEquals(2, actualLinkedList.find(1).next.value);
+        Assertions.assertNull( actualLinkedList.find(3).next);
+    }
+
+    @Test
+    void findInEmptyTest() {
+        Assertions.assertNull(getLinkedList().find(2));
+    }
+
+    @Test
     void countManyTest() {
         Assertions.assertEquals(5, getLinkedList(2, 1, 2, 1, 2).count());
     }
