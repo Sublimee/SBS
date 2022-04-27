@@ -5,6 +5,8 @@ import org.example.lesson01.Node;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static lesson01.TestUtils.getLinkedList;
+
 public class LinkedListTest {
 
     @Test
@@ -263,11 +265,4 @@ public class LinkedListTest {
         Assertions.assertEquals(1, getLinkedList(1).count());
     }
 
-    private LinkedList getLinkedList(int... values) {
-        LinkedList linkedList = new LinkedList();
-        for (Integer value : values) {
-            linkedList.addInTail(new Node(value));
-        }
-        return linkedList;
-    }
 }
