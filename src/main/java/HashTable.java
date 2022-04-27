@@ -1,5 +1,3 @@
-package org.example.lesson08;
-
 import java.util.*;
 
 public class HashTable {
