@@ -18,11 +18,7 @@ public class HashTableTest {
         HashTable hashTable = new HashTable(size, step);
         IntStream.range(1, 10)
                 .boxed()
-                .forEach(x -> {
-                            System.out.println(x);
-                            Assertions.assertEquals(x % size, hashTable.hashFun(String.valueOf(x)));
-                        }
-                );
+                .forEach(x -> Assertions.assertEquals(x % size, hashTable.hashFun(String.valueOf(x))));
     }
 
     @Test
