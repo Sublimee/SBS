@@ -15,9 +15,20 @@ public class HashTableTest {
     public void hashFunTest() {
         int size = 4;
         HashTable hashTable = new HashTable(size, 1);
-        IntStream.range(1, 2 * size + 1)
+        IntStream.range(1, 10)
                 .boxed()
-                .forEach(x -> Assertions.assertEquals(x % size, hashTable.hashFun(String.valueOf(x))));
+                .forEach(x -> {
+                            System.out.println(x);
+                            Assertions.assertEquals(x % size, hashTable.hashFun(String.valueOf(x)));
+                        }
+                );
+    }
+
+    @Test
+    public void hashFunBigValueTest() {
+        int size = 4;
+        HashTable hashTable = new HashTable(size, 1);
+        Assertions.assertEquals(3, hashTable.hashFun("10000000000"));
     }
 
     @Test
