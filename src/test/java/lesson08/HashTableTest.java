@@ -32,6 +32,13 @@ public class HashTableTest {
     }
 
     @Test
+    public void hashFunNullValueTest() {
+        int size = 4;
+        HashTable hashTable = new HashTable(size, 1);
+        Assertions.assertEquals(0, hashTable.hashFun(null));
+    }
+
+    @Test
     public void putVaryWithSameHashAndEvenSizeOddStepTest() {
         int size = 4;
         HashTable hashTable = new HashTable(size, 1);
