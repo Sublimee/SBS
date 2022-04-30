@@ -13,14 +13,14 @@ public class HashTable {
     }
 
     public int hashFun(String value) {
-        return value.hashCode() % size;
+        return Math.abs(value.hashCode()) % size;
     }
 
     public int seekSlot(String value) {
         int hash = hashFun(value);
         int slot = hash;
         while (slots[slot] != null) {
-            if (slots[slot].equals(value)){
+            if (slots[slot].equals(value)) {
                 return slot;
             }
             slot = (slot + step) % size;
@@ -40,10 +40,10 @@ public class HashTable {
     }
 
     public int find(String value) {
-        int slot =  seekSlot(value);
-        if (slot == -1 || !Objects.equals(slots[slot], value)){
+        int slot = seekSlot(value);
+        if (slot == -1 || !Objects.equals(slots[slot], value)) {
             return -1;
-        }else {
+        } else {
             return slot;
         }
     }
