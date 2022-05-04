@@ -1,5 +1,3 @@
-package org.example.lesson10;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
