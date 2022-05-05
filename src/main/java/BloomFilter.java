@@ -1,5 +1,3 @@
-package org.example.lesson11;
-
 public class BloomFilter {
     public int filter_len;
     public int bitArray;
