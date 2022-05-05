@@ -32,32 +32,17 @@ public class NativeCache<T> {
             return;
         }
 
-        int slotToRemove = findMinValueIndex(hits);
-        slots[slotToRemove] = key;
-        values[slotToRemove] = value;
-        hits[slotToRemove] = 0;
-    }
-
-    int findMinValueIndex(int[] array) {
-        int minAt = 0;
-
-        for (int i = 0; i < array.length; i++) {
-            minAt = array[i] < array[minAt] ? i : minAt;
-        }
-
-        return minAt;
+        putWithExclusion(key, value);
     }
 
     public T get(String key) {
         int slot = seekSlot(key);
-        return slot != -1 ? update(slot) : null;
+        if (slot != -1) {
+            hits[slot]++;
+            return values[slot];
+        }
+        return null;
     }
-
-    public T update(int slot) {
-        hits[slot]++;
-        return values[slot];
-    }
-
 
     private int seekSlot(String value) {
         int hash = hashFun(value);
@@ -75,5 +60,22 @@ public class NativeCache<T> {
             }
         }
         return slot;
+    }
+
+    private void putWithExclusion(String key, T value) {
+        int slotToRemove = findMinHitsIndex();
+        slots[slotToRemove] = key;
+        values[slotToRemove] = value;
+        hits[slotToRemove] = 0;
+    }
+
+    private int findMinHitsIndex() {
+        int minAt = 0;
+
+        for (int i = 0; i < hits.length; i++) {
+            minAt = hits[i] < hits[minAt] ? i : minAt;
+        }
+
+        return minAt;
     }
 }
