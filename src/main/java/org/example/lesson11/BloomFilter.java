@@ -9,6 +9,15 @@ public class BloomFilter {
         bitArray = 0;
     }
 
+    public boolean isValue(String str1) {
+        return checkBit(bitArray, hash1(str1)) && checkBit(bitArray, hash2(str1));
+    }
+
+    public void add(String str1) {
+        updateBitArray(hash1(str1));
+        updateBitArray(hash2(str1));
+    }
+
     public int hash1(String str1) {
         return hash(str1, 17);
     }
@@ -25,17 +34,8 @@ public class BloomFilter {
         return result;
     }
 
-    public void add(String str1) {
-        updateBitArray(hash1(str1));
-        updateBitArray(hash2(str1));
-    }
-
     private void updateBitArray(int bit) {
         bitArray |= 1 << bit;
-    }
-
-    public boolean isValue(String str1) {
-        return checkBit(bitArray, hash1(str1)) && checkBit(bitArray, hash2(str1));
     }
 
     private boolean checkBit(int bitArray, int bit) {
