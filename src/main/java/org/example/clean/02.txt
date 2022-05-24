@@ -1,0 +1,132 @@
+6.1
+Для контроллеров в нашем коде на Java/Spring мы пишем документацию. Документация описывается следующим образом:
+...
+        PayloadDocumentation
+            .fieldWithPath("[]") // элемент json-ответа сервиса (указывает на массив)
+            .description("Список бонусов с привязкой к картам") // описание элемента
+            .type(ARRAY), // тип в терминах json
+        PayloadDocumentation
+            .fieldWithPath("[].amount")
+            .description("Величина бонусного баланса")
+            .type(OBJECT),
+
+...
+и соответствовала бы такому ответу сервиса
+[
+	{
+		...
+		"amount": {
+			...
+		}
+		...
+	},
+	...
+]
+Далее я приведу примеры из формирующего документацию кода и как бы можно было их улучшить снизив уровень абстракции.
+
+1 amount -> bonusBalance
+...
+        PayloadDocumentation
+            .fieldWithPath("[]")
+            .description("Список бонусов с привязкой к картам")
+            .type(ARRAY),
+        PayloadDocumentation
+            .fieldWithPath("[].amount")
+            .description("Величина бонусного баланса")
+            .type(OBJECT),
+
+...
+
+2 endpoint -> bonusDetailsEndpoint
+...
+        PayloadDocumentation
+            .fieldWithPath("[]")
+            .description("Список бонусов с привязкой к картам")
+            .type(ARRAY),
+        PayloadDocumentation
+            .fieldWithPath("[].endpoint")
+            .description("Эндпоинт для запроса получения деталей бонуса")
+            .type(STRING),
+...
+
+3 debet -> paidOutSum
+...
+        PayloadDocumentation
+            .fieldWithPath("[]")
+            .description("Список бонусных счетов")
+            .type(ARRAY),
+        PayloadDocumentation
+            .fieldWithPath("[].debet")
+            .description("Выплачено")
+            .optional()
+            .type(NUMBER),
+...
+
+4 monthSum -> currentMonthAccountedTransactionsSum
+...
+        PayloadDocumentation
+            .fieldWithPath("[]")
+            .description("Список бонусных счетов")
+            .type(ARRAY),
+        PayloadDocumentation
+            .fieldWithPath("[].monthSum")
+            .description("Сумма транзакций (покупок), учтенных за текущий месяц")
+            .optional()
+            .type(NUMBER),
+...
+
+
+5 minMonthSum -> minThresholdForBonus
+...
+        PayloadDocumentation
+            .fieldWithPath("[]")
+            .description("Список бонусных счетов")
+            .type(ARRAY),
+        PayloadDocumentation
+            .fieldWithPath("[].minMonthSum")
+            .description("Сумма минимального порога  для начисления")
+            .optional()
+            .type(NUMBER),
+...
+
+
+6.2
+1 Мы задаем порядок виджетов с помощью переменной order. Для того чтобы можно было добавлять новые виджеты без изменения конфигурации старых виджетов мы даем им значения и чем это значение меньше, тем оно будет отображаться раньше на UI. order явно не отвечает на вопрос, в каком порядке будут расположены виджеты. Лучшее название этой переменной weight, это распространенный термин, который указывает на "вес" значения, который влияет тем больше, чем больше его значение.
+2 Для представления последовательного списка месяцев в графике мы используем список месяцев months. Для того чтобы показать, что порядок элементов в этой коллекции имеет значение можно использовать имя monthsSequence.
+3 Для подсчета суммы начислений за каждый месяц использую хэш-таблицу с именем accrualsAccumulatorByMonth, которое отражает семантику накапливаемой суммы начислений по месяцам.
+4 Для поэтапной раскатки новых возможностей на пользователей мобильного приложения используем сервис FeatureToggleService, который явно отражает семантику: Feature - возможность, способность и Toggle - переключатель.
+
+6.3
+1 Любые суммы могут быть представлены одним классом
+public class AmountDTO {
+    private Long value;
+    private String currency;
+    private Integer minorUnits;
+	...
+}
+за счет разных имен объектов:
+public AmountDTO bonusBalance;
+public AmountDTO currentAccrual;
+и т.д.
+
+2 Аналогично один класс пользователя
+public class User {
+	private String name;
+	private String surname;
+	...
+}
+может использоваться в разных контекстах в зависимости от названия переменной:
+public User accountOwner;
+public User mailRecepient;
+и т.д.
+
+3 В Java в качестве распространенного примера можно привести класс Entry, который содержит ключ и значени и в зависимости от названия объемлющей хэш-таблицы может отвечать за хранение разного рода объектов.
+
+6.4
+1 Использование клиента MaplUwsPartnerCashbackEventsDetailedClient сопровождается соответствующим именем maplUwsPartnerCashbackEventsDetailedClient, которое можно сократить до partnerCashbackClient (21 символ), которое в теперь не содержит детали организации клиента, но так же отвечает на вопрос, что этот клиент делает: отдает информацию по партнерскому кэшбэку.
+2-3-4 Группу переменных из конфигурации сервиса:
+    String statisticsFullTitle;
+    String statisticsUnexpectedEmptyTitle;
+    String statisticsExpectedEmptyTitle;
+можно объединить в enum StatisticsTitle c тремя значениями: FULL, EXPECTED_EMPTY, UNEXPECTED_EMPTY
+5 Переменную, которая показывает, что есть невыплаченные кэшбэки hasAnyPlannedCashback можно привести к виду hasPlannedCashback без потери смысла. Переменная так же отвечает на вопрос: есть ли среди перечисленных кэшбэков запланированные.
