@@ -1,0 +1,168 @@
+№1
+Было:
+public enum ArchivedProgramStatus {
+    ACTIVE(0),
+    BLOCKED(1);
+
+    private final int value;
+}
+
+Стало:
+public enum ArchivedProgramStatus {
+    ACTIVE(0),
+    BLOCKED(1);
+
+    private final int id;
+}
+
+№2
+Было:
+def notifyBitbucketWithState(String state) {
+  if('SUCCESS' == state || 'FAILED' == state) {
+    currentBuild.result = state // Set result of currentBuild
+  }
+  notifyBitbucket()
+}
+
+Стало:
+def notifyBitbucketWithState(String state) {
+  if('SUCCESS' == state || 'FAILED' == state) {
+    currentBuild.finalState = state // Set result of currentBuild
+  }
+  notifyBitbucket()
+}
+
+№3
+Было:
+List<Account> result = uwsCustomerInfoClient
+        .getAccountList(headers.getUserId())
+        .collectList()
+        .block();
+...
+return result;
+
+Стало:
+List<Account> accountList = uwsCustomerInfoClient
+        .getAccountList(headers.getUserId())
+        .collectList()
+        .block();
+...
+return accountList;
+
+№4
+Было:
+public class Button {
+    private String value;
+    private String link;
+    private String icon;
+    ...
+}
+Стало:
+public class Button {
+    private String label;
+    private String link;
+    private String icon;
+    ...
+}
+
+№5
+Было:
+long value = accountBalance.getAmount().getValue();
+long nullifiedValue = value - value % loyaltyProgram.getMinorUnits();
+Стало:
+long accountBalanceValue = accountBalance.getAmount().getValue();
+long roundedAccountBalanceValue = accountBalanceValue - accountBalanceValue % accountBalance.getAmount().getMinorUnits();
+
+№6
+Было:
+@Cacheable(value = PROMOTED_CASHBACK_SUPPORTED_CARDS_CACHE_NAME, key = "#headers.userId")
+public List<CardInfo> getSupportedCards(Headers headers) {
+    return promotedCashbackClient.getSupportedCards(FeignHeaders.of(headers)).block();
+}
+
+Стало:
+@Cacheable(cacheName = PROMOTED_CASHBACK_SUPPORTED_CARDS_CACHE_NAME, key = "#headers.userId")
+public List<CardInfo> getSupportedCards(Headers headers) {
+    return promotedCashbackClient.getSupportedCards(FeignHeaders.of(headers)).block();
+}
+
+№7
+Было:
+private enum class MotivationType(val value: String) {
+    ALL_PROGRAMS_CONFIRMED("allProgramsConfirmedMotivation"),
+    NEW_PERIOD_STARTED("newPeriodStartedMotivation"),
+    INTERMEDIATE_STATE("intermediateStateMotivation")
+}
+
+Стало:
+private enum class MotivationType(val id: String) {
+    ALL_PROGRAMS_CONFIRMED("allProgramsConfirmedMotivation"),
+    NEW_PERIOD_STARTED("newPeriodStartedMotivation"),
+    INTERMEDIATE_STATE("intermediateStateMotivation")
+}
+
+№8
+Было:
+data class SuggestedCategoriesResponse(
+    val requiredCount: Int,
+    val totalCount: Int,
+    val categories: List<Int>
+)
+
+Стало:
+data class SuggestedCategoriesResponse(
+    val countRequired: Int,
+    val countTotal: Int,
+    val categoriesIds: List<Int>
+)
+
+№9
+Было:
+public class CashbackForecast {
+    private PayOutAmountDto totalActivePeriodAmount;
+    private PayOutAmountDto totalIntermediatePeriodAmount;
+}
+
+Стало:
+public class CashbackForecast {
+    private PayOutAmountDto activePeriodAmountTotal;
+    private PayOutAmountDto intermediatePeriodAmountTotal;
+}
+
+№10
+Было:
+data class Total(
+    val amount: AmountDTO,
+    val operationsCount: Int
+)
+
+Стало:
+data class AggregatedOperationsAmount(
+    val amountTotal: AmountDTO,
+    val operationsCount: Int
+)
+
+№11
+Было:
+data class TotalDto(
+    val count: Int,
+    val amount: AmountDTO? = null
+)
+
+Стало:
+data class AggregatedOperationsAmountDto(
+     val amountTotal: AmountDTO? = null,
+     val operationsCount: Int
+)
+
+
+№12
+Было:
+data class Result(
+    val message: String
+)
+
+Стало:
+data class OfferClientResponse(
+    val message: String
+)
