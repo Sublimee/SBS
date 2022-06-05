@@ -1,0 +1,143 @@
+№1
+Было:
+public class AccountFilterService {
+public List<BonusAccount> applyAccountFilter(Headers headers, List<BonusAccount> bonusAccounts) { ...
+
+Стало:
+public class AccountFilterService {
+public List<BonusAccount> filterDueToChannelId(Headers headers, List<BonusAccount> bonusAccounts) { ...
+
+Комментарий:
+apply в названии метода, что произойдет изменение аргумента, хотя в теле метода происходит формирование нового листа.
+Имя метода (applyAccountFilter) дублирует название класса (AccountFilterService), поэтому приходится узнавать о методе
+из реализации. В новое название метода внес семантику фильтрации списка в соответствии с каналом (источником запроса)
+пользователя.
+
+№2
+Было:
+public class InternalBonusAccountService {
+...
+private OverallCashbackDto getInternalOverallCashback(...) { ...
+
+
+public class BonusAccountService {
+...
+private ExtendedAmount getOverallCashback(...) { ...
+
+Стало:
+в абстрактный класс (от которого унаследованы InternalBonusAccountService и BonusAccountService) вынесен метод
+protected abstract ExtendedAmount getOverallCashback(...
+
+Комментарий:
+Оба класса предоставляют информацию о бонусных счетах, но в разных форматах (InternalBonusAccount и BonusAccount).
+Введение в класс getInternalOverallCashback не требуется, т.к. название класса (...Internal...) уже дает информацию о
+внутреннем использовании его экземпляров.
+
+№3
+Было:
+private List<Aggregation> filterMigrations(List<Aggregation> aggregations, LoyaltyProgram loyaltyProgram) { ...
+
+Стало:
+private List<Aggregation> filterTravelAggregationsMigration(List<Aggregation> aggregations, LoyaltyProgram loyaltyProgram) { ...
+
+Комментарий:
+Изначально предполагалось, что возможны другие миграции начислений, но в итоге она была только одна и выбранное имя для
+фильтрующего метода не отражает его семантику (миграция баллов путешествий).
+
+№4
+Было:
+private LocalDate getAccumulationDate(Aggregation x) {
+        return x.getDate().minusMonths(1);
+}
+
+Стало:
+private LocalDate calculateAccumulationDate(Aggregation x) {
+        return x.getDate().minusMonths(1);
+}
+
+Комментарий:
+get указывает на вытаскивание даты наружу, хотя в методе всё же проводится ее вычисление.
+
+№5
+Было:
+suspend fun availableFeatures(headers: Headers, features: Set<String>): Set<String> { ...
+
+Стало:
+suspend fun getAvailableFeatures(headers: Headers, features: Set<String>): Set<String> { ...
+
+Комментарий:
+В название метода добавлен глагол
+
+№6
+Было:
+private suspend fun motivation(headers: Headers, motivationType: MotivationType): Motivation? { ...
+
+Стало:
+private suspend fun getMotivationByType(headers: Headers, motivationType: MotivationType): Motivation? { ...
+
+Комментарий:
+В название метода добавлен глагол и указание на ключевую роль типа в формировании ответа
+
+№7
+Было:
+private suspend fun getPrograms(headers: Headers): List<ProgramWidget> { ...
+
+Стало:
+private suspend fun getProgramWidgets(headers: Headers): List<ProgramWidget> { ...
+
+Комментарий:
+Название метода расширено для более точного указания на результат его работы
+
+№8
+Было:
+suspend fun autoActivationEnabled(headers: Headers): Boolean = ...
+
+Стало:
+suspend fun isAutoActivationEnabled(headers: Headers): Boolean = ...
+
+Комментарий:
+Так как метод возвращает значение типа Boolean, необходимо указать is в начале метода
+
+№9
+Было:
+class OffersService( ...
+suspend fun autoActivation(headers: Headers, offer: Offer) = ...
+
+Стало:
+class OffersService( ...
+suspend fun enableAutoActivation(headers: Headers, offer: Offer) = ...
+
+Комментарий:
+Добавляем в название метода действие, тем самым более точно раскрывая его содержание: включаем автоматическую активацию
+предложения
+
+№10
+Было:
+suspend fun getSuggestionsScreenData( ...
+
+Стало:
+suspend fun getSuggestionsScreenContent( ...
+
+Комментарий:
+Используем более емкое Content для указания на наполнение экрана с предложениями
+
+№11
+Было:
+private fun groupOffers(offers: List<OfferDto>): Map<Long, List<OfferDto>> = ...
+
+Стало:
+private fun groupOffersByCategoryId(offers: List<OfferDto>): Map<Long, List<OfferDto>> = ...
+
+Комментарий:
+Исходное название метода не дает представление о способе группировки предложений
+
+№12
+Было:
+private fun buildBannerSuggestion(category: CategoryDto, offers: List<OfferDto>): Suggestion = ...
+
+Стало:
+private fun getBannerSuggestion(category: CategoryDto, offers: List<OfferDto>): Suggestion = ...
+
+Комментарий:
+Использование дополнительного глагола build дополнительно к get нецелесообразно, т.к. должно показывать на различие
+между методами build...() и get...(), которого нет
