@@ -1,0 +1,31 @@
+№1
+Кнопка может быть создана с помощью параметров из различных источников:
+new Button(String title, String action) -> Button.FromConfigurationProperties(String title, String action)
+new Button(String title, String link) -> Button.FromUserInterfaceServiceParams(String title, String link)
+
+Секция мотивации наполняется по-разному в зависимости от наличия активных программ лояльности у пользователя:
+new MotivationSectionResponse(List<PromotedCashbackProgram> promotedCashbackProgramList) ->
+MotivationSectionResponse.FromEmptyPromotedCashbackProgramList()
+MotivationSectionResponse.FromPromotedCashbackProgramList(List<PromotedCashbackProgram> promotedCashbackProgramList)
+
+Дата начисления кэшбэка может прийти актуальной или с задержкой в 1 месяц:
+new Aggregation(LocalDate date) ->
+Aggregation.FromActual(LocalDate date)
+Aggregation.FromDelayed(LocalDate date)
+
+№2
+Для отображения различных программ повышенного кэшбэка используются свои виджеты. Логика формирования ответа для каждого
+из виджетов строится по одним и тем же правилам и вынесена в интерфейс
+    interface WidgetService
+Каждая конкретная реализация имеет в названии тип виджета:
+    class CategoricalCashbackWidgetService
+    class WheelOfFortuneWidgetService
+и т.д.
+
+Микросервис отдает данные о бонусных счетах во внутреннем и внешнем формате (для мобильных устройств). Абстрактный
+класс
+    BonusAccountService
+содержит в себе пересекающуюся логику, а конкретные реализации
+    class InternalBonusAccountServiceImpl
+    class BonusAccountServiceImpl
+отдают бонусные счета в необходимом формате
