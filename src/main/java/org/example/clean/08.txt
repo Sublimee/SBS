@@ -1,0 +1,102 @@
+№1
+Использование для тестов константы с корректным пользователем (без указания на это):
+const val USER_ID = "AAAAAA"
+Для некорректных пользователей использование других констант c указанием причины:
+const val UNREGISTERED_USER_ID = "DDDDDD"
+Тем самым вместо безликих идентификаторов получаем семантически ёмкие имена, которые переходят из теста в тест.
+
+№2
+Использование констант для кэширования/очистки кэша для того, чтобы избавиться от опечаток:
+@CacheableAsync(cacheName = MASKED_CARDS_CACHE_NAME, key = USER_ID_CACHE_KEY_NAME)
+@CacheEvictAsync(
+    cacheNames = [MASKED_CARDS_CACHE_NAME],
+    key = "{USER_ID_CACHE_KEY_NAME}",
+    ignoreCacheError = true
+)
+
+№3
+Вынесение в библиотеку констант для склонений месяцев:
+
+public class MonthUtils {
+
+    public static final List<String> MONTHS_NOMINATIVUS =
+            List.of("январь", "февраль", "март", "апрель", "май", "июнь", "июль",
+                    "август", "сентябрь", "октябрь", "ноябрь", "декабрь"
+            );
+
+    public static final List<String> MONTHS_GENITIVUS =
+            List.of("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+                    "августа", "сентября", "октября", "ноября", "декабря"
+            );
+    ...
+
+№4
+При работе (конструктор, фильтрация и т.д.) с начислениями использование констант
+public static final boolean ACCRUED = Boolean.TRUE;
+public static final boolean NOT_ACCRUED = Boolean.FALSE;
+вместо невыразительных true/false
+
+№5
+enum можно назвать частным случаем использования констант. Мы используем его для перечисления типов бонусных
+счетов:
+...
+    PEREKRESTOK("120"),
+    YANDEX_PLUS("144"),
+...
+
+№6
+При использовании регулярных выражений константы помогают раскрыть их семантику:
+public static final String WHITESPACES_REGEX = "[\\s|\\u00A0]+";
+
+№7
+Для того, чтобы отличать в каких единицах измерения представлены денежные единицы используем константы:
+public static final int DEFAULT_MINOR_UNITS = 100;
+public static final int FORMAL_MINOR_UNITS = 1;
+
+№8
+Для удобства работы с uri, выносим их в константы и комбинируем
+@RequestMapping(InternalLoyaltyAccountController.ROOT)
+@RestController
+@RequiredArgsConstructor
+public class InternalLoyaltyAccountController {
+
+    public static final String ROOT = "/internal/loyalty-accounts";
+    public static final String AGGREGATIONS = "/{id}/aggregations";
+    public static final String AGGREGATIONS_CACHE = AGGREGATIONS + "/cache";
+
+№9
+При форматировании дат константы помогают раскрыть их семантику:
+    private static final DateTimeFormatter RU_LOCALE_GENITIVE_DAY_OF_MONTH_FORMATTER = ofPattern("dd MMMM", RU_LOCALE);
+    private static final DateTimeFormatter RU_LOCALE_NOMINATIVE_MONTH_FORMATTER = ofPattern("LLLL", RU_LOCALE);
+
+№10
+Иногда приходится искать по элементам enum, для чего удобно создать вспомогательную константу:
+
+@Getter
+@RequiredArgsConstructor
+public enum ArchiveProgramStatus {
+    ACTIVE(0),
+    BLOCKED(1);
+
+    private static final Map<Integer, ArchiveProgramStatus> LOOKUP = Arrays.stream(ArchiveProgramStatus.values())
+            .collect(Collectors.toMap(ArchiveProgramStatus::getValue, Function.identity()));
+
+    private final int value;
+
+    public static ArchiveProgramStatus byValue(int value) {
+        return LOOKUP.getOrDefault(value, BLOCKED);
+    }
+}
+
+№11
+Даже для 0 иногда можно использовать выразительное имя для упрощения читаемости:
+public static Integer balanceInMinor(BigDecimal paymentAmount, ...) {
+    return ofNullable(paymentAmount)
+            ...
+            .orElse(ZERO_AMOUNT);
+}
+
+№12
+Использование констант позволяет дать выразительное имя для переменных, используемых как параметры вызова других сервисов:
+val AUDIT_PROGRAM_TYPE : String = "LG8"
+val AUDIT_PROGRAM_ROUTE : String = "08458"
