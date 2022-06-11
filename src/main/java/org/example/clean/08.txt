@@ -15,7 +15,8 @@ const val UNREGISTERED_USER_ID = "DDDDDD"
 )
 
 №3
-Вынесение в библиотеку констант для склонений месяцев:
+Создание и вынесение в библиотеку констант для склонений месяцев. В нашем домене эти константы используются часто, что
+позволяет экономить время на их кодировании и ускоряют понимание кода, т.к. переиспользуются.
 
 public class MonthUtils {
 
@@ -34,24 +35,21 @@ public class MonthUtils {
 При работе (конструктор, фильтрация и т.д.) с начислениями использование констант
 public static final boolean ACCRUED = Boolean.TRUE;
 public static final boolean NOT_ACCRUED = Boolean.FALSE;
-вместо невыразительных true/false
+вместо невыразительных true/false.
 
 №5
-enum можно назвать частным случаем использования констант. Мы используем его для перечисления типов бонусных
-счетов:
-...
-    PEREKRESTOK("120"),
-    YANDEX_PLUS("144"),
-...
+Другие константы можно объединять в коллекции, что показать их общность:
+public static final List<Type> OLD_CASHBACK_TYPES = List.of(LOYALTY_CASHBACK, LOYALTY_CASHBACK_CC, LOYALTY_NEXT);
+Таким образом можно значительно сократить код проверок/фильтрации.
 
 №6
-При использовании регулярных выражений константы помогают раскрыть их семантику:
+Вынесение регулярных выражений в константы помогает раскрыть их семантику:
 public static final String WHITESPACES_REGEX = "[\\s|\\u00A0]+";
 
 №7
 Для того, чтобы отличать в каких единицах измерения представлены денежные единицы используем константы:
 public static final int DEFAULT_MINOR_UNITS = 100;
-public static final int FORMAL_MINOR_UNITS = 1;
+public static final int YANDEX_PLUS_MINOR_UNITS = 1;
 
 №8
 Для удобства работы с uri, выносим их в константы и комбинируем
@@ -63,6 +61,8 @@ public class InternalLoyaltyAccountController {
     public static final String ROOT = "/internal/loyalty-accounts";
     public static final String AGGREGATIONS = "/{id}/aggregations";
     public static final String AGGREGATIONS_CACHE = AGGREGATIONS + "/cache";
+
+Эти константы в дальнейшем можно использовать в тестах.
 
 №9
 При форматировании дат константы помогают раскрыть их семантику:
