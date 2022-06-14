@@ -1,0 +1,106 @@
+№1
+Использование в тестах констант для указания источника запроса:
+    const val MOBILE_CLIENT = "M2"
+    ...
+Тем самым вместо безликих идентификаторов получаем семантически ёмкие имена, которые переходят из теста в тест.
+
+№2
+Практически неизменяемые переменные мы выносим в конфигурацию сервиса (чтобы не приходилось его пересобирать при их
+изменении):
+    ...
+      uwsCustomerAdvertOffersRequest:
+        serviceCategoryId: 37
+        offerTypeId: 11
+    ...
+и в дальнейшем мапятся на экземпляр класса в конфигурации:
+    data class UwsCustomerAdvertOffersRequest(
+        val serviceCategoryId: Int,
+        val offerTypeId: Int
+    )
+Это упрощает читаемость и не требует создания объекта вручную.
+
+№3
+Вынесение регулярных выражений в константы помогает раскрыть их семантику:
+    private val INVOICE_REGEX = ("^(?:(?<number>\\d+)|Счет|Оплата счета)(?: от (?<date>[\\d.]+),)?(?: на сумму " +
+                    "(?<sum>[\\d.]+)(?: руб\\.)?)?(?:\\((?<discount>[\\d.]+)% скидка\\))?")
+Такие (и более простые) выражения без введения констант значительно ухудшают читаемость кода и мешают пониманию его идеи.
+
+№4
+Сравнение на неравенство
+    if (ChronoUnit.MONTHS.between(fromDate, toDate) > 0) {
+        // some logic
+    } else {
+        // another logic
+    }
+заменил на
+    if (ChronoUnit.MONTHS.between(fromDate, toDate) == 0) {
+        // another logic
+    } else {
+        // some logic
+    }
+Простое условие (== 0) воспринимается и читается проще.
+
+№5
+Код
+    public CashbackStatistics getCashbackStatistics(..., Map<Boolean, List<Aggregation>> groupedAggregations, ...) {
+            ...groupedAggregations.get(Boolean.TRUE)...
+    }
+заменил на
+    public CashbackStatistics getCashbackStatistics(..., Map<Boolean, List<Aggregation>> aggregationsGroupedByAccrualStatus, ...) {
+            ...groupedAggregations.get(ACCRUED)...
+    }
+что упростило читаемость кода.
+
+№6
+Код
+    button.setLink(Optional.ofNullable(headers.getOs()).map(os -> os == OperationSystem.IOS).orElse(false)
+                    ? button.getAppLink()
+                    : button.getClickLink()
+    );
+заменил на
+    boolean linkChangeNeeded = Optional.ofNullable(headers.getOs()).map(os -> os == OperationSystem.IOS).orElse(false);
+    button.setLink(linkChangeNeeded ? button.getAppLink() : button.getClickLink());
+Переменная дает лучшее понимание смысла условия и дает возможность ее переиспользования.
+
+№7
+В соответствии с предупреждением компилятора убрал из сервиса Deprecated реализацию получения списка бонусных счетов.
+Неиспользуемый код оттягивает на себя внимание, требует покрытия тестами и поддержке, так как может содержать меняющиеся
+модели из используемых участков кода.
+
+№8
+При разработке на Java кроме предупреждений компилятора, программисты часто пользуются статическим анализатором
+встроенным в IntelliJ Idea (работает в фоновом режиме, есть из коробки). Функция Project Wide Analysis позволяет
+получить все предупреждения по проекту. В результате анализа были исправлены:
+    удалил неиспользуемый @MockBean в тесте
+    исправил кириллические "С" на латинскую "C" в названиях сервисов в документации
+    исправил опечатки в документации и комментариях
+
+№9
+Вынес формат даты в константы
+    const val TIMESTAMP_CONTRACT_WITH_SUBAIO = "yyyy-MM-dd'T'HH:mm:ss'+00:00'"
+для лучшего понимания семантики
+
+№10
+Знаки препинания вынес в константы
+    const val COMMA = ','
+    const val DOT = '.'
+    const val SEMICOLON = ';'
+для улучшения читаемости при форматировании строк.
+
+№11
+В тестах ввел константы
+    private val BEFORE_INTERMEDIATE_PERIOD_STARTS_DATE_EXAMPLE = "2021-06-31"
+    private val INTERMEDIATE_PERIOD_DATE_EXAMPLE = "2021-07-09"
+    private val AFTER_INTERMEDIATE_PERIOD_ENDS_DATE_EXAMPLE = "2021-07-11"
+    private const val FIRST_INTERMEDIATE_PERIOD_DAY_OF_THE_YEAR = "2022-01-01"
+для того, чтобы их можно было переиспользовать + дать дополнительную семантику при чтении.
+
+№12
+В тестах ввел константы
+    private const val BOOMERANG_ACCOUNT_ID = "1044074103953882"
+    private const val PEREKRESTOK_ACCOUNT_ID = "1209602531731417"
+    ...
+    private const val X5_PEREKRESTOK_ACCOUNT_ID = "1909602531731421"
+    private const val X5_PYATEROCHKA_ACCOUNT_ID = "1959602531731422"
+    private const val ILLEGAL_ACCOUNT_ID = "9999999999999999"
+для того, чтобы их можно было переиспользовать + дать дополнительную семантику при чтении.
