@@ -1,0 +1,278 @@
+№1
+Было:
+val isPromotedCashbackProgramAvailable = false
+val isClientCompatibleForProgram = false
+
+Стало:
+val isPromotedCashbackProgramAvailable : Boolean = false
+val isClientCompatibleForProgram : Boolean = false
+
+Комментарий:
+Добавил явное указание типов
+
+№2
+Было:
+private SpendButton getSpendButtonByOs(Headers headers, LoyaltyProgram loyaltyProgram) {
+    boolean spendButtonChangeNeeded = Optional.ofNullable(headers.getOs()).map(os -> os == OperationSystem.IOS).orElse(false);
+    // логика, в которой не участвует spendButtonChangeNeeded
+    return SpendButton.builder()
+            .appLink(spendButton.getAppLink())
+            .clickLink(spendButtonChangeNeeded ? spendButton.getAppLink() : spendButton.getClickLink())
+            .deepLink(spendButton.getDeepLink())
+            .label(spendButton.getLabel())
+            .properties(spendButton.getProperties())
+            .build();
+}
+
+Стало:
+private SpendButton getSpendButtonByOs(Headers headers, LoyaltyProgram loyaltyProgram) {
+    // логика, в которой не участвует isClickButtonChangeNeeded
+    boolean isClickButtonChangeNeeded = isClickButtonChangeNeeded(headers)
+    return SpendButton.builder()
+            .appLink(spendButton.getAppLink())
+            .clickLink(isClickButtonChangeNeeded ? spendButton.getAppLink() : spendButton.getClickLink())
+            .deepLink(spendButton.getDeepLink())
+            .label(spendButton.getLabel())
+            .properties(spendButton.getProperties())
+            .build();
+}
+
+Комментарий:
+Перенёс использование переменной к ее определению
+
+№3
+Было:
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class BonusAccountResponse { ...
+
+Стало:
+@Data
+@AllArgsConstructor
+public class BonusAccountResponse { ...
+
+Комментарий:
+Для того, чтобы нельзя было создать незаконченный объект, убрал аннотации lombok: @Builder и @NoArgsConstructor
+
+№4
+Было:
+val suggestedCategories = ...
+// логика, в которой не участвует suggestedCategories
+if (suggestedCategories.totalCount != suggestedCategories.categories.size) ...
+
+Стало:
+// логика, в которой не участвует suggestedCategories
+val suggestedCategories : SuggestedCategories = ...
+if (suggestedCategories.totalCount != suggestedCategories.categories.size) ...
+
+Комментарий:
+Добавил явное указание типа
+Перенёс использование переменной к ее определению
+
+№5
+Было:
+private suspend fun updateAuditOperationStatus(
+    headers: Headers,
+    auditOperationReference: String?,
+    status: OperationStatus
+) = wsAccountClickPaymentService.changeAuditOperationStatus( ...
+
+Стало:
+private suspend fun updateAuditOperationStatus(
+    headers: Headers,
+    auditOperationReference: String?,
+    status: OperationStatus
+): Unit = wsAccountClickPaymentService.changeAuditOperationStatus( ...
+
+Комментарий:
+Добавил явное указание возвращаемого типа. В этом примере возвращаемое значение особенно актуально, т.к. синтаксис
+expression body (отсутствие {} и присутствие =) и наличие в языке типа Unit (аналог void) могут вызывать ощущение,
+что возвращаемое значение у метода есть, хотя это не так и стоит это продемонстрировать явно.
+
+№6
+Было:
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoyaltyAccount { ...
+
+Стало:
+@Data
+@AllArgsConstructor
+public class LoyaltyAccount { ...
+
+Комментарий:
+Для того, чтобы нельзя было создать незаконченный объект, убрал аннотации lombok: @Builder и @NoArgsConstructor
+
+№7
+Было:
+val userOs = headers.os
+val userAppVersion = headers.appVersion
+
+return isMobileClientCompatible(headers, userOs, userAppVersion, programCompatibilityProperties)
+
+Стало:
+// логика, в которой не участвует userOs и userAppVersion
+val userOs: OperationSystem? = headers.os
+val userAppVersion: ApplicationVersion? = headers.appVersion
+return isMobileClientCompatible(headers, userOs, userAppVersion, programCompatibilityProperties)
+
+Комментарий:
+Добавил явное указание типов
+Перенёс использование переменных к их определениям
+
+№8
+Было:
+val previousProgramsPeriod = programs.minOf { it.date.toDate() }
+val uniqueProgramPeriodsCount = programs.map { it.date.toDate() }.distinct().count()
+// логика, в которой не участвуют previousProgramsPeriod и uniqueProgramPeriodsCount
+if (confirmedPrograms.isNotEmpty() && uniqueProgramPeriodsCount > 1) ...
+
+Стало:
+// логика, в которой не участвуют previousProgramsPeriod и uniqueProgramPeriodsCount
+val previousProgramsPeriod: LocalDate = programs.minOf { it.date.toDate() }
+val uniqueProgramPeriodsCount: Int = programs.map { it.date.toDate() }.distinct().count()
+if (confirmedPrograms.isNotEmpty() && uniqueProgramPeriodsCount > 1) ...
+
+№9
+Было:
+do {
+    ...
+    if (!timedCounter.isOverfull()) {
+        successfulEnters++;
+        timedCounter.increment();
+    }
+    entersAttempts++;
+} while (System.currentTimeMillis() < endTime);
+
+
+Стало:
+try {
+    do {
+        ...
+        if (!timedCounter.isOverfull()) {
+            successfulEnters++;
+            timedCounter.increment();
+        }
+        entersAttempts++;
+    } while (System.currentTimeMillis() < endTime);
+} finally {
+    timedCounter.stop();
+}
+
+Комментарий:
+После остановки таймер завершает подсчет и не может быть перезапущен
+
+№10
+Было:
+try {
+    inputStream = new FileInputStream(pathToProperties);
+    ...
+} catch (FileNotFoundException e) {
+    ...
+} catch (IOException e) {
+    ...
+}
+
+Стало:
+try {
+    inputStream = new FileInputStream(pathToProperties);
+    ...
+} catch (FileNotFoundException e) {
+    ...
+} catch (IOException e) {
+    ...
+} finally {
+    try {
+      inputStream.close();
+    } catch (IOException e) {
+      log.error("", e);
+    }
+}
+
+Комментарий:
+Яркий пример завершения работы с переменной, в результате чего не допускаем утечки ресурсов. Используется Java 6
+
+№11
+Было:
+    private suspend fun createAuditOperation(
+        headers: Headers,
+        categoriesConfirmationRequest: CategoriesConfirmationRequest
+    ) = wsAccountClickPaymentService.createAuditOperation(
+        ...
+    )?.reference
+
+Стало:
+    private suspend fun createAuditOperation(
+        headers: Headers,
+        categoriesConfirmationRequest: CategoriesConfirmationRequest
+    ): String? = wsAccountClickPaymentService.createAuditOperation(
+        ...
+    )?.reference
+
+Комментарий:
+Добавил явное указание возвращаемого типа
+
+№12
+Было:
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CashbackForecast { ...
+
+Стало:
+@Data
+@AllArgsConstructor
+public class CashbackForecast { ...
+
+Комментарий:
+Для того, чтобы нельзя было создать незаконченный объект, убрал аннотации lombok: @Builder и @NoArgsConstructor
+
+№13
+Было:
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CashbackStatistics { ...
+
+Стало:
+@Data
+@AllArgsConstructor
+public class CashbackStatistics { ...
+
+Комментарий:
+Для того, чтобы нельзя было создать незаконченный объект, убрал аннотации lombok: @Builder и @NoArgsConstructor
+
+№14
+Было:
+suspend fun checkClientCompatibility(headers: Headers, programId: Int, offerDate: String) { ...
+
+Стало:
+suspend fun checkClientCompatibility(headers: Headers, programId: Int, offerDate: String) : Unit { ...
+
+Комментарий:
+Несмотря на хорошее название метода (намекающего на отсутствие возвращаемого значения) стоит указать его явно. Это
+может упростить код-ревью, когда подсветка синтаксиса в браузере ограничена.
+
+№15
+Было:
+@Data
+@Builder
+@Validated
+@NoArgsConstructor
+@AllArgsConstructor
+public class EmptyState { ...
+
+Стало:
+@Data
+@Validated
+@AllArgsConstructor
+public class EmptyState { ...
+
+Комментарий:
+Для того, чтобы нельзя было создать незаконченный объект, убрал аннотации lombok: @Builder и @NoArgsConstructor
