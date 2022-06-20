@@ -1,0 +1,301 @@
+Некоторые замечания были выявлена на ревью кода коллег
+
+№1
+Было:
+    ...
+    return if (offer.isDisplayDetailInfo == false) {
+        DeepLinkDetails(
+            showDetails = false,
+            deeplinkToDetails = null,
+            isOldDetailsScreen = false
+        )
+    } else {
+        pickDeepLinkDetails(headers, offer)
+    }
+
+Что предложил сделать:
+Вынести в отдельный метод
+    DeepLinkDetails(
+        showDetails = false,
+        deeplinkToDetails = null,
+        isOldDetailsScreen = false
+    )
+
+Комментарий:
+Почему-то одна из веток была вынесена в метод, а другая нет. Читая такой код, вообще не приходит понимание, что
+происходит по первой ветке. Он содержит много молчаливых деталей. Такому методу можно дать осмысленное имя, облегчающее
+чтение кода. Такой блок (метод) скроет эти детали и сделает код менее уязвимым (более понятным).
+
+№2
+Было:
+    val features = when (headers.os) {
+        ...
+        // выбор набора активных фич в зависимости от операционной системы пользователя
+        ...
+    }
+    val featureEnabled = featureToggleService.isFeatureEnabled(headers, features)
+    ...
+    // действительно важная логика, которая будет опираться на featureEnabled
+    ...
+
+Что предложил сделать:
+Вынести весь блок определения активности фич в отдельный метод
+
+Комментарий:
+Не показываем внутреннюю кухню получения фич, снижаем область видимости features, что значительно сокращает время на
+чтение метода. Логика, которая должны была быть скрыта, т.к. является больше поддерживающей, вывалена напоказ и
+оттягивает на себя много внимания.
+
+№3
+Было:
+    return if (featureEnabled) {
+        ...
+    } else {
+        ...
+    } ?: DeepLinkDetails(
+        showDetails = true,
+        isOldDetailsScreen = true,
+        deeplinkToDetails = paymentBannerDeepLink
+    )
+
+Что предложил сделать:
+Ситуация аналогична №1: заполнили объект какими-то значениями и отдаем. Почему он такой? Как понять, что он наполнен
+правильно? Из этого кода это сделать абсолютно невозможно.
+
+Комментарий:
+Для того, чтобы нельзя было создать незаконченный объект, убрал аннотации lombok: @Builder и @NoArgsConstructor
+
+№4
+Было:
+    val resultTitles = ...
+    val resultList = ...
+
+    val mainTitle = getTitleWithMonth(...resultList...)
+
+    var bySym: TopMerchantStatistics? = null
+    var byCount: TopMerchantStatistics? = null
+
+    val rowMerchantStatistics = getRowMerchantStatistics(...resultList...)
+
+    if ( // условие с resultTitles и rowMerchantStatistics ) {
+        ...
+        bySym = TopMerchantStatistics(...resultList..., ...rowMerchantStatistics...)
+    }
+    if ( // другое условие с resultTitles и rowMerchantStatistics ) {
+        ...
+        byCount = TopMerchantStatistics(...resultList..., ...rowMerchantStatistics...)
+    }
+
+    return TopMerchantInfo(
+        ...
+        bySum = bySym,
+        byCount = byCount
+    )
+Из исходного кода оставил в основном названия переменных для лучшей читаемости.
+
+Что предложил сделать:
+Создать 2 метода: для получения bySym и byCount
+
+Комментарий:
+Метод занимает 35 строк и напичкан множеством переменных, условий. К этому добавляется то, что переменные
+инициализируются не всегда там, где начинают использоваться. Я предложил создать 2 метода: для получения bySym и
+byCount, что позволит сократить количество переменных в этом методе и спрятать условия.
+
+№5
+Было:
+    ...
+    val cardActions = it.getCardActions(headers, cards)
+    return cardActions.map { ... }
+    ...
+
+Что предложил сделать:
+    ...
+    return it.getCardActions(headers, cards).map { ... }
+    ...
+
+Комментарий:
+Иногда введение переменных не облегчает чтение кода, а наоборот - мешает.
+
+№6
+Было:
+    fun getWinnerOffer(headers: Headers, offerDate: String): WheelOfFortuneWinnerOfferResponse = try {
+        checkClientCompatibility(...)
+        val confirmedOfferId = getConfirmedOfferId(...)
+
+        return WheelOfFortuneWinnerOfferResponse(
+            winnerOffer = // логика
+                Offer(
+                    // заполнение полей объекта
+                )
+        )
+    }
+
+Стало:
+Вынес блок с формированием оффера-победителя в отдельный метод.
+
+Комментарий:
+Множество переменных, которые в итоге становятся частью ответа (WheelOfFortuneWinnerOfferResponse), скрывают за собой
+реальную бизнес-логику метода: проверка наличия подтвержденного оффера и формирование ответа на основе полученной информации.
+Обычно, чем больше участок кода, тем дольше времени приходится на его изучение. Логично вынести такой участок в метод.
+
+№7
+Было:
+    val confirmedCategoriesIds =
+        categoriesProviderService.getConfirmedCategoriesIds(headers, categoriesConfirmationRequest.offerDate)
+    if (confirmedCategoriesIds.isNotEmpty()) {
+        throw InternalException.of(LogicErrorCode.SPECIFIED_PERIOD_CATEGORIES_ALREADY_CONFIRMED)
+    }
+    // логика
+    ...
+
+Стало:
+Вынес указанный участок кода в метод
+
+Комментарий:
+За пределами этих строк результаты работы не используются и могут быть вынесены в отдельный метод.
+
+№8
+Было:
+    private fun getCategoriesSection(...) = CategoriesSection(
+        categories = categoriesDirectory
+            .filter { categoryDirectoryItem -> categoryDirectoryItem.id in userCategoriesIds }
+            .map { categoryDirectoryItem ->
+                Category(
+                    // наполнение объекта
+                )
+            }
+    )
+
+Стало:
+Вынес код наполнения объекта в отельный метод
+
+Комментарий:
+Аналогично №6. Выносим на первый план значимые части работы, а незначимые - скрываем.
+
+№9
+    val expected: Boolean = true
+    val headers: Headers = Headers.builder()
+        .os(getOs(os))
+        .channelId(MOBILE_CHANNEL_ID)
+        .appVersion(getAppVersion(major, minor))
+        .build()
+    val programCompatibilityProperties =
+        programsProperties.getCategoricalCashbackProgramProperties().availabilityProperties
+
+    whenever(featureToggleApiService.hasFeature(headers, programCompatibilityProperties.feature))
+        .thenReturn(isFeatureEnabled)
+    whenever(featureToggleApiService.hasFeature(headers, programCompatibilityProperties.featureIos))
+        .thenReturn(isIosFeatureEnabled)
+
+    val actual = clientCompatibilityService.isClientCompatibleForProgram(headers, programCompatibilityProperties)
+    Assertions.assertEquals(actual, expected)
+
+Комментарий:
+Группировка также актуальна при написании тестов. Тест условно можно разделить на части: Given, When, Then. Это повышает
+читаемость тестов.
+
+№10
+Было:
+    suspend fun getSummary(headers: Headers, bonusAccountType: String): ProgramsSummaryResponse {
+        val userLoyaltyCardsTerms = try {
+            promotedCashbackAvailabilityService.getUserLoyaltyCardsTerms(headers)
+        } catch (e: Exception) {
+            logger.error(e) {
+                "Failed getting promoted cashback programs summary for user with id ${headers.userId} due to user cards terms fetch error"
+            }
+            throw BusinessException.of(LogicErrorCode.PROGRAMS_SUMMARY_FETCH_ERROR)
+        }
+
+        if (userLoyaltyCardsTerms.isEmpty()) {
+            throw BusinessException.of(LogicErrorCode.PROMOTED_CASHBACK_NOT_AVAILABLE)
+        }
+
+        try {
+            val programs = getPrograms(headers, userLoyaltyCardsTerms, bonusAccountType)...
+
+Стало:
+    suspend fun getSummary(headers: Headers, bonusAccountType: String): ProgramsSummaryResponse {
+        val userLoyaltyCardsTerms = getUserLoyaltyCardsTerms(...)
+
+        try {
+            val programs = getPrograms(headers, userLoyaltyCardsTerms, bonusAccountType)...
+
+Комментарий:
+Группируем операции в метод и сокращаем область видимости переменной userLoyaltyCardsTerms
+
+№11
+Было:
+class CategoricalCashbackConfirmationService(
+    val promotedCashbackAvailabilityService: PromotedCashbackAvailabilityService,
+    val featureToggleApiService: FeatureToggleApiService,
+    val programsProperties: ProgramsProperties ...
+
+Стало:
+class CategoricalCashbackConfirmationService(
+    private val promotedCashbackAvailabilityService: PromotedCashbackAvailabilityService,
+    private val featureToggleApiService: FeatureToggleApiService,
+    private val programsProperties: ProgramsProperties ...
+
+Комментарий:
+Уменьшил область видимости переменных в сервисе
+
+№12
+Было:
+    val programsPeriods = promotedCashbackService.getProgramsPeriods(headers)
+    val programIds = userLoyaltyCardsTerms
+        .filter { it.bonusAccountTypeId == bonusAccountType }
+        .flatMap { x -> x.promotedCashbackProgramIds }.toSet()
+
+    return programsPeriods
+        .filter { programPeriod -> programIds.contains(programPeriod.programId) }
+        .flatMap { ...
+
+Стало:
+    val programIds = userLoyaltyCardsTerms
+        .filter { it.bonusAccountTypeId == bonusAccountType }
+        .flatMap { x -> x.promotedCashbackProgramIds }.toSet()
+
+    return promotedCashbackService.getProgramsPeriods(headers)
+        .filter { programPeriod -> programIds.contains(programPeriod.programId) }
+        .flatMap { ...
+
+Комментарий:
+Инлайним вызовы для получения переменной programsPeriods без потери читаемости
+
+№13
+Было:
+enum class MotivationType(val value: String) { ...
+
+Стало:
+private enum class MotivationType(val value: String) { ...
+
+Комментарий:
+Сделал приватным класс, который не используется за пределами сервиса
+
+№14
+Было:
+    companion object {
+        val CLOCK: Clock = Clock.fixed(Instant.parse("2022-06-06T00:00:00.00Z"), ZoneId.of("Europe/Moscow"))
+    }
+
+Стало:
+    private companion object {
+        private val CLOCK: Clock = Clock.fixed(Instant.parse("2022-06-06T00:00:00.00Z"), ZoneId.of("Europe/Moscow"))
+    }
+
+Комментарий:
+Сделал константу для класса с тестами приватной
+
+№15
+Было:
+    companion object {
+        const val ANY_EXAMPLE_PATCH_VERSION = 5
+    }
+
+Стало:
+    private companion object {
+        private const val ANY_EXAMPLE_PATCH_VERSION = 5
+    }
+
+Комментарий:
+Сделал константу для класса с тестами приватной
