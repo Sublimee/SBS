@@ -111,11 +111,11 @@ public class LoyaltyAccount { ...
 Было:
 val userOs = headers.os
 val userAppVersion = headers.appVersion
-
+// логика, в которой не участвуют userOs и userAppVersion
 return isMobileClientCompatible(headers, userOs, userAppVersion, programCompatibilityProperties)
 
 Стало:
-// логика, в которой не участвует userOs и userAppVersion
+// логика, в которой не участвуют userOs и userAppVersion
 val userOs: OperationSystem? = headers.os
 val userAppVersion: ApplicationVersion? = headers.appVersion
 return isMobileClientCompatible(headers, userOs, userAppVersion, programCompatibilityProperties)
