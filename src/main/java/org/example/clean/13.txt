@@ -1,0 +1,55 @@
+№1
+У нас есть библиотечная переменная:
+    public static final List<String> MONTHS_PREPOSITIONAL =
+            List.of("январе", "феврале", "марте", "апреле", "мае", "июне", "июле", "августе",
+                    "сентябре", "октябре", "ноябре", "декабре"
+            );
+
+Так выглядит метод получения формы слова:
+    fun getPrepositionalMonthName(date: String): String =
+        MonthUtils.MONTHS_PREPOSITIONAL[LocalDate.parse(date).month.value - 1]
+
+Вместо получения формы по индексу в листе, можно задать тип Map<Int, String> или Map<Month, String> в зависимости от
+сценариев использования.
+
+№2
+    List<Card> list = new ArrayList<Card>( cards.size() );
+    for ( CardDTO cardDTO : cards ) {
+        list.add( cardDTOToCard( cardDTO ) );
+    }
+
+    return list;
+
+Несмотря на то, что конструктор ArrayList умеет работать с 0 при инициализации (массива), такой код выглядит достаточно
+громоздко и невыразительно. Заменим его на код в функциональном стиле:
+    return cards.stream()
+            .map(card -> cardDTOToCard( card ))
+            .collect(Collectors.toList());
+
+№3
+        return loyaltyProperties
+                .getHints()
+                .get(getRandomInteger(...));
+    }
+
+.getHints() возвращает список. Изменение типа на Map позволит не получать OutOfBoundsException, а возвращать null,
+который можно провалидировать.
+
+№4
+В тестах к заданию Хэш-таблица я использовал конструкцию
+    IntStream.range(1, 10)
+которая может хорошо заменять более многословную классическую конструкцию с увеличением на 1 переменной на каждом шаге.
+
+№5
+Такую конструкцию:
+    IntStream.range(0, statements.size())
+        .boxed()
+        .map { i ->
+            var statement = statements[i]
+            var statementAction = statementActions[i]
+            "$statement:$statementAction";
+        }
+        .toList()
+формирующую результирующий список из двух других с использованием индексов можно заменить на:
+    statements.zip(statementActions) { statement, statementAction -> "$statement:$statementAction" }
+предварительно проверив совпадение длин исходных массивов.
