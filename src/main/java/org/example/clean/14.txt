@@ -1,0 +1,96 @@
+№1
+    /**
+     * день миграции программы лояльности с 501 на 180 тип бонусного счета
+     */
+    public static final LocalDate TRAVEL_MIGRATION_DAY = LocalDate.of(2021, Month.NOVEMBER, 1);
+
+Переменная использовалась для настройки поведения в период миграции типа бонусного счета для программы лояльности.
+
+№2
+    /**
+     *  Постобрабатываем сырой ряд начислений с бэкенда:
+     *  убираем техническое начисление в период миграции
+     *  завершаем последовательность пустыми начислениями до текущего месяца
+     *  заполняем пропуски между начислениями, если они есть
+     */
+    public Map<Boolean, List<Aggregation>> getRefinedAggregationsGroupedByAccrualStatus(...) {
+        List<Aggregation> aggregationsWithoutMigration = ...
+        List<Aggregation> endedAggregationsSequence = ...
+        return getEndedAggregationSequenceWithNoGaps(...)
+    }
+
+Метод содержит достаточно много логики, которую требуется применить для приходящей в него сырой последовательности
+начислений. Описать все манипуляции, произведенные над последовательностью в названии метода по моему мнению невозможно,
+поэтому стоит добавить комментарий.
+
+№3
+    /**
+     *  Получаем дату, когда начисление было заработано клиентом, которое отличается на месяц от даты начисления
+     */
+    private LocalDate getAccumulationDate(Aggregation x) {
+        return x.getDate().minusMonths(1);
+    }
+
+Метод содержит magic number (1), который можно было бы в принципе заменить константой с именем
+DIFFERENCE_BETWEEN_AGGREGATION_AND_ACCUMULATION_DATE, но понятие ACCUMULATION не фигурирует нигде кроме этого метода
+и может также не внести ясность повествования. Лучшим решением видится введение константы и соответствующего комментария.
+
+№4
+    /**
+     * Проверяем, является ли текущее состояние промежуточным: предыдущий период (месяц) закрыт для начисления бонусов,
+     * но за него еще не начислены бонусы, а новый период (месяц) уже начался -> имеем 2 невыплаченных периода
+     */
+    private boolean isIntermediatePeriod(List<Aggregation> calculatedAggregations) {
+        return calculatedAggregations.size() == INTERMEDIATE_PERIOD_CALCULATIONS_SIZE;
+    }
+
+Проверка в коде метода является достаточно неочевидной и исходит из особенностей данных, приходящих с бэкэнда, поэтому
+достаточно сложное условие можно вынести в комментарий.
+
+№5
+В коде коллег предложил заменить
+
+    boolean refundResult = refundRestaurantsTransactions(...
+
+    ...
+
+    if (!refundResult) {
+        //компенсация не выполнена
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(makeErrorCompensationResult());
+    }
+
+на:
+
+    boolean isRefundComplete = refundRestaurantsTransactions(...
+
+    ...
+
+    if (isRefundComplete) {
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(makeErrorCompensationResult());
+    }
+
+чтобы избавиться от комментария.
+
+№6
+В коде коллег предложил заменить:
+
+    // Если баланс не равен нулю и тип аккаунта 104 или 180
+    private boolean isBalanceEmptyAndAccountTypeApplicable(UnifiedBonusAccount unifiedBonusAccount) {
+    ...
+    // логика, которая использовала константы для сверки
+
+на
+
+   private boolean isBalanceEmptyAndAccountTypeApplicable(UnifiedBonusAccount unifiedBonusAccount) {
+   ...
+   // логика, которая использует список из конфига для сверки
+
+чтобы избавиться от комментария. Код теперь можно быстро дополнить новыми типами счетов и он стал более читабельным.
+
+№7
+// Программы, по которым могут приходить начисления, но невидимы для пользователя и конвертируются в баллы на 104 счете
+    public enum ArchivedType {
+        CASHBACK_CARD_WEBVIEW("40"),
+        ...
+
+Комментарий помогает раскрыть смысл, вкладываемый бизнесом в понятие архивной программы.
