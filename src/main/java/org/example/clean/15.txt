@@ -1,0 +1,186 @@
+№1
+Добавляем комментарий, чтобы в будущем после заданной даты убрать неиспользуемые участки кода:
+
+    public enum Type {
+        ...
+        @Deprecated // TODO тип счета неактуален после миграции 01.11.21, требуется его удалить
+        TRAVEL_CARD("501"),
+        ...
+    }
+
+№2
+Система развивается технически и со временем неиспользумые участки кода требуется удалять:
+
+    @Deprecated // TODO убедиться по логам, что клиенты не запрашивают виджеты этой версии, требуется оставить только версию 2
+    public interface WidgetVersion1 extends Contract { ...
+
+№3
+Некоторые участки кода становятся неактулаьными из-за меняющихся требований бизнеса, поэтому тоже подлежат удалению:
+
+    @Component
+    @Deprecated // TODO убедиться по логам, что клиенты не запрашивают виджеты этого типа, требуется его удалить
+    public class YandexPlus extends DefaultContract implements WidgetVersion1 { ...
+
+    @Component("yandex-plus-v2")
+    @Deprecated // TODO убедиться по логам, что клиенты не запрашивают виджеты этого типа, требуется его удалить
+    public class YandexPlus extends DefaultContract implements WidgetVersion2 { ...
+
+№4
+Было:
+
+    /**
+     * Метод для сочетания формы числительного с существительным
+     */
+    public String getAmountDeclensionForm(int number, String formOne, String formFew, String formMany) {
+        return StringDeclension.declension(number, formOne, formFew, formMany);
+    }
+
+Добавил комментарий для раскрытия семантики работы метода:
+
+    /**
+     * Метод для сочетания формы числительного с существительным
+     * Правило описано, например, тут: https://dist-tutor.info/mod/book/view.php?id=42060&chapterid=3230
+     */
+    public String getAmountDeclensionForm(int number, String formOne, String formFew, String formMany) {
+        return StringDeclension.declension(number, formOne, formFew, formMany);
+    }
+
+№5
+Было:
+
+    // Значение взято из JMBA
+    private static final LocalTime DEFAULT_OPERATION_TIME = LocalTime.of(9, 0);
+Стало:
+
+    // Значение взято из JMBA. Константа, валидируется на бэкенде. Не менять!
+    private static final LocalTime DEFAULT_OPERATION_TIME = LocalTime.of(9, 0);
+
+Комментарий:
+Используем усиление и дополнительно раскрываем содержание
+
+№6
+Было:
+
+    /**
+     * Системный код операции
+     */
+    public enum OperationSystemCode {
+        BASE_INCOMING_TRANSFER,
+        ...
+
+Стало:
+
+    /**
+     * Системный код операции.
+     * Возможные значения:
+     * BASE_INCOMING_TRANSFER - Базовый входящий перевод (коды #DZ1, #DZ0, #DS)
+     * ...
+     */
+    public enum OperationSystemCode {
+        BASE_INCOMING_TRANSFER,
+        ...
+
+Комментарий:
+Для раскрытия семантика каждого кода операции добавил дополнительные раскрывающие комментарии
+
+№7
+Было:
+
+    /**
+     * Useful constant for the default precedence value.
+     */
+    int DEFAULT_ORDER = 0;
+
+Стало:
+
+    /**
+     * Используется для указания приоритета опреации по-умолчанию
+     */
+    int DEFAULT_ORDER = 0;
+
+Комментарий:
+Преимущественно в проекте используются комментарии на русском языке, поэтому перевел комментарий и убрал мусор в виде
+"Useful constant"
+
+№8
+Было:
+
+    /**
+     * @param headers Headers
+     * @param featureName Имя фичи
+     * @return Доступна ли фича. Если featureName == null, то считается, что фича доступна
+     */
+    public Mono<Boolean> isFeatureEnabled(
+            @NotNull Headers headers,
+            @Nullable String featureName
+    ) { ...
+
+Стало:
+
+    public Mono<Boolean> isFeatureEnabled(
+            @NotNull Headers headers,
+            @Nullable String featureName
+    ) { ...
+
+Комментарий:
+Убрал комментарии, т.к. внутри используется описанный библиотечный вызов с повторяющейся сигнатурой. Библиотека
+переиспользуется практически во всех микросервисах и не требует дополнительных пояснений.
+
+№9
+Пока часть функциональности не была реализована на системах-источниках - использовали файл-конфигурации для поддержания
+функциональности. Сейчас эту модель можно удалять одновременно переходом на получение данных с системы-источника.
+
+    // TODO: удалить в рамках таски http://jira.moscow...
+    @ConfigurationProperties(prefix = "fake-merchant")
+    @Validated
+    @Data
+    public class FakeMerchantProperties {
+
+№10
+Было:
+
+    @Test
+    @DisplayName("При нехватке данных на страницу, не генерируется лишних запросов")
+    public void monoCacheServiceGetPagesTest() { ...
+
+    @Test
+    @DisplayName("При нехватке данных на страницу, не генерируется лишних запросов в режиме forced")
+    public void monoCacheServiceForcedGetPagesTest() { ...
+
+Стало:
+
+    /**
+     * Покрывает кейс когда выполнены не все запросы к WS и страница заполнена не полностью
+     */
+    @Test
+    @DisplayName("При нехватке данных на страницу, не генерируется лишних запросов")
+    public void monoCacheServiceGetPagesTest() { ...
+
+    /**
+     * Покрывает кейс когда выполнены не все запросы к WS и страница заполнена не полностью и параметр forced = true
+     */
+    @Test
+    @DisplayName("При нехватке данных на страницу, не генерируется лишних запросов в режиме forced")
+    public void monoCacheServiceForcedGetPagesTest() { ...
+
+Комментарий:
+Дополнительно раскрываем содержание тестов
+
+№11
+Добавил информацию о причине необходимости избавления от эндпоинта:
+
+    @GetMapping(CONDITIONS)
+    @Deprecated // TODO Устаревший эндпоинт, так как формируются некорректные данные, требуется перевести все микросервисы на новый эндпоинт /card/{cardId}/conditions,
+    public ValueFieldsResponse getCardConditions(...
+
+№12
+Добавил комментарий о необходимости расщепления большого класса с конфигурацией на несколько меньших, чтобы сгруппировать
+настройки в соответствии с их семантикой:
+
+    // TODO: Требуется рефакторинг ConditionsProperties: разбить на несколько классов с разбиением по тематическим группам
+    @Getter
+    @Setter
+    @Validated
+    @RefreshScope
+    @ConfigurationProperties(prefix = "tariff.conditions")
+    public class ConditionsProperties {
