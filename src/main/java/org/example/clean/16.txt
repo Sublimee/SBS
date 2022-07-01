@@ -1,0 +1,271 @@
+№1
+Было:
+    /**
+     * Получение списка операций подходящих под критерий
+     */
+    public Mono<OperationsHistoryPage> getOperationsHistoryByCriteria(Headers headers, OperationsHistoryCriteria criteria) { ...
+
+Стало:
+    public Mono<OperationsHistoryPage> getOperationsHistoryByCriteria(Headers headers, OperationsHistoryCriteria criteria) { ...
+
+Комментарий:
+Комментарий является избыточным, дублируя сигнатуру метода
+
+№2
+Было:
+    /**
+     * Получение тэгов для фильтра по истории операций
+     */
+    public Mono<FiltersTagsResponse> getFiltersTagsResponse(Headers headers, @NotNull LocalDate from) { ...
+
+Стало:
+    public Mono<FiltersTagsResponse> getFiltersTagsResponse(Headers headers, @NotNull LocalDate from) { ...
+
+Комментарий:
+Комментарий является избыточным, дублируя сигнатуру метода
+
+№3
+Было:
+    /**
+     * @param headers Headers
+     * @param featureName Имя фичи
+     * @return Доступна ли фича. Если featureName == null, то считается, что фича доступна
+     */
+    public Mono<Boolean> isFeatureEnabled(
+            @NotNull Headers headers,
+            @Nullable String featureName
+    ) { ...
+
+Стало:
+    public Mono<Boolean> isFeatureEnabled(
+            @NotNull Headers headers,
+            @Nullable String featureName
+    ) { ...
+
+Комментарий:
+Комментарий является избыточным, дублируя сигнатуру метода
+
+№4
+Было:
+    /**
+     * Page number must be greater than 0
+     */
+    private Integer page = 1;
+
+Стало:
+    @DecimalMin("1")
+    private Integer page = 1;
+
+Комментарий:
+Используем более выразительную запись комментария, одновременно дополняя переменную валидацией
+
+№5
+Было:
+    /**
+     * The service is responsible for processing saving payments.
+     */
+    @RequiredArgsConstructor
+    @Slf4j
+    @Service
+    public class WsAccountSavingsPaymentService { ...
+
+Стало:
+    @RequiredArgsConstructor
+    @Slf4j
+    @Service
+    public class WsAccountSavingsPaymentService { ...
+
+Комментарий:
+Комментарий является избыточным, дублируя название класса на русском языке
+
+№6
+Было:
+    // Urls
+    public static final String WS_MOCKS_PATH_PREFIX = "ws-responses/";
+    public static final String CLIENTS_MOCKS_PATH_PREFIX = "clients/";
+    ...
+
+Стало:
+    public static final String WS_MOCKS_PATH_PREFIX = "ws-responses/";
+    public static final String CLIENTS_MOCKS_PATH_PREFIX = "clients/";
+    ...
+
+Комментарий:
+Если очень хотелось указать на то, что блок констант относится к uri, можно было бы вынести это в названия переменных,
+но комментарий ничего кроме шума не привносит
+
+№7
+Было:
+     private static Stream<Arguments> provideDataForConverters() {
+         return Stream.of(
+            // Перевод от юрлица
+            Arguments.of(
+                    StatementDto.builder()
+                            .headers(HEADERS) ...
+
+Стало:
+    val legalEntityTransfer = Arguments.of(StatementDto.builder() .headers(HEADERS) ...
+
+    private static Stream<Arguments> provideDataForConverters() {
+        return Stream.of(legalEntityTransfer, ...
+
+Комментарий:
+Вместо введения комментария, создадим переменную, которая будет явно указывать на семантику объекта
+
+№8
+Было:
+    //todo
+    fields.add(
+            HeaderField.builder()
+                    .id(idFallbackGenerator.getId())
+                    .label(cardConditionsProperties.getAlfabankWithdrawHeaderText())
+                    .build()
+    );
+
+Стало:
+    fields.add(
+            HeaderField.builder()
+                    .id(idFallbackGenerator.getId())
+                    .label(cardConditionsProperties.getAlfabankWithdrawHeaderText())
+                    .build()
+    );
+
+Комментарий:
+Комментарий двухлетней давности без указания, что собственно следует изменить сбивает с толку и может быть безболезненно
+удален
+
+№9
+Было:
+    /**
+     * A response of internal API to get unified bonus account details
+     */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public class InternalUnifiedBonusAccountResponse { ...
+
+Стало:
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public class InternalUnifiedBonusAccountResponse { ...
+
+Комментарий:
+Комментарий является избыточным, дублируя название класса на русском языке
+
+№10
+Было:
+    /**
+     * A cashback paid out at specified date with current status
+     */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public class UnifiedChargeDto { ...
+
+Стало:
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public class UnifiedChargeDto { ...
+
+Комментарий:
+Комментарий является избыточным, дублируя название класса на русском языке
+
+№11
+Было:
+    /**
+     * Cashback forecast with pay out date for every period
+     */
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class UnifiedCashbackForecastDto { ...
+
+Стало:
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class UnifiedCashbackForecastDto { ...
+
+Комментарий:
+Комментарий является избыточным, дублируя название класса на русском языке
+
+№12
+Было:
+    /**
+     * A cashback statistics data
+     */
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class UnifiedCashbackStatisticsDto { ...
+
+Стало:
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class UnifiedCashbackStatisticsDto { ...
+
+Комментарий:
+Комментарий является избыточным, дублируя название класса на русском языке
+
+№13
+Было:
+    /**
+     *
+     * @param aggregation
+     * @param loyaltyProgram
+     * @return
+     */
+    private ExtendedAmount getUnifiedTotalPeriodAmount(Aggregation aggregation, LoyaltyProgram loyaltyProgram) { ...
+
+Стало:
+    private ExtendedAmount getUnifiedTotalPeriodAmount(Aggregation aggregation, LoyaltyProgram loyaltyProgram) { ...
+
+Комментарий:
+Здесь без комментариев, непонятно, как это вообще попало в мастер после ревью
+
+№14
+Было:
+    @Test
+    fun `CashBackConverterTest test`() = runBlocking<Unit> {
+        ...
+        assertEquals(1, transactions.size) // all duplicates removed
+    }
+
+Стало:
+    @Test
+    fun `check all duplicates removed while converting raw transactions`() = runBlocking<Unit> {
+        ...
+        assertEquals(1, transactions.size) // all
+    }
+
+Комментарий:
+От комментария можно избавиться, если дать правильное название тесту.
+
+№15
+Было:
+                /* TRIPLE */
+                PayloadDocumentation.fieldWithPath("suggestions[].data.title")
+                        .type(JsonFieldType.STRING)
+                        .ignored()
+                        .optional()
+                        .description("Заголовок подборки"),
+Стало:
+                PayloadDocumentation.fieldWithPath("suggestions[].data.title")
+                        .type(JsonFieldType.STRING)
+                        .ignored()
+                        .optional()
+                        .description("Заголовок подборки"),
+Комментарий:
+Убрал комментарий, так как в таком виде он не дает дополнительной ифнормации, требуется обратиться к автору комментария
+за разъяснением
