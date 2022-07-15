@@ -1,7 +1,7 @@
 package lesson02;
 
-import org.example.lesson02.DoubledLinkedList;
-import org.example.lesson02.Node;
+import org.example.algo.lesson02.DoubledLinkedList;
+import org.example.algo.lesson02.Node;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
 package lesson09;
 
-import org.example.lesson09.NativeDictionary;
+import org.example.algo.lesson09.NativeDictionary;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

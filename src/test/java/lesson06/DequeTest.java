@@ -1,6 +1,6 @@
 package lesson06;
 
-import org.example.lesson06.Deque;
+import org.example.algo.lesson06.Deque;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

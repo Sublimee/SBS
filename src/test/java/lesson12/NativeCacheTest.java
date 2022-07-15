@@ -1,6 +1,6 @@
 package lesson12;
 
-import org.example.lesson12.NativeCache;
+import org.example.algo.lesson12.NativeCache;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

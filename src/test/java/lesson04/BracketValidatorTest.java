@@ -1,6 +1,6 @@
 package lesson04;
 
-import org.example.lesson04.BracketValidator;
+import org.example.algo.lesson04.BracketValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
