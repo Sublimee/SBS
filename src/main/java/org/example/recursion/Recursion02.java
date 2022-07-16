@@ -6,7 +6,7 @@ public class Recursion02 {
         System.out.println(sumDigits(90090));
     }
 
-    private static int sumDigits(int number) {
+    private static long sumDigits(int number) {
         if (number < 10) {
             return number;
         }
