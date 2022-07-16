@@ -2,7 +2,7 @@ package org.example.recursion;
 
 public class Recursion02 {
 
-    private static long sumDigits(int number) {
+    public long sumDigits(int number) {
         if (number < 10) {
             return number;
         }

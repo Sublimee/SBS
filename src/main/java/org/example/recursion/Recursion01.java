@@ -2,7 +2,7 @@ package org.example.recursion;
 
 public class Recursion01 {
 
-    private static long exponentiation(long base, long power) {
+    public long exponentiation(long base, long power) {
         if (power == 0) {
             return 1;
         }
