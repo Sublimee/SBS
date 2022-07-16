@@ -2,10 +2,6 @@ package org.example.recursion;
 
 public class Recursion02 {
 
-    public static void main(String[] args) {
-        System.out.println(sumDigits(90090));
-    }
-
     private static long sumDigits(int number) {
         if (number < 10) {
             return number;
