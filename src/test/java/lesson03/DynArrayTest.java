@@ -1,13 +1,13 @@
 package lesson03;
 
-import org.example.algo.lesson03.DynArray;
+import org.example.algo01.lesson03.DynArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.util.stream.IntStream;
 
-import static org.example.algo.lesson03.DynArray.MIN_CAPACITY;
+import static org.example.algo01.lesson03.DynArray.MIN_CAPACITY;
 
 public class DynArrayTest {
 

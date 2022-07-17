@@ -1,6 +1,6 @@
 package lesson04;
 
-import org.example.algo.lesson04.OperandStack;
+import org.example.algo01.lesson04.OperandStack;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

@@ -1,6 +1,6 @@
 package lesson05;
 
-import org.example.algo.lesson05.QueueOnStacks;
+import org.example.algo01.lesson05.QueueOnStacks;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

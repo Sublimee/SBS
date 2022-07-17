@@ -1,7 +1,7 @@
 package lesson07;
 
-import org.example.algo.lesson07.Node;
-import org.example.algo.lesson07.OrderedList;
+import org.example.algo01.lesson07.Node;
+import org.example.algo01.lesson07.OrderedList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

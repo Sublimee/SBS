@@ -1,6 +1,6 @@
 package lesson08;
 
-import org.example.algo.lesson08.HashTable;
+import org.example.algo01.lesson08.HashTable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,7 @@
 package lesson05;
 
-import org.example.algo.lesson05.Queue;
-import org.example.algo.lesson05.Rotator;
+import org.example.algo01.lesson05.Queue;
+import org.example.algo01.lesson05.Rotator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

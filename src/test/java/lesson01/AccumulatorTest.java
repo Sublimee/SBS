@@ -1,6 +1,6 @@
 package lesson01;
 
-import org.example.algo.lesson01.Accumulator;
+import org.example.algo01.lesson01.Accumulator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

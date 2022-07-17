@@ -1,6 +1,6 @@
 package lesson04;
 
-import org.example.algo.lesson04.Stack;
+import org.example.algo01.lesson04.Stack;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
