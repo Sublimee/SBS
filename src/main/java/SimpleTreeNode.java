@@ -121,7 +121,7 @@ class SimpleTree<T> {
             return 0;
         }
 
-        if (node.Children == null) {
+        if (node.Children == null || node.Children.isEmpty()) {
             return 1;
         }
 

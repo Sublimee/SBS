@@ -59,6 +59,8 @@ public class SimpleTreeTest {
 
         Assertions.assertEquals(2, nodes.size());
         Assertions.assertEquals(simpleTree.Count(), nodes.size());
+
+        Assertions.assertEquals(1, simpleTree.LeafCount());
     }
 
     @Test
