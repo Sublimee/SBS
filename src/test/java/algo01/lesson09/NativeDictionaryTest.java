@@ -1,4 +1,4 @@
-package lesson09;
+package algo01.lesson09;
 
 import org.example.algo01.lesson09.NativeDictionary;
 import org.junit.jupiter.api.Assertions;

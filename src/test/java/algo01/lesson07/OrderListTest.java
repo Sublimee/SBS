@@ -1,4 +1,4 @@
-package lesson07;
+package algo01.lesson07;
 
 import org.example.algo01.lesson07.Node;
 import org.example.algo01.lesson07.OrderedList;

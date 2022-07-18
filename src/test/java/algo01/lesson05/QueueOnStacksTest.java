@@ -1,4 +1,4 @@
-package lesson05;
+package algo01.lesson05;
 
 import org.example.algo01.lesson05.QueueOnStacks;
 import org.junit.jupiter.api.Assertions;

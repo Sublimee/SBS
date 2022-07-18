@@ -1,4 +1,4 @@
-package lesson03;
+package algo01.lesson03;
 
 import org.example.algo01.lesson03.DynArray;
 import org.junit.jupiter.api.Assertions;

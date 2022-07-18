@@ -1,4 +1,4 @@
-package lesson06;
+package algo01.lesson06;
 
 import org.example.algo01.lesson06.PalindromeChecker;
 import org.junit.jupiter.api.Assertions;

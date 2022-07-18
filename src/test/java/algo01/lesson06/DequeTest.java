@@ -1,4 +1,4 @@
-package lesson06;
+package algo01.lesson06;
 
 import org.example.algo01.lesson06.Deque;
 import org.junit.jupiter.api.Assertions;

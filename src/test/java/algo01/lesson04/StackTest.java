@@ -1,4 +1,4 @@
-package lesson04;
+package algo01.lesson04;
 
 import org.example.algo01.lesson04.Stack;
 import org.junit.jupiter.api.Assertions;

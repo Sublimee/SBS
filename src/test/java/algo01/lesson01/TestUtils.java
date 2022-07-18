@@ -1,4 +1,4 @@
-package lesson01;
+package algo01.lesson01;
 
 import org.example.algo01.lesson01.LinkedList;
 import org.example.algo01.lesson01.Node;
