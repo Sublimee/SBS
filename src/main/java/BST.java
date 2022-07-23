@@ -1,5 +1,5 @@
-import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 class BSTNode<T> {
     public int NodeKey; // ключ узла
@@ -195,5 +195,66 @@ class BST<T> {
         }
 
         return 1 + Count(node.LeftChild) + Count(node.RightChild);
+    }
+
+    ArrayList<BSTNode> WideAllNodes() {
+        List<List<BSTNode>> nodesByLevel = new ArrayList<>();
+
+        WideAllNodes(nodesByLevel, 0, Root);
+
+        return nodesByLevel.stream()
+                .filter(Objects::nonNull)
+                .flatMap(List::stream)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    void WideAllNodes(List<List<BSTNode>> nodesByLevel, int level, BSTNode node) {
+        if (node == null) {
+            return;
+        }
+
+        addWideNode(nodesByLevel, level, node);
+
+        WideAllNodes(nodesByLevel, level + 1, node.LeftChild);
+        WideAllNodes(nodesByLevel, level + 1, node.RightChild);
+    }
+
+    private void addWideNode(List<List<BSTNode>> nodesByLevel, int level, BSTNode node) {
+        if (level >= nodesByLevel.size()) {
+            List<BSTNode> newLevelNodes = new ArrayList<>();
+            newLevelNodes.add(node);
+            nodesByLevel.add(level, newLevelNodes);
+        } else {
+            List<BSTNode> levelNodes = nodesByLevel.get(level);
+            levelNodes.add(node);
+        }
+    }
+
+    public ArrayList<BSTNode> DeepAllNodes(int mode) {
+        ArrayList<BSTNode> nodes = new ArrayList<>();
+        DeepAllNodes(nodes, this.Root, mode);
+        return nodes;
+    }
+
+    private void DeepAllNodes(List<BSTNode> nodes, BSTNode node, int mode) {
+        if (node == null) {
+            return;
+        }
+
+        if (mode == 2) {
+            nodes.add(node);
+        }
+
+        DeepAllNodes(nodes, node.LeftChild, mode);
+
+        if (mode == 0) {
+            nodes.add(node);
+        }
+
+        DeepAllNodes(nodes, node.RightChild, mode);
+
+        if (mode == 1) {
+            nodes.add(node);
+        }
     }
 }
