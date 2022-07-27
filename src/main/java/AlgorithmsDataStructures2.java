@@ -17,7 +17,7 @@ public class AlgorithmsDataStructures2 {
         return result;
     }
 
-    public static void GenerateBBSTArray(int[] a, int i, int[] result) {
+    private static void GenerateBBSTArray(int[] a, int i, int[] result) {
         int aLength = a.length;
         int middle = aLength / 2;
 
