@@ -1,3 +1,5 @@
+package org.example.algo02;
+
 class aBST {
 
     public Integer Tree[]; // массив ключей

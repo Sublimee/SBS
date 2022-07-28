@@ -1,3 +1,5 @@
+package org.example.algo02;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

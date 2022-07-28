@@ -1,3 +1,5 @@
+package org.example.algo02;
+
 import java.util.*;
 
 public class SimpleTreeNode<T> {
