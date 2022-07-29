@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 class BSTNode {
     public int NodeKey; // ключ узла
@@ -36,9 +37,9 @@ class BalancedBST {
         if (aLength == 0) {
             return;
         }
-        int middle = aLength / 2;
+        int middleIndex = aLength / 2;
 
-        BSTNode nextParent = new BSTNode(a[middle], parent);
+        BSTNode nextParent = new BSTNode(a[middleIndex], parent);
         nextParent.Level = level;
 
         if (parent == null) {
@@ -49,8 +50,8 @@ class BalancedBST {
             parent.RightChild = nextParent;
         }
 
-        GenerateTree(Arrays.copyOfRange(a, 0, middle), nextParent, level + 1, true);
-        GenerateTree(Arrays.copyOfRange(a, middle + 1, aLength), nextParent, level + 1, false);
+        GenerateTree(Arrays.copyOfRange(a, 0, middleIndex), nextParent, level + 1, true);
+        GenerateTree(Arrays.copyOfRange(a, middleIndex + 1, aLength), nextParent, level + 1, false);
     }
 
     public boolean IsBalanced(BSTNode root_node) {
@@ -76,5 +77,38 @@ class BalancedBST {
         }
 
         return 1 + diff;
+    }
+
+    ArrayList<Integer> WideAllNodes() {
+        List<List<Integer>> nodesByLevel = new ArrayList<>();
+
+        WideAllNodes(nodesByLevel, 0, Root);
+
+        return nodesByLevel.stream()
+                .filter(Objects::nonNull)
+                .flatMap(List::stream)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    void WideAllNodes(List<List<Integer>> nodesByLevel, int level, BSTNode node) {
+        if (node == null) {
+            return;
+        }
+
+        addWideNode(nodesByLevel, level, node);
+
+        WideAllNodes(nodesByLevel, level + 1, node.LeftChild);
+        WideAllNodes(nodesByLevel, level + 1, node.RightChild);
+    }
+
+    private void addWideNode(List<List<Integer>> nodesByLevel, int level, BSTNode node) {
+        if (level >= nodesByLevel.size()) {
+            List<Integer> newLevelNodes = new ArrayList<>();
+            newLevelNodes.add(node.NodeKey);
+            nodesByLevel.add(level, newLevelNodes);
+        } else {
+            List<Integer> levelNodes = nodesByLevel.get(level);
+            levelNodes.add(node.NodeKey);
+        }
     }
 }
