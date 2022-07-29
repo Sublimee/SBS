@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 class BSTNode {
     public int NodeKey; // ключ узла
@@ -76,39 +75,6 @@ class BalancedBST {
             throw new RuntimeException();
         }
 
-        return 1 + diff;
-    }
-
-    public ArrayList<Integer> WideAllNodes() {
-        List<List<Integer>> nodesByLevel = new ArrayList<>();
-
-        WideAllNodes(nodesByLevel, 0, Root);
-
-        return nodesByLevel.stream()
-                .filter(Objects::nonNull)
-                .flatMap(List::stream)
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    private void WideAllNodes(List<List<Integer>> nodesByLevel, int level, BSTNode node) {
-        if (node == null) {
-            return;
-        }
-
-        addWideNode(nodesByLevel, level, node);
-
-        WideAllNodes(nodesByLevel, level + 1, node.LeftChild);
-        WideAllNodes(nodesByLevel, level + 1, node.RightChild);
-    }
-
-    private void addWideNode(List<List<Integer>> nodesByLevel, int level, BSTNode node) {
-        if (level >= nodesByLevel.size()) {
-            List<Integer> newLevelNodes = new ArrayList<>();
-            newLevelNodes.add(node.NodeKey);
-            nodesByLevel.add(level, newLevelNodes);
-        } else {
-            List<Integer> levelNodes = nodesByLevel.get(level);
-            levelNodes.add(node.NodeKey);
-        }
+        return 1 + Math.max(leftLevel, rightLevel);
     }
 }
