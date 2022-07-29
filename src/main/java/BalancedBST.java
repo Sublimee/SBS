@@ -79,7 +79,7 @@ class BalancedBST {
         return 1 + diff;
     }
 
-    ArrayList<Integer> WideAllNodes() {
+    public ArrayList<Integer> WideAllNodes() {
         List<List<Integer>> nodesByLevel = new ArrayList<>();
 
         WideAllNodes(nodesByLevel, 0, Root);
@@ -90,7 +90,7 @@ class BalancedBST {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    void WideAllNodes(List<List<Integer>> nodesByLevel, int level, BSTNode node) {
+    private void WideAllNodes(List<List<Integer>> nodesByLevel, int level, BSTNode node) {
         if (node == null) {
             return;
         }
