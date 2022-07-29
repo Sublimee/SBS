@@ -62,7 +62,7 @@ class BalancedBST {
         }
     }
 
-    public int getLevel(BSTNode node) {
+    private int getLevel(BSTNode node) {
         if (node == null) {
             return 0;
         }
