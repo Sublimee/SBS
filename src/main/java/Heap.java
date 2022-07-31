@@ -30,14 +30,14 @@ class Heap {
         }
 
         int head = HeapArray[0];
-        if (head == -1) {
+        int lastFilledIndex = getLastFilledIndex();
+
+        if (lastFilledIndex == -1) {
             return -1;
         }
 
-        int lastFilledIndex = getLastFilledIndex();
-
         if (lastFilledIndex == 0) {
-            HeapArray[0] = -1;
+            HeapArray[lastFilledIndex] = -1;
             return head;
         }
 
@@ -45,40 +45,35 @@ class Heap {
         HeapArray[lastFilledIndex] = -1;
 
         int elementIndex = 0;
-        int leftIndex = elementIndex * 2 + 1;
-        int rightIndex = elementIndex * 2 + 2;
+        int leftIndex = 1;
+        int rightIndex = 2;
 
-        int element = HeapArray[0];
-        int left = HeapArray[leftIndex];
-        int right = HeapArray[rightIndex];
-
-        while (element < left || element < right) {
-            if (left > right && left > element) {
-                int temp = HeapArray[elementIndex];
-                HeapArray[elementIndex] = left;
-                HeapArray[leftIndex] = temp;
+        while (HeapArray[elementIndex] < HeapArray[leftIndex] || HeapArray[elementIndex] < HeapArray[rightIndex]) {
+            if (HeapArray[leftIndex] > HeapArray[rightIndex]) {
+                swap(elementIndex, leftIndex);
 
                 elementIndex = leftIndex;
-                leftIndex = elementIndex * 2 + 1;
-                rightIndex = elementIndex * 2 + 2;
-            } else if (right > left && right > element) {
-                int temp = HeapArray[elementIndex];
-                HeapArray[elementIndex] = right;
-                HeapArray[rightIndex] = temp;
+            } else {
+                swap(elementIndex, rightIndex);
 
                 elementIndex = rightIndex;
-                leftIndex = elementIndex * 2 + 1;
-                rightIndex = elementIndex * 2 + 2;
             }
 
-            if (leftIndex > HeapArray.length || rightIndex > HeapArray.length) {
+            leftIndex = elementIndex * 2 + 1;
+            rightIndex = elementIndex * 2 + 2;
+
+            if (rightIndex >= HeapArray.length) {
                 return head;
             }
-            left = HeapArray[leftIndex];
-            right = HeapArray[rightIndex];
         }
 
         return head;
+    }
+
+    private void swap(int index, int otherIndex) {
+        int temp = HeapArray[index];
+        HeapArray[index] = HeapArray[otherIndex];
+        HeapArray[otherIndex] = temp;
     }
 
     private int getLastFilledIndex() {
@@ -89,8 +84,11 @@ class Heap {
     }
 
     public boolean Add(int key) {
-        int vacantIndex = getVacantIndex();
+        if (key < 0) {
+            return false;
+        }
 
+        int vacantIndex = getVacantIndex();
         if (vacantIndex == -1) {
             return false;
         }
