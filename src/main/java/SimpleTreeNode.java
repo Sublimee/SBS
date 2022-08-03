@@ -1,5 +1,3 @@
-package org.example.algo02;
-
 import java.util.*;
 
 public class SimpleTreeNode<T> {
@@ -94,7 +92,7 @@ class SimpleTree<T> {
         return Count(Root);
     }
 
-    private int Count(SimpleTreeNode<T> node) {
+    public int Count(SimpleTreeNode<T> node) {
         // количество всех узлов в дереве
         if (node == null) {
             return 0;
@@ -139,7 +137,7 @@ class SimpleTree<T> {
         SetLevel(Root, 0);
     }
 
-    public void SetLevel(SimpleTreeNode<T> node, int level) {
+    private void SetLevel(SimpleTreeNode<T> node, int level) {
         if (node == null) {
             return;
         }
@@ -152,6 +150,75 @@ class SimpleTree<T> {
 
         for (SimpleTreeNode<T> child : node.Children) {
             SetLevel(child, level + 1);
+        }
+    }
+
+    public ArrayList<T> EvenTrees() {
+        ArrayList<T> result = new ArrayList<>();
+        EvenTrees(Root, result);
+        return result;
+    }
+
+    public void EvenTrees(SimpleTreeNode<T> root, ArrayList<T> result) {
+        SimpleTreeNode<T> deepestNode = getDeepestNode(root);
+        SimpleTreeNode<T> deepestNodeParent = deepestNode.Parent;
+
+        int nodeCount = Count(deepestNodeParent);
+        while (nodeCount % 2 != 0) {
+            deepestNode = deepestNode.Parent;
+            deepestNodeParent = deepestNodeParent.Parent;
+            nodeCount = Count(deepestNodeParent);
+        }
+
+        if (deepestNodeParent != root) {
+            result.add(deepestNodeParent.Parent.NodeValue);
+            result.add(deepestNodeParent.NodeValue);
+            DeleteNode(deepestNodeParent);
+            EvenTrees(root, result);
+            return;
+        }
+
+        if (root.Children.size() + 1 == Count(root)) {
+            return;
+        }
+        if (root.Children.size() == 1) {
+            return;
+        }
+
+        root.Children.remove(deepestNode);
+        for (SimpleTreeNode<T> child : root.Children) {
+            result.add(root.NodeValue);
+            result.add(child.NodeValue);
+        }
+        for (SimpleTreeNode<T> child : root.Children) {
+            child.Parent = null;
+            EvenTrees(child, result);
+        }
+    }
+
+    public SimpleTreeNode<T> getDeepestNode(SimpleTreeNode<T> node) {
+        SimpleTreeNode[] deepestNode = new SimpleTreeNode[1];
+        getDeepestNode(node, 0, deepestNode);
+        return deepestNode[0];
+    }
+
+    private void getDeepestNode(SimpleTreeNode<T> node, int level, SimpleTreeNode<T>[] deepestNode) {
+        if (node == null) {
+            return;
+        }
+
+        node.level = level;
+
+        if (deepestNode[0] == null) {
+            deepestNode[0] = node;
+        } else if (deepestNode[0].level < node.level) {
+            deepestNode[0] = node;
+        }
+
+        if (node.Children != null) {
+            for (SimpleTreeNode<T> child : node.Children) {
+                getDeepestNode(child, level + 1, deepestNode);
+            }
         }
     }
 }
