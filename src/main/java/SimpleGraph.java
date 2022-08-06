@@ -237,6 +237,77 @@ class SimpleGraph {
                     x.Hit = false;
                 });
     }
+
+    public ArrayList<Vertex> WeakVertices() {
+        ArrayList<Vertex> result = new ArrayList<>();
+
+        IntStream.range(0, max_vertex).forEach(
+                i -> {
+                    init();
+                    vertex[i].Hit = true;
+                    stack.push(vertex[i]);
+                    getPath(i, i, 0);
+                    if (stack.isEmpty()) {
+                        result.add(vertex[i]);
+                    }
+                }
+        );
+
+        return result;
+    }
+
+    private void getPath(int goal, int current, int level) {
+        Integer nextVertex = getAdjacentVertex(goal, current, level);
+        if (nextVertex != null) {
+            stack.push(vertex[nextVertex]);
+            vertex[nextVertex].Hit = true;
+        }
+
+        if (nextVertex != null && nextVertex == goal) {
+            return;
+        }
+
+        if (nextVertex != null) {
+            getPath(goal, nextVertex, level + 1);
+            return;
+        }
+
+        stack.pop();
+        if (stack.isEmpty()) {
+            return;
+        }
+
+        getPath(
+                goal,
+                IntStream.range(0, max_vertex)
+                        .boxed()
+                        .filter(i -> vertex[i].equals(stack.getFirst()))
+                        .findFirst()
+                        .orElse(null),
+                level - 1
+        );
+    }
+
+    private Integer getAdjacentVertex(int goal, int current, int level) {
+        List<Integer> adjacentVertexes = IntStream.range(0, max_vertex)
+                .boxed()
+                .filter(i -> m_adjacency[i][current] == 1)
+                .collect(Collectors.toList());
+
+        if (level == 2) {
+            return adjacentVertexes
+                    .stream()
+                    .filter(adjacent -> vertex[adjacent].equals(vertex[goal]))
+                    .findFirst().orElse(null);
+        }
+        if (level < 2) {
+            return adjacentVertexes.stream()
+                    .filter(i -> !vertex[i].Hit)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
+    }
 }
 
 class Pair {
