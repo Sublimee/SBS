@@ -5,6 +5,7 @@ import java.util.stream.IntStream;
 class Vertex {
     public int Value;
     public boolean Hit;
+    public Vertex parent;
 
     public Vertex(int val) {
         Value = val;
@@ -16,6 +17,9 @@ class SimpleGraph {
     Vertex[] vertex;
     int[][] m_adjacency;
     int max_vertex;
+
+    private Queue<Vertex> queue = new LinkedList<>();
+    private Deque<Vertex> stack = new LinkedList<>();
 
     public SimpleGraph(int size) {
         max_vertex = size;
@@ -83,8 +87,6 @@ class SimpleGraph {
         }
     }
 
-    Deque<Vertex> stack = new LinkedList<>();
-
     public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo) {
         init();
 
@@ -122,7 +124,7 @@ class SimpleGraph {
         if (stack.isEmpty()) {
             return;
         }
-        
+
         find(IntStream.range(0, max_vertex)
                         .boxed()
                         .filter(i -> vertex[i].equals(stack.getFirst()))
@@ -161,11 +163,79 @@ class SimpleGraph {
         return vFrom < vertex.length && vTo < vertex.length;
     }
 
+
+    public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo) {
+        init();
+
+        if (!areIndexesValid(VFrom, VTo)) {
+            return new ArrayList<>(queue);
+        }
+
+        if (vertex[VFrom] == null || vertex[VTo] == null) {
+            return new ArrayList<>(queue);
+        }
+
+        vertex[VFrom].Hit = true;
+        queue.add(vertex[VFrom]);
+
+        if (VFrom == VTo) {
+            return new ArrayList<>(queue);
+        }
+
+        while (queue.size() != 0) {
+            Vertex current = queue.poll();
+
+            List<Integer> notVisitedAdjacentVertexes = getNotVisitedAdjacentVertexes(current);
+            for (Integer v : notVisitedAdjacentVertexes) {
+                Vertex childVertex = vertex[v];
+                childVertex.Hit = true;
+                childVertex.parent = current;
+                queue.add(childVertex);
+                if (childVertex.equals(vertex[VTo])) {
+                    ArrayList<Vertex> next = new ArrayList<>();
+                    getPath(next, childVertex);
+                    Collections.reverse(next);
+                    return next;
+                }
+            }
+        }
+
+        return new ArrayList<>(queue);
+    }
+
+    private int getIndex(Vertex current) {
+        return IntStream.range(0, max_vertex)
+                .filter(i -> current.equals(vertex[i]))
+                .findFirst()
+                .orElse(-1);
+    }
+
+    private void getPath(ArrayList<Vertex> result, Vertex foundVertex) {
+        if (foundVertex == null) {
+            return;
+        }
+        result.add(foundVertex);
+        getPath(result, foundVertex.parent);
+    }
+
+    private List<Integer> getNotVisitedAdjacentVertexes(Vertex v) {
+        int vertexPosition = getIndex(v);
+        return IntStream.range(0, max_vertex)
+                .boxed()
+                .filter(i -> m_adjacency[i][vertexPosition] == 1)
+                .filter(i -> !vertex[i].Hit)
+                .collect(Collectors.toList());
+    }
+
     private void init() {
+        queue = new LinkedList<>();
         stack = new ArrayDeque<>();
         Arrays.stream(vertex)
                 .filter(Objects::nonNull)
-                .forEach(x -> x.Hit = false);
+                .forEach(x -> {
+                    x.parent = null;
+                    x.Hit = false;
+                });
     }
 }
 
