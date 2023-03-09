@@ -1,13 +1,16 @@
+// 17.1
 let rec pow = function
   | (s, 0) -> ""
   | (s, 1) -> s
   | (s, n) -> s + pow(s, n - 1)
 
+// 17.2
 let rec isIthChar(s, n, c) = (string s).[n] = c
 
+// 17.3
 let boolToInt = function
-    | true -> 1
-    | false -> 0
+  | true -> 1
+  | false -> 0
 
 let rec occFromIth = function
   | ("", 0, c) -> 0
