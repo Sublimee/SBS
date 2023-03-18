@@ -14,8 +14,8 @@ let (.+.) x y =
 
 let (.-.) x y =
     let (g1, s1, c1) = x
-    let (g2, s2,c2) = y
-    format (g1 - g2, s1 - s2, c1 - c1)
+    let (g2, s2, c2) = y
+    format (g1 - g2, s1 - s2, c1 - c2)
 
 // 23.4.2
 let (.+) x y =
