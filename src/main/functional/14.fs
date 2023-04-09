@@ -41,11 +41,18 @@ let rec minus (xs1, xs2) =
     | head1 :: tail1, head2 :: tail2 when head1 = head2 -> minus(tail1, tail2)
     | head1 :: tail1, head2 :: tail2 when head1 > head2 -> minus(xs1, tail2)
 
-let rec smallest (xs : int list) =
+let rec smallest = fun (xs : int list) ->
+  match xs with
+    | [] -> None
+    | head :: [] -> Some(head)
+    | head1 :: (head2 :: tail) when head1 >= head2 -> smallest(head2 :: tail)
+    | head1 :: (head2 :: tail) -> smallest(head1 :: tail)
+    
+let rec smallest2 (xs : int list) =
   match xs with
     | [] -> None
     | [x] -> Some x
-    | candidate :: tail -> let last_smallest = Option.get(smallest tail)
+    | candidate :: tail -> let last_smallest = Option.get(smallest2 tail)
                            if (candidate < last_smallest) then Some(candidate) else Some(last_smallest)
 
 let rec delete (n, xs) =
