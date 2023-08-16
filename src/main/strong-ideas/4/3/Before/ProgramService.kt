@@ -59,16 +59,9 @@ class ProgramService(
     ): List<ProgramWidget> {
         val availableProgramsPeriods = promotedCashbackAvailabilityService.getAvailableProgramsPeriods(headers)
 
-        var availableProgramIds: Set<Int> = emptySet()
-        if (promotedCashbackAvailability.userPromotedCashbackProgramsByBonusAccountTypes != null) {
-            availableProgramIds = promotedCashbackAvailability.userPromotedCashbackProgramsByBonusAccountTypes
-                .filter { "${it.key}" == bonusAccountType }
-                .flatMap { it.value }.toSet()
-        } else if (promotedCashbackAvailability.userCardsTerms != null) {
-            availableProgramIds = promotedCashbackAvailability.userCardsTerms
+        var availableProgramIds: Set<Int> = promotedCashbackAvailability.userCardsTerms
                 .filter { it.bonusAccountTypeId == bonusAccountType }
                 .flatMap { it.promotedCashbackProgramIds }.toSet()
-        }
 
         return availableProgramsPeriods
             .filter { programPeriod -> availableProgramIds.contains(programPeriod.programId) }
