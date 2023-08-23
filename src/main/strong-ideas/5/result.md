@@ -1,5 +1,5 @@
-В примерах 1 [PromotedCashbackAvailabilityService.kt](1%2FPromotedCashbackAvailabilityService.kt) и 2 [ConfirmationService.kt](2%2FConfirmationService.kt) даны комментарии, которые вытекают из особенностей эксплуатации программы.
-В примере 3 [CardsSectionService.kt](3%2FCardsSectionService.kt) приведено общее описание метода и причина, по которой был реализован алгоритм.
+В примерах [1](1%2FPromotedCashbackAvailabilityService.kt) и [2](2%2FConfirmationService.kt) даны комментарии, которые вытекают из особенностей эксплуатации программы.
+В примере [3](3%2FCardsSectionService.kt) приведено общее описание метода и причина, по которой был реализован алгоритм.
 
 Подводя итог, хочется сказать, что комментарий должен отражать не то, что есть в коде, а то, чего в нем нет. Чистый код позволяет быстро и правильно считать алгоритм, но не более. 
 
