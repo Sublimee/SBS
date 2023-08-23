@@ -1,5 +1,3 @@
-package some.company.mobile.loyalty.promoted.cashback.service
-
 import some.company.mobile.contract.header.Headers
 import some.company.mobile.entity.operation.OperationStatus
 import some.company.mobile.loyalty.promoted.cashback.service.audit.AuditService
