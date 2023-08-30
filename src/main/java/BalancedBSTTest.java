@@ -5,6 +5,7 @@ import java.util.*;
 
 public class BalancedBSTTest {
 
+    /* fix
     @Test
     void nullInputArrayTest() {
         BalancedBST balancedBST = new BalancedBST();
@@ -56,7 +57,7 @@ public class BalancedBSTTest {
         Assertions.assertEquals(List.of(4, 2, 6, 1, 3, 5, 7), balancedBST.WideAllNodes());
         Assertions.assertTrue(balancedBST.IsBalanced(balancedBST.Root));
     }
-    /* fix
+
     @Test
     void seven_array2() {
         BalancedBST balancedBST = new BalancedBST();

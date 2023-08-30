@@ -2,7 +2,7 @@ package strong.ideas.lesson_6.task_1;
 
 import java.util.Objects;
 
-class Range {
+public class Range {
     int indexFrom;
     int indexTo;
 
