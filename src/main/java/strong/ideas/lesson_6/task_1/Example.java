@@ -23,8 +23,11 @@ public class Example {
             if (array[i] > array[i - 1]) {
                 currentDirection = true;
             }
+            if (array[i] < array[i - 1]) {
+                currentDirection = false;
+            }
 
-            if (currentDirection != subSequenceDirection && Boolean.TRUE.equals(currentDirection)) {
+            if (currentDirection != subSequenceDirection) {
                 subSequenceIndexFrom = i - 1;
                 subSequenceIndexTo = i;
                 subSequenceDirection = currentDirection;

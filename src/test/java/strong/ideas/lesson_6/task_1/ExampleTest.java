@@ -29,4 +29,10 @@ public class ExampleTest {
         Assertions.assertEquals(new Range(1, 3), processArray(example));
     }
 
+    @Test
+    @DisplayName("должен вернуть строго убывающую последовательность в массиве из двух элементов")
+    void processArray4Test() {
+        int[] example = new int[]{2, 1};
+        Assertions.assertEquals(new Range(0, 1), processArray(example));
+    }
 }
