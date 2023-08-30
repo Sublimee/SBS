@@ -25,8 +25,11 @@ public class Example {
             }
 
             if (currentDirection != subSequenceDirection && currentDirection == true) {
-                subSequenceIndexFrom = array[i - 1];
-                subSequenceIndexTo = array[i];
+                subSequenceIndexFrom = i - 1;
+                subSequenceIndexTo = i;
+                subSequenceDirection = currentDirection;
+            } else if (currentDirection == subSequenceDirection) {
+                subSequenceIndexTo = i;
             }
 
             if ((subSequenceIndexTo - subSequenceIndexFrom) > (indexTo - indexFrom)) {
