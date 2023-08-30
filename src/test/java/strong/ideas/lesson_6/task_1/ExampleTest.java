@@ -42,4 +42,11 @@ public class ExampleTest {
         int[] example = new int[]{3, 2, 1};
         Assertions.assertEquals(new Range(0, 2), processArray(example));
     }
+
+    @Test
+    @DisplayName("должен вернуть строго убывающую последовательность, которая обрамлена значениями, не входящими в другие последовательности")
+    void processArray6Test() {
+        int[] example = new int[]{3, 3, 2, 1, 1};
+        Assertions.assertEquals(new Range(1, 3), processArray(example));
+    }
 }
