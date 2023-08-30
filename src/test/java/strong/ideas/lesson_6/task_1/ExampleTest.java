@@ -49,4 +49,11 @@ public class ExampleTest {
         int[] example = new int[]{3, 3, 2, 1, 1};
         Assertions.assertEquals(new Range(1, 3), processArray(example));
     }
+
+    @Test
+    @DisplayName("должен отдавать первую из наиболее длинных строго возрастающих последовательностей")
+    void processArray7Test() {
+        int[] example = new int[]{1, 1, 2, 3, 3, 7, 7, 8, 9, 9};
+        Assertions.assertEquals(new Range(1, 3), processArray(example));
+    }
 }
