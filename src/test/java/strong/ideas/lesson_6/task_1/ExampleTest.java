@@ -9,8 +9,8 @@ public class ExampleTest {
 
     @Test
     void processArrayTest() {
-        int[] example = new int[]{1, 2, 3};
-        Assertions.assertNull(processArray(example));
+        int[] example = new int[]{1, 2};
+        Assertions.assertEquals(new Range(1, 2), processArray(example));
     }
 
 }
