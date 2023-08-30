@@ -24,11 +24,11 @@ public class Example {
                 currentDirection = true;
             }
 
-            if (currentDirection != subSequenceDirection && currentDirection == true) {
+            if (currentDirection != subSequenceDirection && Boolean.TRUE.equals(currentDirection)) {
                 subSequenceIndexFrom = i - 1;
                 subSequenceIndexTo = i;
                 subSequenceDirection = currentDirection;
-            } else if (currentDirection == subSequenceDirection) {
+            } else if (currentDirection == subSequenceDirection && currentDirection != null) {
                 subSequenceIndexTo = i;
             }
 
