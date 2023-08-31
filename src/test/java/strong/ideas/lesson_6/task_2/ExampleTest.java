@@ -23,4 +23,12 @@ public class ExampleTest {
         int[] arg2 = new int[]{2};
         Assertions.assertArrayEquals(new int[]{9}, summarize(arg1, arg2));
     }
+
+    @Test
+    @DisplayName("должен сложить двухразрядные числа без переноса")
+    void summarizeArrays3Test() {
+        int[] arg1 = new int[]{7, 1};
+        int[] arg2 = new int[]{2, 3};
+        Assertions.assertArrayEquals(new int[]{9, 4}, summarize(arg1, arg2));
+    }
 }
