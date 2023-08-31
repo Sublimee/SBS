@@ -63,4 +63,12 @@ public class ExampleTest {
         int[] arg2 = new int[]{9, 9};
         Assertions.assertArrayEquals(new int[]{1, 9, 8}, summarize(arg1, arg2));
     }
+
+    @Test
+    @DisplayName("должен сложить два числа с отличающимся количеством разрядов с переносами через несколько позиций")
+    void summarizeArrays8Test() {
+        int[] arg2 = new int[]{9, 9, 9, 9};
+        int[] arg1 = new int[]{9, 9};
+        Assertions.assertArrayEquals(new int[]{1, 0, 0, 9, 8}, summarize(arg1, arg2));
+    }
 }
