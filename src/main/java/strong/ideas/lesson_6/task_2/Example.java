@@ -9,20 +9,24 @@ package strong.ideas.lesson_6.task_2;
 public class Example {
 
     public static int[] summarize(int[] arg1, int[] arg2) {
-        int[] result = new int[arg1.length];
+        int[] result = new int[arg1.length + 1];
 
         int carry = 0;
         for (int i = 0; i < arg1.length; i++) {
-            int resultIndex = arg1.length - 1 - i;
-            int secondArgumentIndex = arg2.length - 1 - i;
+            int arg1Index = arg1.length - 1 - i;
+            int arg2Index = arg2.length - 1 - i;
+            int resultIndex = result.length - 1 - i;
 
-            if (secondArgumentIndex >= 0) {
-                int digitsSum = arg1[resultIndex] + arg2[secondArgumentIndex] + carry;
-                carry = digitsSum / 10;
-                result[resultIndex] = digitsSum % 10;
-            } else {
-                result[resultIndex] = arg1[resultIndex] + carry;
+            int digitsSum = arg1[arg1Index] + carry;
+            if (arg2Index >= 0) {
+                digitsSum = digitsSum + arg2[arg2Index];
             }
+            carry = digitsSum / 10;
+            result[resultIndex] = digitsSum % 10;
+        }
+
+        if (carry != 0) {
+            result[0] = result[0] + carry;
         }
 
         return result;

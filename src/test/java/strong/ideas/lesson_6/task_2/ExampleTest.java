@@ -13,7 +13,7 @@ public class ExampleTest {
     void summarizeArrays1Test() {
         int[] arg1 = new int[]{1};
         int[] arg2 = new int[]{0};
-        Assertions.assertArrayEquals(new int[]{1}, summarize(arg1, arg2));
+        Assertions.assertArrayEquals(new int[]{0, 1}, summarize(arg1, arg2));
     }
 
     @Test
@@ -21,7 +21,7 @@ public class ExampleTest {
     void summarizeArrays2Test() {
         int[] arg1 = new int[]{7};
         int[] arg2 = new int[]{2};
-        Assertions.assertArrayEquals(new int[]{9}, summarize(arg1, arg2));
+        Assertions.assertArrayEquals(new int[]{0, 9}, summarize(arg1, arg2));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class ExampleTest {
     void summarizeArrays3Test() {
         int[] arg1 = new int[]{7, 1};
         int[] arg2 = new int[]{2, 3};
-        Assertions.assertArrayEquals(new int[]{9, 4}, summarize(arg1, arg2));
+        Assertions.assertArrayEquals(new int[]{0, 9, 4}, summarize(arg1, arg2));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class ExampleTest {
     void summarizeArrays4Test() {
         int[] arg1 = new int[]{1, 2};
         int[] arg2 = new int[]{3};
-        Assertions.assertArrayEquals(new int[]{1, 5}, summarize(arg1, arg2));
+        Assertions.assertArrayEquals(new int[]{0, 1, 5}, summarize(arg1, arg2));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ExampleTest {
     void summarizeArrays5Test() {
         int[] arg1 = new int[]{1, 2};
         int[] arg2 = new int[]{9};
-        Assertions.assertArrayEquals(new int[]{2, 1}, summarize(arg1, arg2));
+        Assertions.assertArrayEquals(new int[]{0, 2, 1}, summarize(arg1, arg2));
     }
 
     @Test
@@ -53,6 +53,14 @@ public class ExampleTest {
     void summarizeArrays6Test() {
         int[] arg1 = new int[]{1, 9};
         int[] arg2 = new int[]{1, 8};
-        Assertions.assertArrayEquals(new int[]{3, 7}, summarize(arg1, arg2));
+        Assertions.assertArrayEquals(new int[]{0, 3, 7}, summarize(arg1, arg2));
+    }
+
+    @Test
+    @DisplayName("должен сложить двухразрядное число с двухразрядным c двумя переносами")
+    void summarizeArrays7Test() {
+        int[] arg1 = new int[]{9, 9};
+        int[] arg2 = new int[]{9, 9};
+        Assertions.assertArrayEquals(new int[]{1, 9, 8}, summarize(arg1, arg2));
     }
 }
