@@ -12,7 +12,8 @@ public class Example {
         int[] result = new int[arg1.length];
 
         for (int i = 0; i < arg1.length; i++) {
-            result[i] = arg1[i] + arg2[i];
+            int resultIndex = arg1.length - 1 - i;
+            result[resultIndex] = arg1[resultIndex] + arg2[resultIndex];
         }
 
         return result;
