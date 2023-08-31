@@ -11,7 +11,7 @@ public class Example {
     public static int[] summarize(int[] arg1, int[] arg2) {
         int[] result = new int[arg1.length];
 
-        for (int i = arg1.length - 1; i >= 0; i--) {
+        for (int i = 0; i < arg1.length; i++) {
             result[i] = arg1[i] + arg2[i];
         }
 
