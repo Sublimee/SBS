@@ -13,7 +13,13 @@ public class Example {
 
         for (int i = 0; i < arg1.length; i++) {
             int resultIndex = arg1.length - 1 - i;
-            result[resultIndex] = arg1[resultIndex] + arg2[resultIndex];
+            int secondArgumentIndex = arg2.length - 1 - i;
+
+            if (secondArgumentIndex >= 0) {
+                result[resultIndex] = arg1[resultIndex] + arg2[secondArgumentIndex];
+            } else {
+                result[resultIndex] = arg1[resultIndex];
+            }
         }
 
         return result;
