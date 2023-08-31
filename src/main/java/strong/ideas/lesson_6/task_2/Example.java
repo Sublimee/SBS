@@ -11,14 +11,17 @@ public class Example {
     public static int[] summarize(int[] arg1, int[] arg2) {
         int[] result = new int[arg1.length];
 
+        int carry = 0;
         for (int i = 0; i < arg1.length; i++) {
             int resultIndex = arg1.length - 1 - i;
             int secondArgumentIndex = arg2.length - 1 - i;
 
             if (secondArgumentIndex >= 0) {
-                result[resultIndex] = arg1[resultIndex] + arg2[secondArgumentIndex];
+                int digitsSum = arg1[resultIndex] + arg2[secondArgumentIndex] + carry;
+                carry = digitsSum / 10;
+                result[resultIndex] = digitsSum % 10;
             } else {
-                result[resultIndex] = arg1[resultIndex];
+                result[resultIndex] = arg1[resultIndex] + carry;
             }
         }
 
