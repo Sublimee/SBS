@@ -9,6 +9,12 @@ package strong.ideas.lesson_6.task_2;
 public class Example {
 
     public static int[] summarize(int[] arg1, int[] arg2) {
-        return null;
+        int[] result = new int[arg1.length];
+
+        for (int i = arg1.length - 1; i >= 0; i--) {
+            result[i] = arg1[i] + arg2[i];
+        }
+
+        return result;
     }
 }
