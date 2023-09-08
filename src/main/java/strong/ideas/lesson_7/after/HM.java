@@ -21,7 +21,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class HM<K, V> extends AM<K, V> implements Map<K, V>, Cloneable, Serializable {
+public class HM<K, V> extends AM<K, V> implements Map<K, V>, Cloneable, Serializable, MyMap {
 
     static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
     static final int MAXIMUM_CAPACITY = 1 << 30;
@@ -435,20 +435,6 @@ public class HM<K, V> extends AM<K, V> implements Map<K, V>, Cloneable, Serializ
             for (Node<K, V> e : tab) {
                 for (; e != null; e = e.next) {
                     r[idx++] = e.key;
-                }
-            }
-        }
-        return a;
-    }
-
-    <T> T[] valuesToArray(T[] a) {
-        Object[] r = a;
-        Node<K, V>[] tab;
-        int idx = 0;
-        if (size > 0 && (tab = table) != null) {
-            for (Node<K, V> e : tab) {
-                for (; e != null; e = e.next) {
-                    r[idx++] = e.value;
                 }
             }
         }
@@ -894,6 +880,11 @@ public class HM<K, V> extends AM<K, V> implements Map<K, V>, Cloneable, Serializ
                 }
             }
         }
+    }
+
+    @Override
+    public <T> T[] valuesToArray(Visitor visitor, T[] a) {
+        return visitor.visitHM(this, a);
     }
 
     static class Node<K, V> implements Entry<K, V> {
@@ -1787,12 +1778,12 @@ public class HM<K, V> extends AM<K, V> implements Map<K, V>, Cloneable, Serializ
             return new ValueSpliterator<>(HM.this, 0, -1, 0, 0);
         }
 
-        public Object[] toArray() {
-            return valuesToArray(new Object[size]);
+        public Object[] toArray(Visitor visitor) {
+            return valuesToArray(visitor, new Object[size]);
         }
 
-        public <T> T[] toArray(T[] a) {
-            return valuesToArray(prepareArray(a));
+        public <T> T[] toArray(Visitor visitor, T[] a) {
+            return valuesToArray(visitor, prepareArray(a));
         }
 
         public final void forEach(Consumer<? super V> action) {

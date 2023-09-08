@@ -15,7 +15,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
-public class LHM<K,V> extends HM<K,V> implements Map<K,V> {
+public class LHM<K,V> extends HM<K,V> implements Map<K,V>, MyMap  {
 
 
     static class Entry<K,V> extends HM.Node<K,V> {
@@ -250,16 +250,6 @@ public class LHM<K,V> extends HM<K,V> implements Map<K,V> {
         return a;
     }
 
-    @Override
-    final <T> T[] valuesToArray(T[] a) {
-        Object[] r = a;
-        int idx = 0;
-        for (Entry<K,V> e = head; e != null; e = e.after) {
-            r[idx++] = e.value;
-        }
-        return a;
-    }
-
     final class LinkedKeySet extends AbstractSet<K> {
         public final int size()                 { return size; }
         public final void clear()               { LHM.this.clear(); }
@@ -317,12 +307,12 @@ public class LHM<K,V> extends HM<K,V> implements Map<K,V> {
                     Spliterator.ORDERED);
         }
 
-        public Object[] toArray() {
-            return valuesToArray(new Object[size]);
+        public Object[] toArray(Visitor visitor) {
+            return valuesToArray(visitor, new Object[size]);
         }
 
-        public <T> T[] toArray(T[] a) {
-            return valuesToArray(prepareArray(a));
+        public <T> T[] toArray(Visitor visitor, T[] a) {
+            return valuesToArray(visitor, prepareArray(a));
         }
 
         public final void forEach(Consumer<? super V> action) {
@@ -439,6 +429,11 @@ public class LHM<K,V> extends HM<K,V> implements Map<K,V> {
             removeNode(p.hash, p.key, null, false, false);
             expectedModCount = modCount;
         }
+    }
+
+    @Override
+    public <T> T[] valuesToArray(Visitor visitor, T[] a) {
+        return visitor.visitLHM(this, a);
     }
 
     final class LinkedKeyIterator extends LinkedHashIterator
