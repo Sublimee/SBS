@@ -1,6 +1,6 @@
 В рабочем коде был произведен поиск примеров неистинного наследования. В этом я потерпел неудачу, то ли из-за специфики решаемых задач, то ли из-за ограниченного использования наследования разработчиками.  
 
-В качестве исходников были взяты классы java.util.HashMap и java.util.LinkedHashMap, которые были перенесены в [HM.java](..%2F..%2Fjava%2Fstrong%2Fideas%2Flesson_7%2Fbefore%2FHM.java) и LHM[LHM.java](..%2F..%2Fjava%2Fstrong%2Fideas%2Flesson_7%2Fbefore%2FLHM.java) соответственно. В исходном классе LinkedHashMap переопределяется метод valuesToArray класса HashMap. Заменим эту конструкцию на вызов посетителя. Коммит: 
+В качестве исходников были взяты классы java.util.HashMap и java.util.LinkedHashMap, которые были перенесены в [HM.java](..%2F..%2Fjava%2Fstrong%2Fideas%2Flesson_7%2Fbefore%2FHM.java) и LHM[LHM.java](..%2F..%2Fjava%2Fstrong%2Fideas%2Flesson_7%2Fbefore%2FLHM.java) соответственно. В исходном классе LinkedHashMap переопределяется метод valuesToArray класса HashMap. Заменим эту конструкцию на вызов посетителя. Коммит: https://github.com/Sublimee/SBS/commit/a5f76dad011e9331862af856d7e7cb120c4dbfbc
 
 Отмечу плюсы и минусы, которые вытекают из получившегося решения. 
 
