@@ -1,4 +1,4 @@
-package strong.ideas.lesson_8;
+package strong.ideas.lesson_8.example_1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ interface Commentable {
     List<String> getComments();
 
     default void addComment(String comment) {
-        getComments().add(comment);
+        this.getComments().add(comment);
     }
 }
 
