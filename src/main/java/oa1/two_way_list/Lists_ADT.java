@@ -1,10 +1,12 @@
-package oa1.linked_list;
+package oa1.two_way_list;
 
-/* 2.1. АТД LinkedList
+/*
 
-abstract class LinkedList<T> {
+АТД ParentList
 
-    // интерфейс класса, реализующий АТД LinkedList
+abstract class ParentList<T> {
+
+    // интерфейс класса, реализующий АТД ParentList
 
     public final int HEAD_NIL = 0;      // head() ещё не вызывалась
     public final int HEAD_OK = 1;       // последняя команда установки курсора отработала нормально
@@ -42,10 +44,11 @@ abstract class LinkedList<T> {
     public final int GET_OK = 1;        // последняя команда получения значения текущего узла отработала нормально
     public final int GET_ERR = 2;       // список пуст (курсор не задан)
 
+
     // конструктор
 
     // постусловие: создан новый список
-    public LinkedList<T> LinkedList();
+    public ParentList<T> ParentList();
 
 
     // команды
@@ -75,7 +78,7 @@ abstract class LinkedList<T> {
     // постусловие: текущий узел удален (курсор смещается к правому соседу, если он есть, в противном случае курсор
     //                                  смещается к левому соседу, если он есть, в противном случае курсор сбрасывается
     //                                  т.к. список пуст)
-    public void remove(T value);
+    public void remove();
 
     // постусловие: новый узел добавлен в хвост списка
     public void add_tail(T value);
@@ -114,6 +117,7 @@ abstract class LinkedList<T> {
 
     public boolean is_value();  // установлен ли курсор на какой-либо узел в списке (по сути, непустой ли список)
 
+
     // дополнительные запросы:
 
     // возвращает значение
@@ -146,8 +150,44 @@ abstract class LinkedList<T> {
     public int get_get_status();
 }
 
-2.2. С точки зрения эффективности операция tail имеет сложность O(1). Единственная пригодная для решения той же задачи
-(установка курсора на последний узел в списке) операция right может обеспечить эффективность лишь O(N).
 
-2.3. Операция может быть выражена с помощью череды вызовов find(T value)
+АТД LinkedList
+
+abstract class LinkedList<T> extends ParentList<T> {
+
+    // конструктор
+
+    // постусловие: создан новый список
+    public LinkedList<T> LinkedList();
+}
+
+
+АТД TwoWayList
+
+abstract class TwoWayList<T> extends ParentList<T> {
+
+    public final int LEFT_NIL = 0;     // left() ещё не вызывалась
+    public final int LEFT_OK = 1;      // последняя команда установки курсора отработала нормально
+    public final int LEFT_ERR = 2;     // список пуст (курсор не задан) или узел, на который указывает курсор, не имеет соседа слева
+
+
+    // конструктор
+
+    // постусловие: создан новый список
+    public TwoWayList<T> TwoWayList();
+
+
+    // команды
+
+    // предусловие: 1) список не пуст (курсор задан)
+    //              2) узел, на который указывает курсор, имеет соседа слева
+    // постусловие: курсор сдвинут на один узел влево
+    public void left();
+
+
+    // дополнительные запросы:
+
+    // возвращает значение LEFT_
+    public int get_left_status();
+}
 */
