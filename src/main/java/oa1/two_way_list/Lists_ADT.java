@@ -120,8 +120,6 @@ abstract class ParentList<T> {
 
     // дополнительные запросы:
 
-    // возвращает значение
-
     // возвращает значение HEAD_
     public int get_head_status();
 
