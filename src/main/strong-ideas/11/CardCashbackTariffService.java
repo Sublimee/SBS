@@ -1,23 +1,23 @@
-package ru.alfabank.mobile.tariff.service;
+package some.company.mobile.tariff.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import ru.alfabank.mobile.contract.header.Headers;
-import ru.alfabank.mobile.exceptions.BusinessException;
-import ru.alfabank.mobile.starter.client.feign.card.CardDTO;
-import ru.alfabank.mobile.tariff.client.bonus.amount.dto.BonusAmountDTO;
-import ru.alfabank.mobile.tariff.client.loyalty.card.info.dto.LoyaltyCardInfo;
-import ru.alfabank.mobile.tariff.configuration.WidgetCashbackConditionsProperties;
-import ru.alfabank.mobile.tariff.configuration.WidgetCashbackConditionsProperties.WidgetCardScreenFeaturesProperties;
-import ru.alfabank.mobile.tariff.model.CardStatus;
-import ru.alfabank.mobile.tariff.model.CashbackConditions;
-import ru.alfabank.mobile.tariff.service.bonus.amount.BonusAmountService;
-import ru.alfabank.mobile.tariff.service.card.CardService;
-import ru.alfabank.mobile.tariff.service.converter.CardCashbackTariffConverter;
-import ru.alfabank.mobile.tariff.service.feature.FeatureService;
-import ru.alfabank.mobile.tariff.service.loyalty.card.info.LoyaltyCardInfoService;
+import some.company.mobile.contract.header.Headers;
+import some.company.mobile.exceptions.BusinessException;
+import some.company.mobile.starter.client.feign.card.CardDTO;
+import some.company.mobile.tariff.client.bonus.amount.dto.BonusAmountDTO;
+import some.company.mobile.tariff.client.loyalty.card.info.dto.LoyaltyCardInfo;
+import some.company.mobile.tariff.configuration.WidgetCashbackConditionsProperties;
+import some.company.mobile.tariff.configuration.WidgetCashbackConditionsProperties.WidgetCardScreenFeaturesProperties;
+import some.company.mobile.tariff.model.CardStatus;
+import some.company.mobile.tariff.model.CashbackConditions;
+import some.company.mobile.tariff.service.bonus.amount.BonusAmountService;
+import some.company.mobile.tariff.service.card.CardService;
+import some.company.mobile.tariff.service.converter.CardCashbackTariffConverter;
+import some.company.mobile.tariff.service.feature.FeatureService;
+import some.company.mobile.tariff.service.loyalty.card.info.LoyaltyCardInfoService;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -31,12 +31,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ru.alfabank.mobile.tariff.exception.ErrorCode.LOYALTY_KEY_IS_NULL;
-import static ru.alfabank.mobile.tariff.exception.ErrorCode.UNABLE_TO_MATCH_LOYALTY_CARD_INFO;
-import static ru.alfabank.mobile.tariff.model.BonusAmountStatus.NOT_ACCRUED_TO_BONUS_ACCOUNT;
-import static ru.alfabank.mobile.tariff.util.WidgetUtils.ALFA_ONLINE_CHANNEL_ID;
-import static ru.alfabank.mobile.tariff.util.WidgetUtils.ONE;
-import static ru.alfabank.mobile.tariff.util.WidgetUtils.isRulesIdGroupNeeded;
+import static some.company.mobile.tariff.exception.ErrorCode.LOYALTY_KEY_IS_NULL;
+import static some.company.mobile.tariff.exception.ErrorCode.UNABLE_TO_MATCH_LOYALTY_CARD_INFO;
+import static some.company.mobile.tariff.model.BonusAmountStatus.NOT_ACCRUED_TO_BONUS_ACCOUNT;
+import static some.company.mobile.tariff.util.WidgetUtils.ALFA_ONLINE_CHANNEL_ID;
+import static some.company.mobile.tariff.util.WidgetUtils.ONE;
+import static some.company.mobile.tariff.util.WidgetUtils.isRulesIdGroupNeeded;
 
 @Service
 @RequiredArgsConstructor

@@ -1,25 +1,25 @@
-package ru.alfabank.mobile.loyalty.promoted.cashback.service.proxy
+package some.company.mobile.loyalty.promoted.cashback.service.proxy
 
 import kotlinx.coroutines.reactive.awaitSingle
 import mu.KLogging
 import org.springframework.stereotype.Service
-import ru.alfabank.mobile.cache.aspect.annotation.CachePutAsync
-import ru.alfabank.mobile.cache.aspect.annotation.CacheableAsync
-import ru.alfabank.mobile.contract.header.Headers
-import ru.alfabank.mobile.loyalty.promoted.cashback.configuration.CacheConfiguration.Companion.PARAMETERS_INDEPENDENT_CACHE_KEY_NAME
-import ru.alfabank.mobile.loyalty.promoted.cashback.configuration.CacheConfiguration.Companion.PROMOTED_CASHBACK_CARDS_TERMS_CACHE_NAME
-import ru.alfabank.mobile.loyalty.promoted.cashback.configuration.CacheConfiguration.Companion.USER_INTERFACE_CONTENT_CACHE_NAME
-import ru.alfabank.mobile.loyalty.promoted.cashback.configuration.CacheConfiguration.Companion.WIDGET_SETTINGS_CACHE_NAME
-import ru.alfabank.mobile.loyalty.promoted.cashback.configuration.MaplProperties
-import ru.alfabank.mobile.loyalty.promoted.cashback.configuration.ProgramsProperties
-import ru.alfabank.mobile.loyalty.promoted.cashback.service.client.common.LoyaltyCardTermsClient
-import ru.alfabank.mobile.loyalty.promoted.cashback.service.client.common.UserInterfaceContentClient
-import ru.alfabank.mobile.loyalty.promoted.cashback.service.client.common.WidgetsSettingsClient
-import ru.alfabank.mobile.loyalty.promoted.cashback.service.client.model.PromotedCashbackCardTerms
-import ru.alfabank.mobile.loyalty.promoted.cashback.service.client.model.UserInterfaceContent
-import ru.alfabank.mobile.loyalty.promoted.cashback.service.client.model.UwsAttractiveOffersRequest
-import ru.alfabank.mobile.loyalty.promoted.cashback.service.client.model.WidgetSettings
-import ru.alfabank.mobile.loyalty.promoted.cashback.util.isNotNullOrEmpty
+import some.company.mobile.cache.aspect.annotation.CachePutAsync
+import some.company.mobile.cache.aspect.annotation.CacheableAsync
+import some.company.mobile.contract.header.Headers
+import some.company.mobile.loyalty.promoted.cashback.configuration.CacheConfiguration.Companion.PARAMETERS_INDEPENDENT_CACHE_KEY_NAME
+import some.company.mobile.loyalty.promoted.cashback.configuration.CacheConfiguration.Companion.PROMOTED_CASHBACK_CARDS_TERMS_CACHE_NAME
+import some.company.mobile.loyalty.promoted.cashback.configuration.CacheConfiguration.Companion.USER_INTERFACE_CONTENT_CACHE_NAME
+import some.company.mobile.loyalty.promoted.cashback.configuration.CacheConfiguration.Companion.WIDGET_SETTINGS_CACHE_NAME
+import some.company.mobile.loyalty.promoted.cashback.configuration.MaplProperties
+import some.company.mobile.loyalty.promoted.cashback.configuration.ProgramsProperties
+import some.company.mobile.loyalty.promoted.cashback.service.client.common.LoyaltyCardTermsClient
+import some.company.mobile.loyalty.promoted.cashback.service.client.common.UserInterfaceContentClient
+import some.company.mobile.loyalty.promoted.cashback.service.client.common.WidgetsSettingsClient
+import some.company.mobile.loyalty.promoted.cashback.service.client.model.PromotedCashbackCardTerms
+import some.company.mobile.loyalty.promoted.cashback.service.client.model.UserInterfaceContent
+import some.company.mobile.loyalty.promoted.cashback.service.client.model.UwsAttractiveOffersRequest
+import some.company.mobile.loyalty.promoted.cashback.service.client.model.WidgetSettings
+import some.company.mobile.loyalty.promoted.cashback.util.isNotNullOrEmpty
 import kotlin.coroutines.cancellation.CancellationException
 
 @Service

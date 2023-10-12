@@ -118,7 +118,7 @@
     fields.add(
             HeaderField.builder()
                     .id(idFallbackGenerator.getId())
-                    .label(cardConditionsProperties.getAlfabankWithdrawHeaderText())
+                    .label(cardConditionsProperties.getWithdrawHeaderText())
                     .build()
     );
 
@@ -126,7 +126,7 @@
     fields.add(
             HeaderField.builder()
                     .id(idFallbackGenerator.getId())
-                    .label(cardConditionsProperties.getAlfabankWithdrawHeaderText())
+                    .label(cardConditionsProperties.getWithdrawHeaderText())
                     .build()
     );
 
