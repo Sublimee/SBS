@@ -19,7 +19,7 @@ abstract class Queue<T> {
     // конструктор
 
     // постусловие: создана новая пустая очередь
-    public Queue();
+    public Queue<T> Queue();
 
 
     // команды
@@ -86,7 +86,6 @@ public class Queue<T> {
         }
     }
 
-    // предусловие: очередь не пуста
     public T peek() {
         T result;
         if (size() == 0) {
@@ -101,5 +100,13 @@ public class Queue<T> {
 
     public int size() {
         return queue.size();
+    }
+
+    public int get_dequeue_status() {
+        return dequeueStatus;
+    }
+
+    public int get_peek_status() {
+        return peekStatus;
     }
 }
