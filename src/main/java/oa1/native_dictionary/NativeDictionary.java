@@ -21,7 +21,7 @@ abstract class NativeDictionary<T> {
 
     // конструктор
 
-    // постусловие: создана новый пустой ассоциативный массив
+    // постусловие: создан новый пустой ассоциативный массив
     public NativeDictionary<T> NativeDictionary(int capacity);
 
 
