@@ -3,10 +3,13 @@
 import math
 
 # Декоратор для пометки команд
-def command(func):
-    func.is_command = True
-    return func
-    
+def command(name=None):
+    def decorator(func):
+        func.is_command = True
+        func.command_name = name if name else func.__name__
+        return func
+    return decorator
+
 class Robot:
     def __init__(self):
         self.__x = 0.0
@@ -14,13 +17,13 @@ class Robot:
         self.__angle = 0.0
         self.valid_states = ['water', 'soap', 'brush']
         self.state = self.valid_states[0]
-        
+
         # Автоматически собрать методы-команды с декоратором @command
         self.command_map = {}
         for attr_name in dir(self):
             method = getattr(self, attr_name)
             if callable(method) and hasattr(method, 'is_command'):
-                self.command_map[attr_name] = method
+                self.command_map[method.command_name] = method
 
     @property
     def x(self):
@@ -48,25 +51,28 @@ class Robot:
 
     def execute_commands(self, commands):
         for cmd in commands:
-            tokens = cmd.strip().split()
-            if not tokens:
-                continue
-            command_name = tokens[0]
-            args = tokens[1:]
-            command_func = self.command_map.get(command_name)
-            if command_func:
-                command_func(args)
-            else:
-                print(f"Unknown command: {command_name}")
+            self.execute_command(cmd)
 
-    @command
+    def execute_command(self, cmd):
+        tokens = cmd.strip().split()
+        if not tokens:
+            return
+        command_name = tokens[0]
+        args = tokens[1:]
+        command_func = self.command_map.get(command_name)
+        if command_func:
+            command_func(args)
+        else:
+            print(f"Unknown command: {command_name}")
+
+    @command()
     def move(self, args):
         if len(args) != 1:
             print("Error: 'move' command requires one argument")
             return
         try:
             distance = int(args[0])
-            
+
         except ValueError:
             print("Error: 'move' command requires a numeric argument")
             return
@@ -75,7 +81,7 @@ class Robot:
         self.y += int(distance * math.sin(theta_rad))
         print(f"POS {self.x},{self.y}")
 
-    @command
+    @command()
     def turn(self, args):
         if len(args) != 1:
             print("Error: 'turn' command requires one argument")
@@ -87,9 +93,9 @@ class Robot:
             return
         self.angle += delta_angle
         print(f"ANGLE {self.angle}")
-    
-    @command
-    def set(self, args):
+
+    @command('set')
+    def set_state(self, args):
         if len(args) != 1:
             print("Error: 'set' command requires one argument")
             return
@@ -99,12 +105,12 @@ class Robot:
             return
         self.state = state
         print(f"STATE {self.state}")
-    
-    @command
+
+    @command()
     def start(self, args):
         print(f"START WITH {self.state}")
 
-    @command
+    @command()
     def stop(self, args):
         print("STOP")
 
