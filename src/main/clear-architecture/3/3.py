@@ -1,6 +1,11 @@
 import math
+from enum import Enum
 
-# Декоратор для пометки команд
+class CleaningState(Enum):
+    WATER = 'water'
+    SOAP = 'soap'
+    BRUSH = 'brush'
+
 def command(name=None):
     def decorator(func):
         func.is_command = True
@@ -16,8 +21,7 @@ class Robot:
         self.__x = 0.0
         self.__y = 0.0
         self.__angle = 0.0
-        self.valid_states = ['water', 'soap', 'brush']
-        self.state = self.valid_states[0]
+        self.state = CleaningState.WATER
         self.transfer = transfer_func
 
         # Автоматически собрать методы-команды с декоратором @command
@@ -100,22 +104,23 @@ class Robot:
         if len(args) != 1:
             self.transfer("Error: 'set' command requires one argument")
             return
-        state = args[0]
-        if state not in self.valid_states:
-            self.transfer(f"Error: Invalid state '{state}'")
+        state_str = args[0]
+        try:
+            new_state = CleaningState(state_str)
+        except ValueError:
+            self.transfer(f"Error: Invalid state '{state_str}'")
             return
-        self.state = state
-        self.transfer(f"STATE {self.state}")
+        self.state = new_state
+        self.transfer(f"STATE {self.state.value}")
 
     @command()
     def start(self, args):
-        self.transfer(f"START WITH {self.state}")
+        self.transfer(f"START WITH {self.state.value}")
 
     @command()
     def stop(self, args):
         self.transfer("STOP")
 
-# Пример использования:
 commands = [
     'move 100',
     'turn -90',
