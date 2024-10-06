@@ -13,7 +13,7 @@ def command(name=None):
         return func
     return decorator
 
-def transfer_to_cleaner(message):
+def transfer_to_robot(message):
     print(message)
 
 class Robot:
@@ -130,5 +130,5 @@ commands = [
     'stop'
 ]
 
-robot = Robot(transfer_to_cleaner)
+robot = Robot(transfer_to_robot)
 robot.execute_commands(commands)
