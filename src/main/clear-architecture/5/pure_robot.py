@@ -8,16 +8,6 @@ from command_decorator import command_map
 RobotState = namedtuple("RobotState", ["x", "y", "angle", "state"])
 
 
-def transfer_to_cleaner(message):
-    print(message)
-
-
-def make(transfer, commands, state):
-    for cmd in commands:
-        state = execute_command(transfer, cmd, state)
-    return state
-
-
 def execute_command(transfer, cmd, state):
     tokens = cmd.strip().split()
     if not tokens:

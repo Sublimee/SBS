@@ -1,17 +1,30 @@
 from cleaning_state import CleaningState
-from robot import RobotState, make, transfer_to_cleaner
+from robot_api import RobotApi, RobotCommand
+from pure_robot import RobotState
 
-# Список команд
-commands = [
-    'move 100',
-    'turn -90',
-    'set soap',
-    'start',
-    'move 50',
-    'stop'
-]
 
-# Начальное состояние
-initial_state = RobotState(0.0, 0.0, 0, CleaningState.WATER)
-
-final_state = make(transfer_to_cleaner, commands, initial_state)
+robot_api = RobotApi()
+robot_state = robot_api.execute(RobotCommand(
+    command='move 100',
+    initial_state=RobotState(0.0, 0.0, 0, CleaningState.WATER),
+))
+robot_state = robot_api.execute(RobotCommand(
+    command='turn -90',
+    initial_state=robot_state,
+))
+robot_state = robot_api.execute(RobotCommand(
+    command='set soap',
+    initial_state=robot_state,
+))
+robot_state = robot_api.execute(RobotCommand(
+    command='start',
+    initial_state=robot_state,
+))
+robot_state = robot_api.execute(RobotCommand(
+    command='move 50',
+    initial_state=robot_state,
+))
+robot_state = robot_api.execute(RobotCommand(
+    command='stop',
+    initial_state=robot_state,
+))
