@@ -1,4 +1,4 @@
-package arrays.climbing_stairs;
+package dp.climbing_stairs;
 
 class Solution {
     public static int climbStairs(int n) {
