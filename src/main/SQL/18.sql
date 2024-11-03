@@ -50,7 +50,7 @@ WITH profession_tasks AS (SELECT D.profession,
                                Tasks T ON D.dwarf_id = T.assigned_to
                           WHERE T.status = 'pending'
                              OR T.status = 'in_progress'
-                          GROUP BY D.dwarf_id, D.profession),
+                          GROUP BY D.profession),
      profession_totals AS (SELECT profession,
                                   SUM(incomplete_tasks) AS total_incomplete_tasks
                            FROM profession_tasks
@@ -63,3 +63,13 @@ WHERE total_incomplete_tasks = (SELECT MAX(total_incomplete_tasks)
                                 FROM profession_totals);
 
 --7
+SELECT I.type, AVG(D.age) AS avg_age
+FROM Items I
+         LEFT JOIN Dwarves D ON I.owner_id = D.dwarf_id OR I.owner_id IS NULL -- потому что предметы без явно указанного владельца принадлежат всем
+GROUP BY I.type;
+
+--8
+SELECT D.dwarf_id
+FROM Dwarves D
+         LEFT JOIN Items I ON I.owner_id = D.dwarf_id OR I.owner_id IS NULL
+WHERE I.item_id IS NULL AND D.age>(SELECT AVG(Dwarves.age) as age FROM Dwarves);
