@@ -50,17 +50,13 @@ WITH profession_tasks AS (SELECT D.profession,
                                Tasks T ON D.dwarf_id = T.assigned_to
                           WHERE T.status = 'pending'
                              OR T.status = 'in_progress'
-                          GROUP BY D.profession),
-     profession_totals AS (SELECT profession,
-                                  SUM(incomplete_tasks) AS total_incomplete_tasks
-                           FROM profession_tasks
-                           GROUP BY profession)
+                          GROUP BY D.profession)
 
 SELECT profession,
-       total_incomplete_tasks
-FROM profession_totals
-WHERE total_incomplete_tasks = (SELECT MAX(total_incomplete_tasks)
-                                FROM profession_totals);
+       incomplete_tasks
+FROM profession_tasks
+WHERE incomplete_tasks = (SELECT MAX(incomplete_tasks)
+                          FROM profession_tasks);
 
 --7
 SELECT I.type, AVG(D.age) AS avg_age
@@ -72,4 +68,5 @@ GROUP BY I.type;
 SELECT D.dwarf_id
 FROM Dwarves D
          LEFT JOIN Items I ON I.owner_id = D.dwarf_id OR I.owner_id IS NULL
-WHERE I.item_id IS NULL AND D.age>(SELECT AVG(Dwarves.age) as age FROM Dwarves);
+WHERE I.item_id IS NULL
+  AND D.age > (SELECT AVG(Dwarves.age) as age FROM Dwarves);
