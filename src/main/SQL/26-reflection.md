@@ -40,7 +40,7 @@ squad_training_effectiveness AS (
 )
 ```
 
-level и date нет в DWARF_SKILLS, но используются:
+* level и date нет в DWARF_SKILLS, но используются:
 ```sql
 squad_skill_progression AS (
     SELECT 
