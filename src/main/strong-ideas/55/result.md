@@ -150,10 +150,35 @@ override suspend fun buildButton(
 ```
 
 Здесь опят же можно выделить две ответственности:
-1) получение списка операций;
-2) формирование кнопки.
+1) формирование конфигурации;
+2) конструирование кнопки.
 
-Сразу на ум приходит следующий вариант разбиения:
+Вообще наличие return null (кнопки) в середине метода как бы намекает на то, что ответственности смешались. 
+
+На ум приходит следующий вариант разбиения:
+
+```kotlin
+    override suspend fun buildButton(
+    headers: Headers,
+    buttonConfig: ButtonConfig,
+    bonusAccount: UnifiedBonusAccount,
+): Button? {
+    val loyaltyTypeId = bonusAccount.account.typeId
+
+    val configWithValue = loyaltyOperationsProxy.getOperations(headers, loyaltyTypeId)
+        .takeIf { it.isNotEmpty() }
+        ?.count { it.writeoffAmount.value <= bonusAccount.balance.amount.value }
+        ?.let { count -> buttonConfig.copy(value = count.toString()) }
+
+    return if (configWithValue!= null) {
+        defaultActionButtonBuilder.buildButton(headers, configWithValue, bonusAccount)
+    } else {
+        null
+    }
+}
+```
+
+И если перейти к Kotlin-style:
 
 ```kotlin
 override suspend fun buildButton(
@@ -161,44 +186,8 @@ override suspend fun buildButton(
     buttonConfig: ButtonConfig,
     bonusAccount: UnifiedBonusAccount,
 ): Button? {
-    val operations = loyaltyOperationsProxy.getOperations(headers, bonusAccount.account.typeId)
-    if (operations.isEmpty()) return null
-
-    val configWithValue = buttonConfigWithOperationsCount(buttonConfig, bonusAccount, operations)
-    return defaultActionButtonBuilder.buildButton(headers, configWithValue, bonusAccount)
-}
-
-private fun buttonConfigWithOperationsCount(
-    buttonConfig: ButtonConfig,
-    bonusAccount: UnifiedBonusAccount,
-    operations: List<Operation>
-): ButtonConfig {
-    val count = operations.count { it.writeoffAmount.value <= bonusAccount.balance.amount.value }
-    return buttonConfig.copy(value = count.toString())
-}
-```
-
-Выглядит громоздко и не очень-то упрощает поддержку. Здесь лучше смотрится выделение блока:
-
-
-```kotlin
-val configWithValue = run {
-    val operationsCount = operations.count { it.writeoffAmount.value <= bonusAccount.balance.amount.value }
-    buttonConfig.copy(value = operationsCount.toString())
-}
-```
-
-МНе кажется, что здесь разделение ответственности также можно получить с помощью перехода к функциональному стилю:
-
-```kotlin
-override suspend fun buildButton(
-    headers: Headers,
-    buttonConfig: ButtonConfig,
-    bonusAccount: UnifiedBonusAccount,
-): Button? {
-    val loyaltyTypeId: String = bonusAccount.account.typeId
-    return loyaltyOperationsProxy
-        .getOperations(headers, loyaltyTypeId)
+    val loyaltyTypeId = bonusAccount.account.typeId
+    return loyaltyOperationsProxy.getOperations(headers, loyaltyTypeId)
         .takeIf { it.isNotEmpty() }
         ?.let { operations ->
             val operationsCount = operations.count { it.writeoffAmount.value <= bonusAccount.balance.amount.value }
@@ -210,6 +199,20 @@ override suspend fun buildButton(
 
 С помощью scope-функции let формирование кнопки выделено в отдельный блок. Однако нужно помнить, что вложенные let (которыми грешат увлекающиеся разработчики) значительно ухудшают читаемость.
 
+Если бы в коде не встречались внезапные if'ы, то очень хорошо смотрятся такие выделенные блоки:
 
-Подобный подход с использованием комментариев для независимых блоков кода можно встретить в тестах, как описано, например, здесь https://davidvlijmincx.com/posts/junit-given-when-then/. Предполагается, что такие комментарии помогут в считывании теста. Хотя, как по мне, они избыточны и не выполняют свою роль, только засоряя код. Чего, однако, нельзя сказать о given-when-then структурах в BDD-фреймворках для тестов, например Kotest.
 
+```kotlin
+val configWithValue = run {
+    val operationsCount = operations.count { it.writeoffAmount.value <= bonusAccount.balance.amount.value }
+    buttonConfig.copy(value = operationsCount.toString())
+}
+```
+
+Идея использования встраиваемого проектирования может встречаться в утильных классах / конвертерах, когда, пока они маленькие, проще не дробить, чтобы дополнительно не увеличивать когнитивную нагрузку на разработчика. То же по моему опыту относится и к классам с небольшим количеством (1-2) методов. Код таких классов обычно лучше поддерживается, если мы не допускаем его разрастания за счет boilerplate кода приватных методов.
+
+Подобный подход с использованием комментариев для разделения независимых блоков кода можно встретить в тестах, как описано, например, здесь https://davidvlijmincx.com/posts/junit-given-when-then/. Предполагается, что такие комментарии помогут в считывании теста. Хотя, как по мне, они избыточны и не выполняют свою роль, только засоряя код. Чего, однако, нельзя сказать о given-when-then структурах в BDD-фреймворках для тестов, например Kotest.
+
+Часто для логического разбиения блоков кода также используются две пустые строки. Это неформальная, но в то же время очень понятная и простая техника форматирования кода.
+
+В статье упоминалось, что при использовании встраиваемого проектирования мы ясно видим, "какие локальные переменные будут "жить" во всём теле функции, а какие используются только локально внутри своих блоков кода." Я часто пользуюсь таким приемом при рефакторинге: исследуемый метод, разбитый на множество мелких методов, я собираю путем инлайнинга выделенных методов, после чего перекраиваю более ясным образом.
