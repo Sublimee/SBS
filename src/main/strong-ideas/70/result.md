@@ -223,6 +223,42 @@ interface LoyaltyBackendApi {
 
 # Пример 4
 
+Аналогичная ситуация в другом микросервисе:
+
+```kotlin
+@ReactiveFeignClient(
+    value = LoyaltyBackendApi,
+    configuration = ...,
+    path = "\${urls.loyalty_backend}",
+)
+interface LoyaltyBackendApiClient {
+
+    /* используется в одном сервисе*/
+    @GetMapping("/api/v1/customer-loyalty/card/{plasticId}")
+    fun getCustomerLoyaltyCardHistories(
+        @RequestHeader headers: FeignHeaders,
+        @PathVariable plasticId: Int,
+    ): Mono<List<CustomerLoyaltyCardHistory>>
+
+    /* следующие 2 используются в другом сервисе*/
+    @PostMapping("/api/v1/customer-loyalty/card/change")
+    fun customerLoyaltyCardChange(
+        @RequestHeader headers: FeignHeaders,
+        @RequestBody request: CustomerLoyaltyCardChangeRequest
+    ): Mono<List<String>>
+
+    @PostMapping("/api/v1/customer-loyalty/card/cancel-change")
+    fun customerLoyaltyCardCancelChange(
+        @RequestHeader headers: FeignHeaders,
+        @RequestBody request: CustomerLoyaltyCancelCardChangeRequest
+    ): Mono<List<String>>
+}
+```
+
+Все методы объединяет общность конфигурации при хождении в бэкенд. Но этот интерфейс, как и любой другой должен нести все же не только утилитарную функцию, но и помогать в правильной организации и построении кода. То же касается не только FeignClient, но и работы с репозиториями в Spring (Пример 1).
+
+# Пример 5
+
 Смотрим на следующий пример:
 
 ```java
@@ -260,7 +296,7 @@ public class TransactionJobHandler {
 }
 ```
 
-Не совсем понятно, почему RedisService инжектится не через CacheService, но да ладно. ОЧевидно, что в этом случае весь интерфейс нам не нужен, достаточно только метода get:
+Не совсем понятно, почему RedisService инжектится не через CacheService, но да ладно. Очевидно, что в этом случае весь интерфейс нам не нужен, достаточно только метода get:
 
 ```java
 public interface GetCacheService {
@@ -294,4 +330,4 @@ public class TransactionJobHandler {
 
 3) классы программы не должны зависеть от тех методов, которые они не используют, т.е. в интерфейс должны попадать методы, которые используются вместе и логически неотделимы.
 
-Если честно, то я до выполнения задания был на втором уровне понимания. Пример 1 показывает, что при желании в интерфейс можно запихать все что угодно. Примеры 3 показывает, что близкие "по духу" методы, когда их много, все равно нуждаются в разделении. Пример 4 демонстрирует высший уровень понимания, когда мы снижаем число зависимостей нашего кода, используя минимально необходимые возможности, которые предоставляются нам через интерфейсы.
+Если честно, то я до выполнения задания был на втором уровне понимания. Пример 1 показывает, что при желании в интерфейс можно запихать все что угодно. Примеры 3 и 4 показывают, что близкие по идее методы, когда их много, все равно нуждаются в разделении. Пример 5 демонстрирует высший уровень понимания, когда мы снижаем число зависимостей нашего кода, используя минимально необходимые возможности, которые предоставляются нам через интерфейсы.
