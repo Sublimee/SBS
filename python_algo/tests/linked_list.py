@@ -81,23 +81,27 @@ class LinkedList:
         return result
 
     def insert(self, afterNode, newNode):
-        if (afterNode is None):
-            newNode.next = self.head
-            if newNode.next is None:
+        if afterNode is None:
+            if self.head is None:
+                self.head = newNode
                 self.tail = newNode
-            self.head = newNode
+            else:
+                newNode.next = self.head
+                self.head = newNode
             return
-        current = self.head
 
+        current = self.head
         while current is not afterNode and current is not None:
             current = current.next
 
-        if current is not None:
-            next = current.next
-            if next is None:
-                self.tail = newNode
-            current.next = newNode
-            newNode.next = next
+        if current is None:
+            return
+
+        next = current.next
+        current.next = newNode
+        newNode.next = next
+        if next is None:
+            self.tail = newNode
 
 def build_linked_list(values):
     ll = LinkedList()
@@ -128,3 +132,4 @@ def sum_linked_lists(ll1: LinkedList, ll2: LinkedList) -> LinkedList | None:
         current2 = current2.next
 
     return result
+
