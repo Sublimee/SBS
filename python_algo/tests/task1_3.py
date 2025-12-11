@@ -1,5 +1,5 @@
 import unittest
-from linked_list import build_linked_list, to_array, LinkedList, Node, sum_linked_lists
+from task1 import build_linked_list, to_array, LinkedList, Node, sum_linked_lists
 
 class TestDelete(unittest.TestCase):
 
@@ -321,3 +321,4 @@ class TestSumLinkedLists(unittest.TestCase):
         result = sum_linked_lists(list1, list2)
 
         self.assertIsNone(result)
+
