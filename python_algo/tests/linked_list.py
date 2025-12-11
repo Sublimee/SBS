@@ -41,32 +41,27 @@ class LinkedList:
         return result
 
     def delete(self, val, all=False):
-        prev = None
-        current = self.head
+        prev_node = None
+        current_node = self.head
 
-        while current is not None:
-            if current.value == val:
-                if prev is None:
-                    if current.next is not None:
-                        self.head = current.next
-                        current = current.next
-                    else:
-                        self.head = None
-                        self.tail = None
-                        return
+        while current_node is not None:
+            if current_node.value == val:
+                next_node = current_node.next
+
+                if prev_node is None:
+                    self.head = next_node
                 else:
-                    if current.next is not None:
-                        prev.next = current.next
-                        current = current.next
-                    else:
-                        current = None
-                        prev.next = current
-                        self.tail = prev
+                    prev_node.next = next_node
+
+                if next_node is None:
+                    self.tail = prev_node
+
                 if not all:
                     return
+                current_node = next_node
             else:
-                prev = current
-                current = current.next
+                prev_node = current_node
+                current_node = current_node.next
 
     def clean(self):
         self.head = None
@@ -90,17 +85,17 @@ class LinkedList:
                 self.head = newNode
             return
 
-        current = self.head
-        while current is not afterNode and current is not None:
-            current = current.next
+        current_node = self.head
+        while current_node is not afterNode and current_node is not None:
+            current_node = current_node.next
 
-        if current is None:
+        if current_node is None:
             return
 
-        next = current.next
-        current.next = newNode
-        newNode.next = next
-        if next is None:
+        next_node = current_node.next
+        current_node.next = newNode
+        newNode.next = next_node
+        if next_node is None:
             self.tail = newNode
 
 def build_linked_list(values):
