@@ -17,11 +17,12 @@ class Queue2:
     def size(self):
         return len(self.queue)
 
+    # 3. Ввращаем очередь по кругу на N элементов.
     def rotate(self, N):
         for _ in range(N):
             self.enqueue(self.dequeue())
 
-
+# 4.Очередь на двух стеках.
 class Queue3:
     def __init__(self):
         self.stack1 = Stack()
@@ -46,6 +47,7 @@ class Queue3:
         else:
             return self.stack2.pop()
 
+    # 5. Обращает все элементы в очереди в обратном порядке.
     def reverse(self):
         self.isNaturalOrder = not self.isNaturalOrder
         temp = self.stack1
@@ -58,6 +60,7 @@ class Queue3:
         else:
             return self.stack2.size()
 
+# 6. Круговая очередь.
 class Queue4:
 
     def __init__(self, new_capacity):
