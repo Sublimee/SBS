@@ -21,6 +21,19 @@ class TestPowerSetPut(unittest.TestCase):
         self.assertTrue(s.get("a"))
         self.assertEqual(s.size(), 1)
 
+    # for size = 3
+    # def test_3(self):
+    #     s = PowerSet()
+    #     s.put("a")
+    #     s.put("b")
+    #     s.put("c")
+    #     s.put("d")
+    #
+    #     self.assertTrue(s.get("a"))
+    #     self.assertTrue(s.get("b"))
+    #     self.assertTrue(s.get("c"))
+    #     self.assertEqual(s.size(), 3)
+
 
 class TestPowerSetRemove(unittest.TestCase):
 
@@ -40,6 +53,96 @@ class TestPowerSetRemove(unittest.TestCase):
         self.assertFalse(s.remove("b"))
         self.assertTrue(s.get("a"))
         self.assertEqual(s.size(), 1)
+
+    def test_3(self):
+        s = PowerSet()
+
+        self.assertFalse(s.remove("a"))
+        self.assertFalse(s.get("a"))
+        self.assertEqual(s.size(), 0)
+
+    # for size = 3
+    # def test_4(self):
+    #     s = PowerSet()
+    #
+    #     s.put("a")
+    #     s.put("d")
+    #     s.put("g")
+    #
+    #     s.remove("d")
+    #
+    #     self.assertTrue(s.get("a"))
+    #     self.assertTrue(s.get("g"))
+    #     self.assertEqual(s.size(), 2)
+    #
+    #     s.put("d")
+    #
+    #     self.assertTrue(s.get("a"))
+    #     self.assertTrue(s.get("d"))
+    #     self.assertTrue(s.get("g"))
+    #     self.assertEqual(s.size(), 3)
+    #
+    #     s.put("a")
+    #     s.put("d")
+    #     s.put("g")
+    #
+    #     self.assertTrue(s.get("a"))
+    #     self.assertTrue(s.get("d"))
+    #     self.assertTrue(s.get("g"))
+    #     self.assertEqual(s.size(), 3)
+    #
+    #     s.remove("a")
+    #     s.remove("a")
+    #     s.remove("a")
+    #
+    #     self.assertFalse(s.get("a"))
+    #     self.assertTrue(s.get("d"))
+    #     self.assertTrue(s.get("g"))
+    #     self.assertEqual(s.size(), 2)
+    #
+    #     s.remove("g")
+    #
+    #     self.assertFalse(s.get("a"))
+    #     self.assertTrue(s.get("d"))
+    #     self.assertFalse(s.get("g"))
+    #     self.assertEqual(s.size(), 1)
+    #
+    #     s.remove("d")
+    #
+    #     self.assertFalse(s.get("a"))
+    #     self.assertFalse(s.get("d"))
+    #     self.assertFalse(s.get("g"))
+    #     self.assertEqual(s.size(), 0)
+    #
+    #     s.put("a")
+    #     s.put("d")
+    #     s.put("g")
+    #
+    #
+    #     self.assertTrue(s.get("a"))
+    #     self.assertTrue(s.get("d"))
+    #     self.assertTrue(s.get("g"))
+    #     self.assertEqual(s.size(), 3)
+    #
+    #     s.remove("a")
+    #     s.remove("d")
+    #     s.remove("g")
+    #
+    #     s.put("1")
+    #     s.put("2")
+    #     s.put("3")
+    #
+    #     self.assertTrue(s.get("1"))
+    #     self.assertTrue(s.get("2"))
+    #     self.assertTrue(s.get("3"))
+    #     self.assertEqual(s.size(), 3)
+    #
+    #     s.put("4")
+    #
+    #     self.assertTrue(s.get("1"))
+    #     self.assertTrue(s.get("2"))
+    #     self.assertTrue(s.get("3"))
+    #     self.assertEqual(s.size(), 3)
 
 
 class TestPowerSetIntersection(unittest.TestCase):
@@ -631,32 +734,219 @@ class TestBag(unittest.TestCase):
         self.assertIn(("b", 2), result)
         self.assertIn(("c", 1), result)
 
-    def test_8(self):
+    def test_81(self):
         bag = Bag(3)
 
-        bag.put("a")
-        bag.put("b")
-        bag.put("c")
+        bag.put(1)
+        bag.put(2)
+        bag.put(3)
 
         result = bag.get_all()
 
         self.assertEqual(len(result), 3)
-        self.assertIn(("a", 1), result)
-        self.assertIn(("b", 1), result)
-        self.assertIn(("c", 1), result)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
 
-        bag.remove("a")
-        bag.remove("b")
-        bag.remove("c")
+        bag.remove(1)
+        bag.remove(2)
+        bag.remove(3)
 
         result = bag.get_all()
 
         self.assertEqual(len(result), 0)
         self.assertEqual(result, [])
 
+        bag.put(1)
+        bag.put(2)
+        bag.put(3)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+    def test_82(self):
+        bag = Bag(3)
+
+        bag.put(1)
+        bag.put(3)
+        bag.put(2)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+        bag.remove(1)
+        bag.remove(3)
+        bag.remove(2)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 0)
+        self.assertEqual(result, [])
+
+        bag.put(1)
+        bag.put(3)
+        bag.put(2)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+    def test_83(self):
+        bag = Bag(3)
+
+        bag.put(2)
+        bag.put(1)
+        bag.put(3)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+        bag.remove(2)
+        bag.remove(1)
+        bag.remove(3)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 0)
+        self.assertEqual(result, [])
+
+        bag.put(2)
+        bag.put(1)
+        bag.put(3)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+    def test_84(self):
+        bag = Bag(3)
+
+        bag.put(2)
+        bag.put(3)
+        bag.put(1)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+        bag.remove(2)
+        bag.remove(3)
+        bag.remove(1)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 0)
+        self.assertEqual(result, [])
+
+        bag.put(2)
+        bag.put(3)
+        bag.put(1)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+
+    def test_85(self):
+        bag = Bag(3)
+
+        bag.put(3)
+        bag.put(1)
+        bag.put(2)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+        bag.remove(3)
+        bag.remove(1)
+        bag.remove(2)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 0)
+        self.assertEqual(result, [])
+
+        bag.put(3)
+        bag.put(1)
+        bag.put(2)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+
+    def test_86(self):
+        bag = Bag(3)
+
+        bag.put(3)
+        bag.put(2)
+        bag.put(1)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+        bag.remove(3)
+        bag.remove(2)
+        bag.remove(1)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 0)
+        self.assertEqual(result, [])
+
+        bag.put(3)
+        bag.put(2)
+        bag.put(1)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((2, 1), result)
+        self.assertIn((3, 1), result)
+
+    def test_9(self):
+        bag = Bag(3)
+
         bag.put("a")
         bag.put("b")
         bag.put("c")
+        bag.put("d")
 
         result = bag.get_all()
 
@@ -664,3 +954,52 @@ class TestBag(unittest.TestCase):
         self.assertIn(("a", 1), result)
         self.assertIn(("b", 1), result)
         self.assertIn(("c", 1), result)
+
+    def test_10(self):
+        bag = Bag(3)
+
+        bag.put("a")
+        bag.put("d")
+        bag.put("g")
+
+        bag.put("a")
+        bag.put("d")
+        bag.put("g")
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn(("a", 2), result)
+        self.assertIn(("d", 2), result)
+        self.assertIn(("g", 2), result)
+
+    def test_11(self):
+        bag = Bag(3)
+
+        bag.put(1)
+        bag.put(4)
+        bag.put(7)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 3)
+        self.assertIn((1, 1), result)
+        self.assertIn((4, 1), result)
+        self.assertIn((7, 1), result)
+
+        bag.remove(1)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 2)
+        self.assertIn((4, 1), result)
+        self.assertIn((7, 1), result)
+
+        bag.put(4)
+        bag.put(7)
+
+        result = bag.get_all()
+
+        self.assertEqual(len(result), 2)
+        self.assertIn((4, 2), result)
+        self.assertIn((7, 2), result)

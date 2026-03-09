@@ -23,10 +23,10 @@ def cartesian_product(set1: PowerSet, set2: PowerSet):
     result = PowerSet()
 
     for value1 in set1.hashtable.slots:
-        if value1 is None:
+        if value1 is None or value1 is set1.hashtable.PASS:
             continue
         for value2 in set2.hashtable.slots:
-            if value2 is None:
+            if value2 is None or value2 is set2.hashtable.PASS:
                 continue
             result.put((value1, value2))
 
@@ -86,29 +86,29 @@ class Bag:
         return result
 
     def _seek_slot_for_remove(self, key):
-        init_index = self.hash_fun(key)
+        index = self.hash_fun(key)
+        start = index
 
-        if (self.slots[init_index] is None and self.counts[init_index] is None) or self.slots[init_index] == key:
-            return init_index
+        while True:
+            if self.slots[index] is None and self.counts[index] is None or self.slots[index] == key:
+                return index
 
-        next_index = (init_index + 1) % self.size
-        while next_index != init_index:
-            if (self.slots[next_index] is None and self.counts[next_index] is None) or self.slots[next_index] == key:
-                return next_index
-            next_index = (next_index + 1) % self.size
-
-        return None
+            index = (index + 1) % self.size
+            if index == start:
+                return None
 
     def _seek_slot_for_put(self, key):
-        init_index = self.hash_fun(key)
+        index = self.hash_fun(key)
+        start = index
+        candidate_index = None
 
-        if self.slots[init_index] is None or self.slots[init_index] == key:
-            return init_index
+        while True:
+            if self.slots[index] is None and self.counts[index] is None or self.slots[index] == key:
+                return index
 
-        next_index = (init_index + 1) % self.size
-        while next_index != init_index:
-            if self.slots[next_index] is None or self.slots[next_index] == key:
-                return next_index
-            next_index = (next_index + 1) % self.size
+            if candidate_index is None and self.counts[index] == 0:
+                candidate_index = index
 
-        return None
+            index = (index + 1) % self.size
+            if index == start:
+                return candidate_index

@@ -25,7 +25,7 @@ class PowerSet:
         result = PowerSet()
 
         for value in self.hashtable.slots:
-            if value is not None and set2.get(value):
+            if value is not None and value is not self.hashtable.PASS and set2.get(value):
                 result.put(value)
 
         return result
@@ -35,11 +35,11 @@ class PowerSet:
         result = PowerSet()
 
         for value in self.hashtable.slots:
-            if value is not None:
+            if value is not None and value is not self.hashtable.PASS and value is not self.hashtable.PASS:
                 result.put(value)
 
         for value in set2.hashtable.slots:
-            if value is not None:
+            if value is not None and value is not self.hashtable.PASS and value is not self.hashtable.PASS:
                 result.put(value)
 
         return result
@@ -49,31 +49,34 @@ class PowerSet:
         result = PowerSet()
 
         for value in self.hashtable.slots:
-            if value is not None and set2.get(value) is False:
+            if value is not None and value is not self.hashtable.PASS and set2.get(value) is False:
                 result.put(value)
 
         return result
 
     def issubset(self, set2: PowerSet) -> bool:
         for value in set2.hashtable.slots:
-            if value is not None and self.get(value) is False:
+            if value is not None and value is not set2.hashtable.PASS and self.get(value) is False:
                 return False
 
         return True
 
     def equals(self, set2: PowerSet) -> bool:
         for value in self.hashtable.slots:
-            if value is not None and set2.get(value) is False:
+            if value is not None and value is not self.hashtable.PASS and set2.get(value) is False:
                 return False
 
         for value in set2.hashtable.slots:
-            if value is not None and self.get(value) is False:
+            if value is not None and value is not set2.hashtable.PASS and self.get(value) is False:
                 return False
 
         return True
 
 
 class HashTable:
+
+    PASS = object()
+
     def __init__(self, sz, stp):
         self.size = sz
         self.step = stp
@@ -86,40 +89,57 @@ class HashTable:
     def hash_fun(self, value):
         return hash(value) % self.size
 
-    def seek_slot(self, value):
-        init_index = self.hash_fun(value)
+    def _seek_slot(self, key):
+        index = self.hash_fun(key)
+        start = index
 
-        if self.slots[init_index] is None or self.slots[init_index] == value:
-            return init_index
+        while True:
+            if self.slots[index] is None or self.slots[index] == key:
+                return index
 
-        next_index = (init_index + self.step) % self.size
-        while next_index != init_index:
-            if self.slots[next_index] is None or self.slots[next_index] == value:
-                return next_index
-            next_index = (next_index + self.step) % self.size
+            index = (index + self.step) % self.size
+            if index == start:
+                return None
 
-        return None
+    def _seek_candidate_slot_(self, key):
+        index = self.hash_fun(key)
+        start = index
+        first_pass_index = None
+
+        while True:
+            if first_pass_index is None and self.slots[index] is self.PASS:
+                first_pass_index = index
+
+            if self.slots[index] == key:
+                return index
+
+            if self.slots[index] is None:
+                return first_pass_index if first_pass_index is not None else index
+
+            index = (index + self.step) % self.size
+            if index == start:
+                return first_pass_index
 
     def put(self, value):
-        slot = self.seek_slot(value)
+        slot = self._seek_candidate_slot_(value)
         if slot is None:
-            pass
+            return
 
-        if self.slots[slot] is None:
+        if self.slots[slot] is None or self.slots[slot] is self.PASS:
             self._count += 1
 
         self.slots[slot] = value
 
     def find(self, value):
-        slot = self.seek_slot(value)
+        slot = self._seek_slot(value)
         if slot is None or self.slots[slot] != value:
             return None
         return slot
 
     def remove(self, value) -> bool:
-        slot = self.seek_slot(value)
+        slot = self._seek_slot(value)
         if slot is not None and self.slots[slot] == value:
-            self.slots[slot] = None
+            self.slots[slot] = self.PASS
             self._count -= 1
             return True
         return False
