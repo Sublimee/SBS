@@ -68,20 +68,17 @@ class BST:
 
         if FindMax:
             return self.FindMax(FindMax, FromNode)
-        else:
-            return self.FindMin(FindMax, FromNode)
+        return self.FindMin(FindMax, FromNode)
 
     def FindMin(self, FindMax: bool | None, FromNode: BSTNode) -> BSTNode | None:
         if FromNode.LeftChild is not None:
             return self.FinMinMax(FromNode.LeftChild, FindMax)
-        else:
-            return FromNode
+        return FromNode
 
     def FindMax(self, FindMax: bool | None, FromNode: BSTNode) -> BSTNode | None:
         if FromNode.RightChild is not None:
             return self.FinMinMax(FromNode.RightChild, FindMax)
-        else:
-            return FromNode
+        return FromNode
 
     def DeleteNodeByKey(self, key: int) -> bool:
         candidate = self.FindNodeByKey(key)
