@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 import static some.company.mobile.tariff.exception.ErrorCode.LOYALTY_KEY_IS_NULL;
 import static some.company.mobile.tariff.exception.ErrorCode.UNABLE_TO_MATCH_LOYALTY_CARD_INFO;
 import static some.company.mobile.tariff.model.BonusAmountStatus.NOT_ACCRUED_TO_BONUS_ACCOUNT;
-import static some.company.mobile.tariff.util.WidgetUtils.ALFA_ONLINE_CHANNEL_ID;
+import static some.company.mobile.tariff.util.WidgetUtils.ONLINE_CHANNEL_ID;
 import static some.company.mobile.tariff.util.WidgetUtils.ONE;
 import static some.company.mobile.tariff.util.WidgetUtils.isRulesIdGroupNeeded;
 
@@ -228,7 +228,7 @@ public class CardCashbackTariffService {
     }
 
     private boolean isWidgetCardScreenOpenForCustomer(Headers headers) {
-        if (headers.getChannelId().equals(ALFA_ONLINE_CHANNEL_ID)) {
+        if (headers.getChannelId().equals(ONLINE_CHANNEL_ID)) {
             return true;
         }
 
