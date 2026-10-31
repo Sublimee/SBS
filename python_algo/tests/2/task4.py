@@ -1,8 +1,8 @@
-class BSTBasedOnArray:
+class aBST:
 
     def __init__(self, depth: int):
-        nodesCount: int = 2 ** (depth + 1) - 1
-        self.Tree: list[int | None] = [None] * nodesCount
+        tree_size: int = 2 ** (depth + 1) - 1
+        self.Tree: list[int | None] = [None] * tree_size
 
     # Рефлексия
     # Пробегаемся по индексам для того, чтобы найти ячейку со значением key. Значения укладываются последовательно

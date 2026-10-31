@@ -2,7 +2,7 @@ import unittest
 from collections.abc import Callable
 
 from task2 import BST, BSTNode
-from task4 import BSTBasedOnArray
+from task4 import aBST
 
 
 # 4.2. LCA
@@ -14,7 +14,7 @@ from task4 import BSTBasedOnArray
 # взбирания" к родителям очень похожи. Только в нашем случае это арифметика, а в случае рекурсивной схемы — переходы
 # по ссылкам родителей.
 
-class BSTBasedOnArrayWithLCA(BSTBasedOnArray):
+class aBSTWithLCA(aBST):
 
     # O(log N) / O(1)
     def FindLCA(self, key1: int, key2: int) -> int | None:
@@ -40,7 +40,7 @@ class BSTBasedOnArrayWithLCA(BSTBasedOnArray):
 
 # Значения в массиве уже упорядочены по уровням. Нам остаётся только отфильтровать отсутствующие ноды.
 
-class BSTBasedOnArrayWithWideAllNodes(BSTBasedOnArray):
+class aBSTWithWideAllNodes(aBST):
 
     # O(N) / O(N)
     def WideAllNodes(self) -> tuple[int, ...]:

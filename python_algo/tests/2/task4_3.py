@@ -1,23 +1,23 @@
 import unittest
 
-from task4 import BSTBasedOnArray
-from task4_2 import BSTBasedOnArrayWithLCA, BSTBasedOnArrayWithWideAllNodes
+from task4 import aBST
+from task4_2 import aBSTWithLCA, aBSTWithWideAllNodes
 
 
 class TestInit(unittest.TestCase):
 
     def test_1(self):
-        tree = BSTBasedOnArray(0)
+        tree = aBST(0)
 
         self.assertEqual(tree.Tree, [None])
 
     def test_2(self):
-        tree = BSTBasedOnArray(1)
+        tree = aBST(1)
 
         self.assertEqual(tree.Tree, [None] * 3)
 
     def test_3(self):
-        tree = BSTBasedOnArray(3)
+        tree = aBST(3)
 
         self.assertEqual(tree.Tree, [None] * 15)
 
@@ -25,11 +25,11 @@ class TestInit(unittest.TestCase):
 class TestFindKeyIndex(unittest.TestCase):
 
     def setUp(self):
-        self.tree = BSTBasedOnArray(3)
+        self.tree = aBST(3)
         self.tree.Tree = [5, 2, 8, 1, 3, 7, None, None, None, None, None, None, None, None, None]
 
     def test_1(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
 
         result = tree.FindKeyIndex(1)
 
@@ -57,7 +57,7 @@ class TestFindKeyIndex(unittest.TestCase):
         self.assertEqual(self.tree.FindKeyIndex(6), -11)
 
     def test_7(self):
-        tree = BSTBasedOnArray(1)
+        tree = aBST(1)
         tree.Tree = [5, 2, 8]
 
         self.assertIsNone(tree.FindKeyIndex(1))
@@ -66,14 +66,14 @@ class TestFindKeyIndex(unittest.TestCase):
         self.assertIsNone(tree.FindKeyIndex(9))
 
     def test_8(self):
-        tree = BSTBasedOnArray(0)
+        tree = aBST(0)
         tree.Tree = [5]
 
         self.assertEqual(tree.FindKeyIndex(5), 0)
         self.assertIsNone(tree.FindKeyIndex(1))
 
     def test_9(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
         tree.Tree = [5, 2, 8, 1, 3, 7, 9]
 
         self.assertEqual(tree.FindKeyIndex(5), 0)
@@ -85,7 +85,7 @@ class TestFindKeyIndex(unittest.TestCase):
         self.assertEqual(tree.FindKeyIndex(9), 6)
 
     def test_10(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
         tree.Tree = [5, 2, 8, 1, 3, 7, 9]
 
         self.assertIsNone(tree.FindKeyIndex(0))
@@ -97,7 +97,7 @@ class TestFindKeyIndex(unittest.TestCase):
 class TestAddKey(unittest.TestCase):
 
     def test_1(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
 
         result = tree.AddKey(5)
 
@@ -105,7 +105,7 @@ class TestAddKey(unittest.TestCase):
         self.assertEqual(tree.Tree[0], 5)
 
     def test_2(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
         tree.AddKey(5)
 
         self.assertEqual(tree.AddKey(2), 1)
@@ -118,7 +118,7 @@ class TestAddKey(unittest.TestCase):
         self.assertEqual(tree.Tree, [5, 2, 8, 1, 3, 7, 9])
 
     def test_3(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
         tree.AddKey(5)
         tree.AddKey(2)
 
@@ -128,7 +128,7 @@ class TestAddKey(unittest.TestCase):
         self.assertEqual(tree.Tree, [5, 2, None, None, None, None, None])
 
     def test_4(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
         tree.AddKey(5)
 
         result = tree.AddKey(5)
@@ -137,7 +137,7 @@ class TestAddKey(unittest.TestCase):
         self.assertEqual(tree.Tree, [5, None, None, None, None, None, None])
 
     def test_5(self):
-        tree = BSTBasedOnArray(1)
+        tree = aBST(1)
         tree.AddKey(5)
         tree.AddKey(2)
         tree.AddKey(8)
@@ -148,7 +148,7 @@ class TestAddKey(unittest.TestCase):
         self.assertEqual(tree.Tree, [5, 2, 8])
 
     def test_6(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
         tree.AddKey(1)
         tree.AddKey(2)
         tree.AddKey(3)
@@ -157,14 +157,14 @@ class TestAddKey(unittest.TestCase):
         self.assertEqual(tree.AddKey(4), -1)
 
     def test_7(self):
-        tree = BSTBasedOnArray(0)
+        tree = aBST(0)
 
         self.assertEqual(tree.AddKey(5), 0)
         self.assertEqual(tree.AddKey(1), -1)
         self.assertEqual(tree.Tree, [5])
 
     def test_8(self):
-        tree = BSTBasedOnArray(3)
+        tree = aBST(3)
         tree.AddKey(5)
         tree.AddKey(2)
         tree.AddKey(8)
@@ -174,7 +174,7 @@ class TestAddKey(unittest.TestCase):
         self.assertEqual(tree.FindKeyIndex(4), -10)
 
     def test_9(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
         tree.AddKey(5)
         tree.AddKey(2)
         tree.AddKey(8)
@@ -191,7 +191,7 @@ class TestAddKey(unittest.TestCase):
         self.assertEqual(tree.Tree, [5, 2, 8, 1, 3, 7, 9])
 
     def test_10(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
         tree.AddKey(5)
         tree.AddKey(2)
         tree.AddKey(8)
@@ -207,7 +207,7 @@ class TestAddKey(unittest.TestCase):
         self.assertEqual(tree.Tree, [5, 2, 8, 1, 3, 7, 9])
 
     def test_11(self):
-        tree = BSTBasedOnArray(2)
+        tree = aBST(2)
         tree.AddKey(5)
         tree.AddKey(8)
         tree.AddKey(9)
@@ -222,16 +222,16 @@ class TestAddKey(unittest.TestCase):
 class TestFindLCA(unittest.TestCase):
 
     def setUp(self):
-        self.tree = BSTBasedOnArrayWithLCA(2)
+        self.tree = aBSTWithLCA(2)
         self.tree.Tree = [5, 2, 8, 1, 3, 7, 9]
 
     def test_1(self):
-        tree = BSTBasedOnArrayWithLCA(2)
+        tree = aBSTWithLCA(2)
 
         self.assertIsNone(tree.FindLCA(1, 2))
 
     def test_2(self):
-        tree = BSTBasedOnArrayWithLCA(2)
+        tree = aBSTWithLCA(2)
         tree.AddKey(5)
 
         self.assertEqual(tree.FindLCA(5, 5), 0)
@@ -267,7 +267,7 @@ class TestFindLCA(unittest.TestCase):
         self.assertIsNone(self.tree.FindLCA(0, 10))
 
     def test_10(self):
-        tree = BSTBasedOnArrayWithLCA(2)
+        tree = aBSTWithLCA(2)
         tree.AddKey(5)
         tree.AddKey(8)
         tree.AddKey(7)
@@ -280,18 +280,18 @@ class TestFindLCA(unittest.TestCase):
 class TestWideAllNodes(unittest.TestCase):
 
     def test_1(self):
-        tree = BSTBasedOnArrayWithWideAllNodes(2)
+        tree = aBSTWithWideAllNodes(2)
 
         self.assertEqual(tree.WideAllNodes(), ())
 
     def test_2(self):
-        tree = BSTBasedOnArrayWithWideAllNodes(2)
+        tree = aBSTWithWideAllNodes(2)
         tree.AddKey(5)
 
         self.assertEqual(tree.WideAllNodes(), (5,))
 
     def test_3(self):
-        tree = BSTBasedOnArrayWithWideAllNodes(2)
+        tree = aBSTWithWideAllNodes(2)
         tree.AddKey(5)
         tree.AddKey(2)
         tree.AddKey(8)
@@ -303,7 +303,7 @@ class TestWideAllNodes(unittest.TestCase):
         self.assertEqual(tree.WideAllNodes(), (5, 2, 8, 1, 3, 7, 9))
 
     def test_4(self):
-        tree = BSTBasedOnArrayWithWideAllNodes(2)
+        tree = aBSTWithWideAllNodes(2)
         tree.AddKey(5)
         tree.AddKey(8)
         tree.AddKey(9)
@@ -315,7 +315,7 @@ class TestWideAllNodes(unittest.TestCase):
         self.assertEqual(tree.WideAllNodes(), (5, 2, 8, 1, 3, 7, 9))
 
     def test_5(self):
-        tree = BSTBasedOnArrayWithWideAllNodes(3)
+        tree = aBSTWithWideAllNodes(3)
         tree.AddKey(5)
         tree.AddKey(2)
         tree.AddKey(8)
@@ -326,7 +326,7 @@ class TestWideAllNodes(unittest.TestCase):
         self.assertEqual(tree.WideAllNodes(), (5, 2, 8, 3, 9, 4))
 
     def test_6(self):
-        tree = BSTBasedOnArrayWithWideAllNodes(2)
+        tree = aBSTWithWideAllNodes(2)
         tree.AddKey(1)
         tree.AddKey(2)
         tree.AddKey(3)
@@ -334,7 +334,7 @@ class TestWideAllNodes(unittest.TestCase):
         self.assertEqual(tree.WideAllNodes(), (1, 2, 3))
 
     def test_7(self):
-        tree = BSTBasedOnArrayWithWideAllNodes(1)
+        tree = aBSTWithWideAllNodes(1)
         tree.AddKey(5)
         tree.AddKey(2)
         tree.AddKey(8)
