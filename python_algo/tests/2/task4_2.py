@@ -4,10 +4,59 @@ from collections.abc import Callable
 from task2 import BST, BSTNode
 from task4 import BSTBasedOnArray
 
+
+# 4.2. LCA
+
 # Рефлексия
 
+# Массив в отличие от нод неявно хранит информацию об уровнях ключей (либо надо сразу закладываться на уровни в
+# рекурсивной реализации, либо делать автономные проходы по дереву). Если они есть, то алгоритмы "поочередного
+# взбирания" к родителям очень похожи. Только в нашем случае это арифметика, а в случае рекурсивной схемы — переходы
+# по ссылкам родителей.
 
-# 2.2 и 2.3
+class BSTBasedOnArrayWithLCA(BSTBasedOnArray):
+
+    # O(log N) / O(1)
+    def FindLCA(self, key1: int, key2: int) -> int | None:
+        index1 = self.FindKeyIndex(key1)
+        if index1 is None or index1 < 0 or self.Tree[index1] != key1:
+            return None
+
+        index2 = self.FindKeyIndex(key2)
+        if index2 is None or index2 < 0 or self.Tree[index2] != key2:
+            return None
+
+        while index1 != index2:
+            if index1 > index2:
+                index1 = (index1 - 1) // 2
+            else:
+                index2 = (index2 - 1) // 2
+
+        return index1
+
+# 4.3. Обход в ширину
+
+# Рефлексия
+
+# Значения в массиве уже упорядочены по уровням. Нам остаётся только отфильтровать отсутствующие ноды.
+
+class BSTBasedOnArrayWithWideAllNodes(BSTBasedOnArray):
+
+    # O(N) / O(N)
+    def WideAllNodes(self) -> tuple[int, ...]:
+        keys: list[int] = []
+        for key in self.Tree:
+            if key is not None:
+                keys.append(key)
+        return tuple(keys)
+
+
+# Рекомендации по решению задач задания 2.
+
+# 2.2. Метод, который нахождит все пути от корня к листьям, длина которых равна заданной величине.
+# 2.3. Метод, который находит все пути от корня к листьям, чтобы сумма значений узлов на этом пути была максимальной.
+
+# Рефлексия
 
 # В исходных решениях обход дерева выполнялся индивидуально для каждой задачи. Выполнил наивную реализацию с рекурсивным
 # сбором всех путей с их агрегатами и последующим применением результирующих функций. Передачу вычисления итогового
@@ -21,12 +70,12 @@ class BSTWithPaths(BST):
         return result
 
     def CollectPathsRecursive(
-        self,
-        node: BSTNode | None,
-        step: Callable[[int, BSTNode], int],
-        accumulator: int,
-        path: list[BSTNode],
-        result: list[tuple[int, list[BSTNode]]],
+            self,
+            node: BSTNode | None,
+            step: Callable[[int, BSTNode], int],
+            accumulator: int,
+            path: list[BSTNode],
+            result: list[tuple[int, list[BSTNode]]],
     ) -> None:
         if node is None:
             return
@@ -257,7 +306,9 @@ class TestBSTWithPathsGetMaxSumPaths(unittest.TestCase):
         self.assertEqual(tree.GetMaxSumPaths(), [[root, right]])
 
 
-# 2.4.
+# 2.4. Симметрично ли дерево относительно своего корня.
+
+# Рефлексия
 
 # В своём исходном решении не уловил идею правильного рекурсивного погружения на более глубокие уровни дерева (что и с
 # чем сравнивать), поэтому не мог завершать работу алгоритма при нахождении расхождений формы вовремя, так как поздно
@@ -371,49 +422,3 @@ class TestBSTWithSymmetricCheckIsSymmetric(unittest.TestCase):
         root.LeftChild = BSTNode(4, "4", root)
         root.RightChild = BSTNode(12, "12", root)
         self.assertFalse(BSTWithSymmetricCheck(root).IsSymmetric())
-
-
-# 4.2. LCA
-
-# Рефлексия
-
-# Массив в отличие от нод неявно хранит информацию об уровнях ключей (либо надо сразу закладываться на уровни в
-# рекурсивной реализации, либо делать автономные проходы по дереву). Если они есть, то алгоритмы "поочередного
-# взбирания" к родителям очень похожи. Только в нашем случае это арифметика, а в случае рекурсивной схемы — переходы
-# по ссылкам родителей.
-
-class BSTBasedOnArrayWithLCA(BSTBasedOnArray):
-
-    # O(log N) / O(1)
-    def FindLCA(self, key1: int, key2: int) -> int | None:
-        index1 = self.FindKeyIndex(key1)
-        if index1 is None or index1 < 0 or self.Tree[index1] != key1:
-            return None
-
-        index2 = self.FindKeyIndex(key2)
-        if index2 is None or index2 < 0 or self.Tree[index2] != key2:
-            return None
-
-        while index1 != index2:
-            if index1 > index2:
-                index1 = (index1 - 1) // 2
-            else:
-                index2 = (index2 - 1) // 2
-
-        return index1
-
-# 4.3. Обход в ширину
-
-# Рефлексия
-
-# Значения в массиве уже упорядочены по уровням. Нам остаётся только отфильтровать отсутствующие ноды.
-
-class BSTBasedOnArrayWithWideAllNodes(BSTBasedOnArray):
-
-    # O(N) / O(N)
-    def WideAllNodes(self) -> tuple[int, ...]:
-        keys: list[int] = []
-        for key in self.Tree:
-            if key is not None:
-                keys.append(key)
-        return tuple(keys)
